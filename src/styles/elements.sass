@@ -1,0 +1,132 @@
+// Header
+@mixin header-shared($font-size, $shadow-color)
+  font-size: $font-size
+  text-shadow: 2px 2px 0 var(--theme-text-shadow-color)
+  box-shadow: 0 -0.5em 0 $shadow-color inset
+
+h1
+  font-size: 2.2rem
+
+h2
+  @include header-shared(1.4rem, rgb(93, 188, 243))
+  display: inline-block
+  position: relative
+  left: 50%
+  transform: translateX(-50%)
+  /* margin: 0.4rem auto */
+  padding: 0 0.4rem
+
+// Links
+a
+  --color: var(--theme-link-color)
+  color: var(--color)
+  text-decoration: none
+  position: relative
+  display: inline-block
+
+  &.plain
+    display: unset
+
+  &:not(.plain)::after
+    content: ''
+    display: block
+    position: absolute
+    width: 100%
+    height: 0.1em
+    bottom: -0.1em
+    left: 0
+    background-color: var(--color)
+    visibility: hidden
+    transform: scaleX(0)
+    transition: all 0.4s ease-in-out
+
+  &:not(.plain):hover::after,
+  &.router-link-active::after,
+  &.tab-active::after,
+  &.is-active::after
+    visibility: visible
+    transform: scaleX(1)
+
+  &.button
+    padding: 0.2rem 0.4rem
+    background-color: var(--theme-tag-color)
+    transition: all .4s ease
+    cursor: pointer
+
+    &:hover
+      background-color: rgba(var(--theme-link-color--rgb), 1)
+      color: var(--theme-accent-link-color)
+
+// Card
+.card
+  background-color: #fff
+  border-radius: 8px
+  padding: 1rem
+  transition: box-shadow .6s ease
+  box-shadow: var(--theme-box-shadow)
+
+  &.gap
+    margin-top: 1rem
+    margin-bottom: 1.4rem
+
+  &:hover
+    box-shadow: var(--theme-box-shadow-hover)
+
+// Responsive
+.responsive
+  padding-left: 5%
+  padding-right: 5%
+
+@media screen and(max-width: 800px)
+  .responsive
+    padding-left: 1rem
+    padding-right: 1rem
+
+// Loading
+.loading-cover
+  position: relative
+  &::before,&::after
+    content: ""
+    width: 100%
+    height: 100%
+    display: block
+    position: absolute
+  &::before
+    background-image: url(/images/spinner.svg)
+    background-size: 75px
+    background-repeat: no-repeat
+    background-position: center
+    top: 50%
+    left: 50%
+    transform: translateX(-50%) translateY(-50%)
+    z-index: 6
+  &::after
+    top: 0
+    left: 0
+    background-color: rgba(200,200,200,0.2)
+    z-index: 5
+
+// Code
+pre
+  overflow: auto
+  background: rgba(172, 232, 255, 0.2)
+  padding: 0.4rem
+  border: 1px solid #cccccc
+  border-radius: 6px
+
+code
+  background-color: #efefef
+  display: inline
+  border-radius: 2px
+  padding: .1rem .2rem
+  color: #e02080
+  word-break: break-word
+
+// Tabber
+.tabber
+  .tabber-tabs
+    margin-bottom: 1rem
+    display: flex
+    gap: 1rem
+    a
+      cursor: pointer

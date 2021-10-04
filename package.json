@@ -1,0 +1,43 @@
+{
+  "name": "vite-vue-ts-template",
+  "version": "0.0.0",
+  "main": "index.js",
+  "repository": "git@github.com:FreeNowOrg/vite-vue-ts-template.git",
+  "author": "FreeNowOrg <https://github.com/FreeNowOrg>",
+  "license": "Apache-2.0",
+  "private": true,
+  "scripts": {
+    "start": "vite",
+    "serve": "vercel dev",
+    "build": "vuedx-typecheck . && vite build"
+  },
+  "dependencies": {
+    "axios": "^0.22.0",
+    "nprogress": "^0.2.0",
+    "vue": "^3.2.19",
+    "vue-router": "^4.0.11"
+  },
+  "devDependencies": {
+    "@l2studio/picacomic-api": "^0.1.6",
+    "@types/node": "^16.10.2",
+    "@types/nprogress": "^0.2.0",
+    "@typescript-eslint/eslint-plugin": "^4.32.0",
+    "@typescript-eslint/parser": "^4.32.0",
+    "@vicons/fa": "^0.11.0",
+    "@vicons/utils": "^0.1.4",
+    "@vitejs/plugin-vue": "^1.9.2",
+    "@vue/compiler-sfc": "^3.2.19",
+    "@vuedx/typecheck": "^0.7.4",
+    "@vuedx/typescript-plugin-vue": "^0.7.4",
+    "eslint": "^7.32.0",
+    "eslint-config-prettier": "^8.3.0",
+    "eslint-plugin-vue": "^7.18.0",
+    "prettier": "^2.4.1",
+    "pug": "^3.0.2",
+    "sass": "^1.42.1",
+    "serverless-kit": "^0.0.3",
+    "typescript": "^4.4.3",
+    "vercel": "^23.1.2",
+    "vite": "^2.6.2"
+  }
+}

@@ -1,7 +1,7 @@
 import { VercelRequest, VercelResponse } from '@vercel/node'
 import { PicaComicAPI } from '@l2studio/picacomic-api'
 import { HandleResponse } from 'serverless-kit'
-import { toUpperCamelCase } from '../utils'
+import { replaceFileUrl, toUpperCamelCase } from '../utils'
 
 const controllerList = [
   'Categories',
@@ -20,6 +20,7 @@ type Controller =
 
 export default async (req: VercelRequest, res: VercelResponse) => {
   const http = new HandleResponse(req, res)
+
   const controller = toUpperCamelCase(
     req.query.controller as string
   ) as Controller
@@ -31,12 +32,20 @@ export default async (req: VercelRequest, res: VercelResponse) => {
       { valid: { controllers: controllerList } }
     )
   }
-  const token = req.cookies?.['PICA_TOKEN']
-  req.query.token = req.query.token || token
+
+  const token =
+    req.query.token || req.headers.authorization || req.cookies?.['PICA_TOKEN']
+  if (!token) {
+    return http.send(403, 'Please login')
+  }
+
+  delete req.query.controller
+  req.query.token = token
+
   const client = new PicaComicAPI({})
   try {
     const data = await client[`fetch${controller}`](req.query as any)
-    http.send(200, 'ok', data)
+    http.send(200, 'ok', replaceFileUrl(data))
   } catch (err) {
     http.axiosError(err)
   }

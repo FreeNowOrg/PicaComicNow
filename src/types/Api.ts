@@ -50,14 +50,16 @@ export interface UserProfile {
   _id: string
   birthday: string
   email: string
-  gender: string
+  gender: 'm' | 'f' | 'bot'
   name: string
+  slogan: string
   title: string
   verified: boolean
   exp: number
   level: number
   characters: any[]
   created_at: string
+  avatar: FileThumb
   isPunched: boolean
 }
 

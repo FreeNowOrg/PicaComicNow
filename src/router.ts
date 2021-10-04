@@ -57,13 +57,13 @@ router.addRoute({
   component: () => import('./view/404.vue'),
 })
 
-router.beforeEach(async ({ name }, { path: fromPath }) => {
+router.beforeEach(async ({ name, path }) => {
   if (!userData.value && name !== 'auth') {
     await getProfile().catch(() => {
       console.warn('[App]', 'Verification information has expired')
       router.push({
         name: 'auth',
-        query: { from: fromPath, tips: 'You must log in to use this website' },
+        query: { from: path, tips: 1 },
       })
     })
   }

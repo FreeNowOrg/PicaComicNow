@@ -15,11 +15,32 @@ import { defineComponent, onMounted } from 'vue'
 import GlobalHeader from './components/GobalHeader.vue'
 import GlobalFooter from './components/GlobalFooter.vue'
 import NProgress from './components/NProgress.vue'
-import { getProfile } from './components/userData'
+import { getProfile, userData } from './components/userData'
+import { useRoute, useRouter } from 'vue-router'
+
+const route = useRoute()
+const router = useRouter()
 const components = defineComponent({
   GlobalHeader,
   GlobalFooter,
   NProgress,
+})
+
+onMounted(async () => {
+  if (!userData.value) {
+    getProfile().catch((err) => {
+      console.warn('[App]', 'Verification information has expired', err)
+      if (route.name !== 'auth') {
+        router.push({
+          name: 'auth',
+          query: {
+            from: route.path,
+            tips: 1,
+          },
+        })
+      }
+    })
+  }
 })
 </script>
 

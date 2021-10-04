@@ -3,7 +3,7 @@ h1 Authorization
 
 p.info.tips(v-if='$route.query.tips')
   .title Tips
-  p {{ $route.query.tips }}
+  p You must log in to use this website
 
 section(v-if='userData')
   p hello, {{ userData.name }}

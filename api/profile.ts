@@ -1,7 +1,7 @@
 import { PicaComicAPI } from '@l2studio/picacomic-api'
 import { VercelRequest, VercelResponse } from '@vercel/node'
 import { HandleResponse } from 'serverless-kit'
-import { getTokenFromReq } from './utils'
+import { getTokenFromReq, replaceFileUrl } from './utils'
 
 export default async (req: VercelRequest, res: VercelResponse) => {
   const http = new HandleResponse(req, res)
@@ -14,11 +14,13 @@ export default async (req: VercelRequest, res: VercelResponse) => {
 
   try {
     const { data } = await client
+      // eslint-disable-next-line
+      // @ts-ignore
       ._fetch('users/profile', {
         headers: { authorization: token },
       })
       .json()
-    return http.send(200, 'ok', data)
+    return http.send(200, 'ok', replaceFileUrl(data))
   } catch (err) {
     return http.axiosError(err)
   }

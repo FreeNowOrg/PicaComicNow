@@ -28,6 +28,7 @@ export async function getToken(
 }
 
 export async function getProfile(): Promise<UserProfile> {
+  console.info('Get profile')
   const { data }: any = await axios.get(`${API_BASE}/profile`)
   const p = data?.body?.user || null
   userData.value = p

@@ -17,16 +17,16 @@ export const COPYRIGHT_YEAR = 2021
 export const COPYRIGHT_STR =
   year === COPYRIGHT_YEAR ? COPYRIGHT_YEAR : `${COPYRIGHT_YEAR} - ${year}`
 
-// Eject axios
+// Inject axios
 axios.interceptors.request.use(
-  async (req) => {
+  (req) => {
     if (ENV !== 'prod') {
       req.params = req.params || {}
       try {
-        req.params.token = (await import('./token.dev')).default
+        req.params.token = window.Cookies.get('PICA_TOKEN') || ''
         console.info('[Axios]', 'Request with local token')
       } catch (err) {
-        // Do nothing
+        console.warn('[Axios]', 'Inject error', err)
       }
     }
     return req

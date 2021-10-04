@@ -17,6 +17,7 @@ import GlobalFooter from './components/GlobalFooter.vue'
 import NProgress from './components/NProgress.vue'
 import { getProfile, userData } from './components/userData'
 import { useRoute, useRouter } from 'vue-router'
+import Cookies from 'js-cookie'
 
 const route = useRoute()
 const router = useRouter()
@@ -41,6 +42,7 @@ onMounted(async () => {
       }
     })
   }
+  window.Cookies = Cookies
 })
 </script>
 

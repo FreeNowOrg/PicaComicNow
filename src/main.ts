@@ -19,5 +19,9 @@ app.component('Icon', Icon)
 import ExternalLink from './components/ExternalLink.vue'
 app.component('ELink', ExternalLink)
 
+// LazyLoad
+import Lazyload from './components/Lazyload.vue'
+app.component('Lazyload', Lazyload)
+
 // Mount
 app.mount('#app')

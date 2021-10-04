@@ -23,6 +23,18 @@ router.addRoute({
   component: () => import('./view/categories.vue'),
 })
 
+// Comics
+router.addRoute({
+  path: '/comics',
+  name: 'comics-index',
+  component: () => import('./view/comics.vue'),
+})
+router.addRoute({
+  path: '/comics/:category',
+  name: 'comics',
+  component: () => import('./view/comics.vue'),
+})
+
 // About
 router.addRoute({
   path: '/about',

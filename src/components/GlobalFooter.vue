@@ -19,6 +19,12 @@ footer.global-footer
       h4 Friend links
       p Come to GitHub issues to exchange friend links~
 
+  .top.responsive
+    section.flex-1
+      h4 Attention please
+      p 这是一个粉丝向网站，我们与 PicACG 官方<u>没有任何关系</u>。<u>请勿</u>在任何地方分享本网站——珍惜眼前。
+      p This is a fan made website. We are NOT PicACG official. Please DO NOT share this website anywhere. Cherish the present, and cherish everything.
+
   .bottom.align-center.responsive
     .copyright
       | Copyright &copy; {{ COPYRIGHT_STR }}
@@ -26,6 +32,8 @@ footer.global-footer
       e-link(:href='GITHUB_URL') {{ PROJECT_NAME }}
       |
       em v{{ VERSION }}
+      | &nbsp;|&nbsp;
+      span For communication and learning only.
 </template>
 
 <script setup lang="ts">

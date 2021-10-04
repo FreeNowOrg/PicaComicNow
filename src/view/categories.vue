@@ -25,7 +25,10 @@ function init() {
     .get(`${API_BASE}/fetch/categories`)
     .then(
       ({ data }: any) => {
-        list.value = data.body
+        const { body } = data
+        list.value = body.map((item)=>{
+          item.thumb
+        })
       },
       (err) => {
         error.value =

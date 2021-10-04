@@ -7,9 +7,6 @@ p.info.tips(v-if='$route.query.tips')
 
 section(v-if='userData')
   .card
-    h2 You
-    p hello, {{ userData.name }}
-  .card
     h2 Sign out
     .align-center
       button(@click='handleSignOut') Sign out

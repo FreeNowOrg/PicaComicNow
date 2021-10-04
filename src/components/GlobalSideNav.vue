@@ -18,10 +18,15 @@ aside.global-site-nav(:class='{ "is-hide": !sideNavShow }')
       .group
         .title User
         ul
+          li(v-if='userData')
+            router-link(to='/profile')
+              icon
+                user
+              | {{ userData.name }} (you)
           li
             router-link(to='/auth')
               icon
-                User
+                Fingerprint
               | Authorization
 
       .group
@@ -38,7 +43,8 @@ aside.global-site-nav(:class='{ "is-hide": !sideNavShow }')
 import { onMounted, watch } from 'vue'
 import { PROJECT_NAME } from '../config'
 import { sideNavShow } from './states'
-import { Home, Heart, Palette, User } from '@vicons/fa'
+import { userData } from './userData'
+import { Home, Heart, Palette, User, Fingerprint } from '@vicons/fa'
 import { useRouter } from 'vue-router'
 const router = useRouter()
 

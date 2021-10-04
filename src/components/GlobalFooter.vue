@@ -6,6 +6,11 @@ footer.global-footer
       ul
         li
           router-link(to='/about') About us
+        li
+          router-link(to='/categories') Categories
+          ul
+            li
+              router-link(to='/comics/妹妹系') 妹妹系
 
     section.flex-1
       h4 Follow us

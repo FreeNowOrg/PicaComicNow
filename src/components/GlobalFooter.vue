@@ -22,8 +22,8 @@ footer.global-footer
   .top.responsive
     section.flex-1
       h4 Attention please
-      p 这是一个粉丝向网站，我们与 PicACG 官方<u>没有任何关系</u>。<u>请勿</u>在任何地方分享本网站——珍惜眼前。
       p This is a fan made website. We are NOT PicACG official. Please DO NOT share this website anywhere.
+      p 这是一个粉丝向网站，我们与 PicACG 官方<u>没有任何关系</u>。<u>请勿</u>在任何地方传播本网站——珍惜眼前。
 
   .bottom.align-center.responsive
     .copyright

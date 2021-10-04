@@ -6,7 +6,13 @@ p.info.tips(v-if='$route.query.tips')
   p You must log in to use this website
 
 section(v-if='userData')
-  p hello, {{ userData.name }}
+  .card
+    h2 You
+    p hello, {{ userData.name }}
+  .card
+    h2 Sign out
+    .align-center
+      button(@click='handleSignOut') Sign out
 
 section(v-else)
   form.form.card.align-center(:class='{ "loading-cover": onAuthenticating }')
@@ -33,6 +39,11 @@ section(v-else)
 import { onMounted, ref } from 'vue'
 import { setTitle } from '../utils/setTitle'
 import { userData, getProfile, getToken } from '../components/userData'
+import { getErrMsg } from '../utils/getErrMsg'
+import { useRoute, useRouter } from 'vue-router'
+
+const route = useRoute()
+const router = useRouter()
 
 const onAuthenticating = ref(false)
 const email = ref('')
@@ -60,24 +71,30 @@ function handleLogin(e) {
       (err) => {
         console.warn('auth faild', err)
         errorTitle.value = 'Auth failed'
-        errorMsg.value =
-          err?.response?.data?.message || err.message || 'HTTP Timeout'
+        errorMsg.value = getErrMsg(err)
       }
     )
     .then(
       (profile) => {
         console.log('profile ok', profile)
+        if (route.query.from) {
+          router.push(route.query.from as string)
+        }
       },
       (err) => {
         console.warn('profile faild')
         errorTitle.value = 'Faild to get profile'
-        errorMsg.value =
-          err?.response?.data?.message || err.message || 'HTTP Timeout'
+        errorMsg.value = getErrMsg(err)
       }
     )
     .finally(() => {
       onAuthenticating.value = false
     })
+}
+
+function handleSignOut() {
+  window.Cookies.remove('PICA_TOKEN')
+  location.reload()
 }
 
 onMounted(() => {

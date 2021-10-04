@@ -14,15 +14,18 @@ export async function getToken(
     password,
   })
 
-  const { data }: any = await axios.post(`${API_BASE}/auth`, {
-    headers: {
-      'cache-control': 'no-cache',
-    },
-    data: {
+  const { data }: any = await axios.post(
+    `${API_BASE}/auth`,
+    {
       email,
       password,
     },
-  })
+    {
+      headers: {
+        'cache-control': 'no-cache',
+      },
+    }
+  )
 
   return data?.body?.token || ''
 }

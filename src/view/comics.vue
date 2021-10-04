@@ -5,10 +5,8 @@
       arrow-left
     | Categories list
 
-h1(v-if='category') Category: {{ category }} (page {{ page }})
+h1(v-if='category') Comics: {{ category }} (page {{ page }})
 h1(v-else) Comics list (page {{ page }})
-
-.loading(v-if='loading') Loading...
 
 .info.error(v-if='error')
   .title Failed to get comics data
@@ -18,7 +16,12 @@ h1(v-else) Comics list (page {{ page }})
   details
     pre {{ comics }}
 
-section(v-if='comics.docs && comics.docs.length')
+.loading(v-if='loading') Loading...
+
+section(
+  v-if='comics.docs && comics.docs.length',
+  :class='{ "loading-cover": loading }'
+)
   books-list(:data='comics.docs')
 </template>
 
@@ -33,6 +36,7 @@ const route = useRoute()
 const router = useRouter()
 
 import BooksList from '../components/BooksList.vue'
+import { getErrMsg } from '../utils/getErrMsg'
 const components = defineComponent({ BooksList })
 
 type SortTypes = 'ua' | 'dd' | 'da' | 'ld' | 'vd'
@@ -88,8 +92,7 @@ function init() {
       },
       (err) => {
         console.warn('Failed to get comics data', err)
-        error.value =
-          err?.response?.data?.message || err.message || 'HTTP Timeout'
+        error.value = getErrMsg(err)
       }
     )
     .finally(() => {
@@ -97,8 +100,13 @@ function init() {
     })
 }
 
+watch(category, () => {
+  init()
+})
+
 onMounted(() => {
   init()
+  setTitle('Comics')
 })
 </script>
 

@@ -66,3 +66,26 @@ export interface UserProfile {
 export type ApiResponseUserProfile = {
   body: { user: UserProfile }
 } & ApiResponseCommon
+
+export interface ComicInfo {
+  _id: string
+  _creator: UserProfile
+  title: string
+  description: string
+  thumb: FileThumb
+  author: string
+  chineseTeam: string
+  categories: string[]
+  tags: string[]
+  pagesCount: number
+  epsCount: number
+  finished: boolean
+  updated_at: string
+  created_at: string
+  allowDownload: boolean
+  viewsCount: number
+  likesCount: number
+  isFavourite: boolean
+  isLiked: boolean
+  commentsCount: number
+}

@@ -36,6 +36,21 @@ router.addRoute({
   component: () => import('./view/comics.vue'),
 })
 
+// Book
+router.addRoute({
+  path: '/book/:bookid',
+  name: 'book',
+  component: () => import('./view/book.vue'),
+})
+
+// Read
+router.addRoute({
+  path: '/book/:bookid/:epsid',
+  alias: ['/read/:bookid/:epsid'],
+  name: 'read',
+  component: () => import('./view/read.vue'),
+})
+
 // Auth
 router.addRoute({
   path: '/auth',

@@ -29,6 +29,7 @@ ul.list
 import axios from 'axios'
 import { onMounted, ref } from 'vue'
 import { API_BASE } from '../config'
+import { getErrMsg } from '../utils/getErrMsg'
 import { setTitle } from '../utils/setTitle'
 
 const list = ref<any[]>([])
@@ -51,8 +52,7 @@ function init() {
       },
       (err) => {
         console.warn('Failed to get categories data', err)
-        error.value =
-          err?.response?.data?.message || err.message || 'HTTP Timeout'
+        error.value = getErrMsg(err)
       }
     )
     .finally(() => {

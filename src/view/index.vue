@@ -38,11 +38,10 @@ function handleLogin(e) {
   e.preventDefault()
   onAuthenticating.value = true
   authError.value = ''
-  console.log({
+  console.log('Log in with credentials', {
     email: email.value,
     password: password.value,
   })
-  return
 
   axios({
     url: `${API_BASE}/auth`,

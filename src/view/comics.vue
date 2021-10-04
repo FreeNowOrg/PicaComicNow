@@ -44,8 +44,6 @@ const comics = ref<any>({})
 const loading = ref(false)
 const error = ref('')
 
-import * as localData from './comics.dev.json'
-
 // Refresh when the category changes
 router.afterEach((to, from) => {
   console.log('after route', { to })
@@ -92,7 +90,6 @@ function init() {
         console.warn('Failed to get comics data', err)
         error.value =
           err?.response?.data?.message || err.message || 'HTTP Timeout'
-        comics.value = localData.body
       }
     )
     .finally(() => {

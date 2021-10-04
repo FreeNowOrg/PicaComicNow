@@ -11,6 +11,9 @@ aside.global-site-nav(:class='{ "is-hide": !sideNavShow }')
               icon
                 Home
               | Home
+          li
+            router-link(to="/categories")
+              | Categories
 
       .group
         .title {{ PROJECT_NAME }}

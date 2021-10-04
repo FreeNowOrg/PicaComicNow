@@ -16,6 +16,13 @@ router.addRoute({
   component: () => import('./view/index.vue'),
 })
 
+// Categories
+router.addRoute({
+  path: '/categories',
+  name: 'categories',
+  component: () => import('./view/categories.vue'),
+})
+
 // About
 router.addRoute({
   path: '/about',

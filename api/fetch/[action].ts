@@ -1,6 +1,7 @@
 import { VercelRequest, VercelResponse } from '@vercel/node'
 import { PicaComicAPI } from '@l2studio/picacomic-api'
 import { HandleResponse } from 'serverless-kit'
+import { toUpperCamelCase } from '../utils'
 
 const controllers = [
   'Categories',
@@ -19,7 +20,7 @@ type Action =
 
 export default async (req: VercelRequest, res: VercelResponse) => {
   const http = new HandleResponse(req, res)
-  const action = req.query.action as Action
+  const action = toUpperCamelCase(req.query.action as string) as Action
   if (!controllers.includes(action)) {
     return http.send(400, `Invalid action: ${action}`, {}, { controllers })
   }

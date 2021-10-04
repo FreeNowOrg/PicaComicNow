@@ -1,7 +1,8 @@
 import { version } from '../package.json'
 
 export const ENV = process.env.NODE_ENV === 'development' ? 'dev' : 'prod'
-export const API_BASE = '/api'
+export const API_BASE =
+  ENV === 'prod' ? '/api' : 'https://pica-comic.vercel.app/api'
 export const PROJECT_NAME = 'Pica Comic Now'
 export const VERSION = version
 

@@ -45,14 +45,14 @@ import {
     color: var(--theme-accent-link-color)
 
   .top
-    background-color: #6a70d7
+    background-color: var(--theme-accent-color)
     padding-top: 2rem
     padding-bottom: 2rem
     gap: 1.5rem
 
   .bottom
     padding: 1rem
-    background-color: #5955c6
+    background-color: var(--theme-accent-color-darken)
 
   h4
     position: relative

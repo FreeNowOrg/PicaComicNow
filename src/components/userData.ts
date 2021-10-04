@@ -29,6 +29,7 @@ export async function getToken(
 
 export async function getProfile(): Promise<UserProfile> {
   const { data }: any = await axios.get(`${API_BASE}/profile`)
-  userData.value = data.body
-  return data.body
+  const p = data?.body?.user || null
+  userData.value = p
+  return p
 }

@@ -14,12 +14,17 @@ h1(v-else) Comics list (page {{ page }})
   .title Failed to get comics data
   p {{ error }}
 
-pre {{ comics }}
+.card
+  details
+    pre {{ comics }}
+
+section(v-if='comics.docs && comics.docs.length')
+  books-list(:data='comics.docs')
 </template>
 
 <script setup lang="ts">
 import axios from 'axios'
-import { onMounted, ref, watch } from 'vue'
+import { defineComponent, onMounted, ref, watch } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
 import { ArrowLeft } from '@vicons/fa'
 import { API_BASE } from '../config'
@@ -27,14 +32,19 @@ import { setTitle } from '../utils/setTitle'
 const route = useRoute()
 const router = useRouter()
 
+import BooksList from '../components/BooksList.vue'
+const components = defineComponent({ BooksList })
+
 type SortTypes = 'ua' | 'dd' | 'da' | 'ld' | 'vd'
 const category = ref('')
 const page = ref(1)
 const sort = ref<SortTypes>('ua')
 
-const comics = ref<any>()
+const comics = ref<any>({})
 const loading = ref(false)
 const error = ref('')
+
+import * as localData from './comics.dev.json'
 
 // Refresh when the category changes
 router.afterEach((to, from) => {
@@ -75,13 +85,14 @@ function init() {
       params: { category: category.value, page: page.value, sort: sort.value },
     })
     .then(
-      ({ data }) => {
-        comics.value = data
+      ({ data }: any) => {
+        comics.value = data.body
       },
       (err) => {
         console.warn('Failed to get comics data', err)
         error.value =
           err?.response?.data?.message || err.message || 'HTTP Timeout'
+        comics.value = localData.body
       }
     )
     .finally(() => {

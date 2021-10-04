@@ -7,6 +7,15 @@ export default async (req: VercelRequest, res: VercelResponse) => {
   http.send(403, 'Invalid endpoint')
 }
 
+export function getTokenFromReq(req: VercelRequest): string | null {
+  return (
+    (req.query.token as string) ||
+    req.headers.authorization ||
+    req.cookies?.['PICA_TOKEN'] ||
+    null
+  )
+}
+
 export function toUpperCamelCase(str: string) {
   const s = str.split('')
   const t = s.map((item, index) => {

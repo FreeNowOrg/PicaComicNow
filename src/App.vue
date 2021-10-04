@@ -11,10 +11,11 @@
 </template>
 
 <script setup lang="ts">
-import { defineComponent } from 'vue'
+import { defineComponent, onMounted } from 'vue'
 import GlobalHeader from './components/GobalHeader.vue'
 import GlobalFooter from './components/GlobalFooter.vue'
 import NProgress from './components/NProgress.vue'
+import { getProfile } from './components/userData'
 const components = defineComponent({
   GlobalHeader,
   GlobalFooter,

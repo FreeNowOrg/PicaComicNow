@@ -12,8 +12,17 @@ aside.global-site-nav(:class='{ "is-hide": !sideNavShow }')
                 Home
               | Home
           li
-            router-link(to="/categories")
+            router-link(to='/categories')
               | Categories
+
+      .group
+        .title User
+        ul
+          li
+            router-link(to='/auth')
+              icon
+                User
+              | Authorization
 
       .group
         .title {{ PROJECT_NAME }}
@@ -29,7 +38,7 @@ aside.global-site-nav(:class='{ "is-hide": !sideNavShow }')
 import { onMounted, watch } from 'vue'
 import { PROJECT_NAME } from '../config'
 import { sideNavShow } from './states'
-import { Home, Heart, Palette } from '@vicons/fa'
+import { Home, Heart, Palette, User } from '@vicons/fa'
 import { useRouter } from 'vue-router'
 const router = useRouter()
 

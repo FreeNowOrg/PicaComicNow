@@ -15,8 +15,13 @@ export default async (req: VercelRequest, res: VercelResponse) => {
   const client = new PicaComicAPI({})
   try {
     const token = await client.signIn({ email, password })
+    const time = new Date()
+    time.setTime(time.getTime() + 180 * 24 * 60 * 60 * 1000)
     res.setHeader('cache-control', 'no-cache')
-    res.setHeader('set-cookie', `PICA_TOKEN=${token}; path=/; secure`)
+    res.setHeader(
+      'set-cookie',
+      `PICA_TOKEN=${token}; expires=${time.toUTCString()}; path=/; secure`
+    )
     http.send(200, 'ok', { token })
   } catch (err) {
     http.axiosError(err)

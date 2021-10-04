@@ -1,7 +1,7 @@
 import { VercelRequest, VercelResponse } from '@vercel/node'
 import { PicaComicAPI } from '@l2studio/picacomic-api'
 import { HandleResponse } from 'serverless-kit'
-import { replaceFileUrl, toUpperCamelCase } from '../utils'
+import { getTokenFromReq, replaceFileUrl, toUpperCamelCase } from '../utils'
 
 const controllerList = [
   'Categories',
@@ -33,8 +33,7 @@ export default async (req: VercelRequest, res: VercelResponse) => {
     )
   }
 
-  const token =
-    req.query.token || req.headers.authorization || req.cookies?.['PICA_TOKEN']
+  const token = getTokenFromReq(req)
   if (!token) {
     return http.send(403, 'Please login')
   }

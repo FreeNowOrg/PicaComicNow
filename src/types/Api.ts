@@ -45,3 +45,22 @@ export type ApiResponseComics = {
     pages: number
   }
 } & ApiResponseCommon
+
+export interface UserProfile {
+  _id: string
+  birthday: string
+  email: string
+  gender: string
+  name: string
+  title: string
+  verified: boolean
+  exp: number
+  level: number
+  characters: any[]
+  created_at: string
+  isPunched: boolean
+}
+
+export type ApiResponseUserProfile = {
+  body: { user: UserProfile }
+} & ApiResponseCommon

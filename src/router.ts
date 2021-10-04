@@ -1,4 +1,5 @@
 import { createRouter, createWebHistory } from 'vue-router'
+import { getProfile, userData } from './components/userData'
 
 export const router = createRouter({
   history: createWebHistory(),
@@ -35,6 +36,13 @@ router.addRoute({
   component: () => import('./view/comics.vue'),
 })
 
+// Auth
+router.addRoute({
+  path: '/auth',
+  name: 'auth',
+  component: () => import('./view/auth.vue'),
+})
+
 // About
 router.addRoute({
   path: '/about',
@@ -47,6 +55,18 @@ router.addRoute({
   path: '/:pathMatch(.*)*',
   name: 'not-found',
   component: () => import('./view/404.vue'),
+})
+
+router.beforeEach(async ({ name }, { path: fromPath }) => {
+  if (!userData.value && name !== 'auth') {
+    await getProfile().catch(() => {
+      console.warn('[App]', 'Verification information has expired')
+      router.push({
+        name: 'auth',
+        query: { from: fromPath, tips: 'You must log in to use this website' },
+      })
+    })
+  }
 })
 
 router.afterEach(({ name }) => {

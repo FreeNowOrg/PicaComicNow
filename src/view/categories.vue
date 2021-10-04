@@ -22,11 +22,7 @@ function init() {
   error.value = ''
 
   axios
-    .get(`${API_BASE}/fetch`, {
-      params: {
-        action: 'Categories',
-      },
-    })
+    .get(`${API_BASE}/fetch/categories`)
     .then(
       ({ data }: any) => {
         list.value = data.body

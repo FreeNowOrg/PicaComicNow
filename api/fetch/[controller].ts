@@ -3,7 +3,7 @@ import { PicaComicAPI } from '@l2studio/picacomic-api'
 import { HandleResponse } from 'serverless-kit'
 import { toUpperCamelCase } from '../utils'
 
-const controllers = [
+const controllerList = [
   'Categories',
   'Comics',
   'Comic',
@@ -11,7 +11,7 @@ const controllers = [
   'ComicEpisodePages',
 ]
 
-type Action =
+type Controller =
   | 'Categories'
   | 'Comics'
   | 'Comic'
@@ -20,15 +20,22 @@ type Action =
 
 export default async (req: VercelRequest, res: VercelResponse) => {
   const http = new HandleResponse(req, res)
-  const action = toUpperCamelCase(req.query.action as string) as Action
-  if (!controllers.includes(action)) {
-    return http.send(400, `Invalid action: ${action}`, {}, { controllers })
+  const controller = toUpperCamelCase(
+    req.query.controller as string
+  ) as Controller
+  if (!controllerList.includes(controller)) {
+    return http.send(
+      400,
+      `Invalid controller: ${controller}`,
+      {},
+      { valid: { controllers: controllerList } }
+    )
   }
   const token = req.cookies?.['PICA_TOKEN']
   req.query.token = req.query.token || token
   const client = new PicaComicAPI({})
   try {
-    const data = await client[`fetch${action}`](req.query as any)
+    const data = await client[`fetch${controller}`](req.query as any)
     http.send(200, 'ok', data)
   } catch (err) {
     http.axiosError(err)

@@ -6,10 +6,10 @@ section
   form.card.align-center(:class='{ "loading-cover": onAuthenticating }')
     label
       strong email
-      input(@v-model='email', type='email')
+      input(v-model='email', type='email')
     label
       strong password
-      input(@v-model='password', type='password')
+      input(v-model='password', type='password')
     div
       button(@click='handleLogin') Login
     //- OK
@@ -38,6 +38,11 @@ function handleLogin(e) {
   e.preventDefault()
   onAuthenticating.value = true
   authError.value = ''
+  console.log({
+    email: email.value,
+    password: password.value,
+  })
+  return
 
   axios({
     url: `${API_BASE}/auth`,

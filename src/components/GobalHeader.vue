@@ -12,7 +12,7 @@ header.global-header.flex-center(
 
   .item.global-site-logo-container
     router-link.plain.global-site-logo(to='/', title='Home')
-      span PICACG
+      span PicACG
 
   .flex-1.flex.nav-links(style='gap: 1rem')
     .item

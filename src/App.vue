@@ -35,7 +35,7 @@ onMounted(async () => {
         router.push({
           name: 'auth',
           query: {
-            from: route.path,
+            from: location.pathname,
             tips: 1,
           },
         })

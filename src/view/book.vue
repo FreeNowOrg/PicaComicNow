@@ -1,12 +1,17 @@
 <template lang="pug">
 section.book-info
-  .loading.card(v-if='bookLoading || !book') Loading...
+  .bread-crumb(v-if='$route.query.category')
+    router-link.button(
+      :to='{ name: "comics", params: { category: $route.query.category } }'
+    ) ← Back to {{ $route.query.category }} comics
+  .loading.card.align-center(v-if='bookLoading || !book')
+    placeholder
   .card(v-if='book')
     .details.flex.gap-1
       .left
         .thumb
           lazyload.img(:src='book.thumb.fileUrl', :width='200', :height='266')
-      .right.flex.flex-1(style='position: relative')
+      .right.flex(style='position: relative')
         h1.title {{ book.title }}
         .flex-column.flex-1.gap-1
           .finished
@@ -49,12 +54,13 @@ section.book-info
 
 section.book-eps
   .card
-    h2 Episodes
-    p.loading(v-if='epsLoading || !eps') Loaading...
-    .eps-list(v-if='eps')
+    h2#eps Episodes
+    p.loading.align-center(v-if='epsLoading || !eps.length')
+      placeholder
+    .eps-list(v-if='eps.length')
       router-link.ep-link.plain(
-        v-for='item in eps.docs',
-        :to='{ name: "read", params: { bookid: bookid, epsid: item.order } }'
+        v-for='item in eps',
+        :to='{ name: "read", params: { bookid: bookid, epsid: item.order }, query: { category: $route.query.category } }'
       ) {{ item.title }}
     details
       pre {{ eps }}
@@ -74,7 +80,7 @@ const route = useRoute()
 
 const bookid = ref(route.params.bookid as string)
 const book = ref<any>(null)
-const eps = ref<any>(null)
+const eps = ref<any[]>([])
 const bookLoading = ref(false)
 const epsLoading = ref(false)
 const errorTitle = ref('')
@@ -82,11 +88,12 @@ const errorMsg = ref('')
 
 function init() {
   book.value = null
-  eps.value = null
+  eps.value = []
   bookLoading.value = true
   epsLoading.value = false
   errorMsg.value = ''
 
+  // Get comic meta
   axios
     .get(`${API_BASE}/fetch/comic`, {
       params: {
@@ -97,7 +104,6 @@ function init() {
       ({ data }: any) => {
         book.value = data.body
         setTitle(data.body.title, 'Book')
-        getEps()
       },
       (err) => {
         errorTitle.value = 'Failed to get book info'
@@ -107,17 +113,23 @@ function init() {
     .finally(() => {
       bookLoading.value = false
     })
+
+  getEps(1)
 }
 
-function getEps() {
+function getEps(page = 1) {
   epsLoading.value = true
   axios
     .get(`${API_BASE}/fetch/comic_episodes`, {
-      params: { comicId: bookid.value },
+      params: { comicId: bookid.value, page },
     })
     .then(
       ({ data }: any) => {
-        eps.value = data.body
+        eps.value = [...eps.value, ...data.body.docs]
+        if (data.body.page < data.body.pages) {
+          console.info('Get more eps')
+          getEps(data.body.page + 1)
+        }
       },
       (err) => {
         errorTitle.value = 'Failed to get book episodes'
@@ -139,17 +151,19 @@ onMounted(() => {
 })
 </script>
 
-<style scoped lang="sass">
+<style lang="sass">
 .book-info
   .details
     margin-bottom: 1.5rem
   .left
     width: 200px
+    flex: 1
     .thumb
       .img
         width: 100%
-        min-height: 260px
+        height: auto
   .right
+    flex: 3
     flex-direction: column
     .flex-column
       display: flex

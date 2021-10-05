@@ -23,5 +23,9 @@ app.component('ELink', ExternalLink)
 import Lazyload from './components/Lazyload.vue'
 app.component('Lazyload', Lazyload)
 
+// Placeholder
+import Placeholder from './components/Placeholder.vue'
+app.component('Placeholder', Placeholder)
+
 // Mount
 app.mount('#app')

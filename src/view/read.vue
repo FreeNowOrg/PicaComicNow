@@ -1,20 +1,19 @@
 <template lang="pug">
-.bread-crumb(style='margin-bottom: 1.5rem')
-  router-link.button(:to='"/book/" + bookid') ← Back to book
+.bread-crumb
+  router-link.button(
+    :to='{ name: "book", params: { bookid }, query: { category: $route.query.category } }'
+  ) ← Back to book
 
 h1 {{ title || "Loading..." }}
 
 .pages-list
-  .page(
-    v-for='(item, index) in docs',
-    :data-index='index',
-    :id='"page-" + index'
-  )
+  .page(v-for='(item, index) in docs', :id='"page-" + (index + 1)')
+    .page-tag-container(:href='"#page-" + index')
+      .page-tag {{ index + 1 }}
     lazyload.img(:src='item.media.fileUrl')
-    a.page-tag(:href='"#page-" + index') {{ index + 1 }}
 
-p.align-center(v-if='hasNext')
-  a.pointer.button(@click='getPage()') {{ nextLoading ? "Loading..." : "Next page" }}
+p.align-center(v-if='hasNext > 0')
+  a.pointer.button(@click='getPage()') {{ nextLoading ? "Loading..." : "See more" }} ({{ hasNext }} pages left)
 </template>
 
 <script setup lang="ts">
@@ -32,7 +31,7 @@ const epsid = ref(route.params.epsid as string)
 const title = ref('')
 const docs = ref<any[]>([])
 
-const hasNext = ref(false)
+const hasNext = ref(0)
 const nextPage = ref(1)
 const nextLoading = ref(false)
 
@@ -63,7 +62,7 @@ function getPage() {
       docs.value = [...docs.value, ...body.pages.docs]
       title.value = body.ep.title
 
-      hasNext.value = body.pages.page < body.pages.pages
+      hasNext.value = body.pages.total - body.pages.page * body.pages.limit
       nextPage.value = body.pages.page + 1
 
       console.log('after', {
@@ -92,21 +91,33 @@ onMounted(() => {
     position: relative
     .img
       width: 100%
-    .page-tag
+    .page-tag-container
       pointer-events: none
       position: absolute
-      left: 1rem
-      bottom: 1rem
-      line-height: 1.6
-      text-align: center
-      width: 1.6em
-      height: 1.6em
-      background-color: rgba(0, 0, 0, 0.1)
-      border-radius: 50%
+      top: 0
+      left: 0
+      height: 100%
+      .page-tag
+        position: sticky
+        top: calc(50px + 0.5rem)
+        margin-bottom: 0.5rem
+        margin-left: -2rem
+        line-height: 1.6
+        text-align: center
+        width: 1.6em
+        height: 1.6em
+        background-color: var(--theme-accent-color)
+        color: #fff
+        border-radius: 50%
 
 @media screen and(max-width: 800px)
   .pages-list
     width: unset
     max-width: unset
-    margin: 0 2rem
+    margin: 0
+    .page
+      .page-tag-container
+        .page-tag
+          margin-top: 0.5rem
+          margin-left: 0.5rem
 </style>

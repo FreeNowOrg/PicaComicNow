@@ -1,17 +1,19 @@
 <template lang="pug">
 li.book-card.card
-  router-link(:to='"/book/" + data.id')
+  router-link.thumb-link(
+    :to='{ name: "book", params: { bookid: data.id }, query: { category } }'
+  )
     .thumb
       lazyload.img(:src='data.thumb.fileUrl')
   .desc
-    router-link(:to='"/book/" + data.id')
+    router-link(
+      :to='{ name: "book", params: { bookid: data.id }, query: { category } }'
+    )
       .title
         .pages [{{ data.epsCount > 1 ? data.epsCount + "EP/" : "" }}{{ data.pagesCount }}P]
-        icon
-          check-circle(v-if='data.finished')
-          pen-nib(v-else)
         .name {{ data.title }}
-    .author @{{ data.author }}
+    .author
+      router-link(:to='"/search/" + data.author') @{{ data.author }}
     .tags-list
       router-link.tag(
         v-for='item in data.categories',
@@ -35,22 +37,26 @@ li.book-card.card
 import { defineProps } from 'vue'
 import { CheckCircle, PenNib, ThumbsUp, Heart, Eye } from '@vicons/fa'
 
-const props = defineProps<{ data: any }>()
+const props = defineProps<{ data: any; category: string }>()
 </script>
 
 <style lang="sass">
 li.book-card
-  flex: 1
-  min-width: 240px
+  // flex: 1
   max-width: 240px
+  width: calc(50% - 2rem)
   position: relative
 
-  .thumb
-    position: relative
-    .img
-      display: block
-      max-width: 100%
-      min-height: 270px
+  .thumb-link
+    width: 100%
+    .thumb
+      position: relative
+      .img
+        display: block
+        top: 0
+        left: 0
+        width: 100%
+        height: auto
   .desc
     .title
       > *

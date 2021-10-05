@@ -1,22 +1,22 @@
 <template lang="pug">
 mixin thumb(item)
   .thumb
-    lazyload.img(:src='item.thumb.fileUrl', :width='200', :height='200')
-    .title {{ item.title }}
+    lazyload.img(:src='item.thumb.fileUrl')
+    .title
+      | {{ item.title }}
+      icon(v-if='item.isWeb', style='float: right')
+        external-link-alt
 
-h1 Categories
+h1 Categories Index
 
-.loading(v-if='loading') Loading...
+.loading.align-center(v-if='loading')
+  placeholder
 
 .info.error(v-if='error')
   .title Failed to get categories data
   p {{ error }}
 
-.card
-  details
-    pre {{ list }}
-
-ul.list
+ul.categories-list
   li(v-for='item in list')
     .card(v-if='item.active !== false')
       e-link.no-icon(v-if='item.isWeb', :href='item.link')
@@ -31,6 +31,7 @@ import { onMounted, ref } from 'vue'
 import { API_BASE } from '../config'
 import { getErrMsg } from '../utils/getErrMsg'
 import { setTitle } from '../utils/setTitle'
+import { ExternalLinkAlt } from '@vicons/fa'
 
 const list = ref<any[]>([])
 const error = ref('')
@@ -66,8 +67,8 @@ onMounted(() => {
 })
 </script>
 
-<style scoped lang="sass">
-.list
+<style lang="sass">
+.categories-list
   list-style: none
   padding-left: 0
   display: flex
@@ -75,16 +76,29 @@ onMounted(() => {
   flex-wrap: wrap
   justify-content: center
 
+  li
+    max-width: 240px
+    width: calc(50% - 1rem)
+
   .card
     position: relative
+    > a
+      width: 100%
     .thumb
       position: relative
       overflow: hidden
+      width: 100%
+      height: 0
+      padding-top: 100%
       .img
+        position: absolute
+        top: 0
+        left: 0
         display: block
-        width: 200px
-        height: 200px
+        width: 100%
+        height: 100%
         transition: all 0.24s ease
+        transform: scale(1)
       &:hover img
         transform: scale(1.1)
       .title
@@ -93,7 +107,7 @@ onMounted(() => {
         font-size: 1.2rem
         color: #fff
         text-shadow: 0 0 4px #444
-        background-color: rgba(0, 0, 0, 0.25)
+        background-color: rgba(0, 0, 0, 0.5)
         left: 0
         bottom: 0
         padding: 0.4rem 1rem

@@ -1,35 +1,44 @@
 <template lang="pug">
+mixin pagenator
+  .pagenator
+    button(@click='handlePageChange(page - 1)', :disabled='page <= 1')
+      icon
+        arrow-left
+    .page(@click='handlePagePrompt')
+      .cur-page {{ page }}
+      | /
+      .total-page {{ totalPages }}
+    button(@click='handlePageChange(page + 1)', :disabled='page >= totalPages')
+      icon
+        arrow-right
+
 .bread-crumb
   router-link.button(to='/categories') 
     icon
       arrow-left
-    | Categories list
+    | Categories Index
 
-h1(v-if='category') Comics: {{ category }} (page {{ page }})
-h1(v-else) Comics list (page {{ page }})
+h1(v-if='category') Comics in {{ category }}
+h1(v-else) Comics list
 
 .info.error(v-if='error')
   .title Failed to get comics data
   p {{ error }}
 
-.card
-  details
-    pre {{ comics }}
+.loading.align-center(v-if='loading && !comics.length')
+  placeholder
 
-.loading(v-if='loading') Loading...
-
-section(
-  v-if='comics.docs && comics.docs.length',
-  :class='{ "loading-cover": loading }'
-)
-  books-list(:data='comics.docs')
+section(v-if='comics.length', :class='{ "loading-cover": loading }')
+  +pagenator
+  books-list(:data='comics', :category='category')
+  +pagenator
 </template>
 
 <script setup lang="ts">
 import axios from 'axios'
 import { defineComponent, onMounted, ref, watch } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
-import { ArrowLeft } from '@vicons/fa'
+import { ArrowLeft, ArrowRight } from '@vicons/fa'
 import { API_BASE } from '../config'
 import { setTitle } from '../utils/setTitle'
 const route = useRoute()
@@ -37,14 +46,15 @@ const router = useRouter()
 
 import BooksList from '../components/BooksList.vue'
 import { getErrMsg } from '../utils/getErrMsg'
-const components = defineComponent({ BooksList })
+// const components = defineComponent({ BooksList })
 
 type SortTypes = 'ua' | 'dd' | 'da' | 'ld' | 'vd'
 const category = ref('')
 const page = ref(1)
+const totalPages = ref(1)
 const sort = ref<SortTypes>('ua')
 
-const comics = ref<any>({})
+const comics = ref<any[]>([])
 const loading = ref(false)
 const error = ref('')
 
@@ -74,9 +84,9 @@ function init() {
   sort.value = (route.query.sort as SortTypes) || 'ua'
 
   if (category.value) {
-    setTitle(category.value, 'Comics')
+    setTitle(`${category.value} (page ${page.value})`, 'Comics')
   } else {
-    setTitle('Comics')
+    setTitle(`page ${page.value}`, 'Comics')
   }
 
   loading.value = true
@@ -88,7 +98,8 @@ function init() {
     })
     .then(
       ({ data }: any) => {
-        comics.value = data.body
+        comics.value = data.body.docs
+        totalPages.value = data.body.pages
       },
       (err) => {
         console.warn('Failed to get comics data', err)
@@ -100,7 +111,23 @@ function init() {
     })
 }
 
-watch(category, () => {
+function handlePageChange(toPage: number) {
+  router.push({
+    query: { page: Math.min(totalPages.value, Math.max(1, toPage)) },
+  })
+}
+
+function handlePagePrompt() {
+  const p = prompt('Page jump to', '' + page.value) || ''
+  if (!isNaN(parseInt(p))) {
+    handlePageChange(parseInt(p))
+  }
+}
+
+router.afterEach((to) => {
+  if (to.name !== 'comics') return
+  category.value = to.params.category as string
+  page.value = parseInt(to.query.page as string) || 1
   init()
 })
 
@@ -110,4 +137,19 @@ onMounted(() => {
 })
 </script>
 
-<style scoped lang="sass"></style>
+<style scoped lang="sass">
+.pagenator
+  text-align: center
+  > *
+    display: inline-block
+  .page
+    margin-left: 1rem
+    margin-right: 1rem
+    background-color: var(--theme-accent-color)
+    color: #fff
+    padding: 0.25rem 0.6rem
+    border-radius: 1em
+    display: inline-flex
+    gap: 0.4rem
+    cursor: pointer
+</style>

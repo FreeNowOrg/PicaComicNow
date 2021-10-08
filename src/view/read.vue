@@ -47,10 +47,8 @@ function getPage() {
   console.log('before', scrollTop)
 
   axios
-    .get(`${API_BASE}/fetch/ComicEpisodePages`, {
+    .get(`${API_BASE}/comics/${bookid.value}/order/${epsid.value}/pages`, {
       params: {
-        comicId: bookid.value,
-        epsOrder: epsid.value,
         page: nextPage.value,
       },
     })

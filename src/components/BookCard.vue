@@ -1,13 +1,13 @@
 <template lang="pug">
 li.book-card.card
   router-link.thumb-link(
-    :to='{ name: "book", params: { bookid: data.id }, query: { category } }'
+    :to='{ name: "book", params: { bookid: data._id }, query: { backTo } }'
   )
     .thumb
       lazyload.img(:src='data.thumb.fileUrl')
   .desc
     router-link(
-      :to='{ name: "book", params: { bookid: data.id }, query: { category } }'
+      :to='{ name: "book", params: { bookid: data._id }, query: { backTo } }'
     )
       .title
         .pages [{{ data.epsCount > 1 ? data.epsCount + "EP/" : "" }}{{ data.pagesCount }}P]
@@ -37,7 +37,7 @@ li.book-card.card
 import { defineProps } from 'vue'
 import { CheckCircle, PenNib, ThumbsUp, Heart, Eye } from '@vicons/fa'
 
-const props = defineProps<{ data: any; category: string }>()
+const props = defineProps<{ data: any; backTo: string }>()
 </script>
 
 <style lang="sass">

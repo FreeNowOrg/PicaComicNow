@@ -1,6 +1,6 @@
 <template lang="pug">
 ul.books-list
-  book-card(v-for='item in data', :data='item', :category='category')
+  book-card(v-for='item in data', :data='item', :backTo='backTo')
 </template>
 
 <script setup lang="ts">
@@ -9,7 +9,7 @@ import { defineComponent, defineProps } from 'vue'
 import BookCard from './BookCard.vue'
 
 const components = defineComponent({ BookCard })
-const props = defineProps<{ data: any[]; category: string }>()
+const props = defineProps<{ data: any[]; backTo: string }>()
 </script>
 
 <style lang="sass">

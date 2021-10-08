@@ -1,18 +1,25 @@
 <template lang="pug">
 section.book-info
-  .bread-crumb(v-if='$route.query.category')
-    router-link.button(
-      :to='{ name: "comics", params: { category: $route.query.category } }'
-    ) ← Back to {{ $route.query.category }} comics
+  .bread-crumb(v-if='$route.query.backTo')
+    router-link.button(:to='$route.query.backTo') ← Back to {{ $route.query.backTo }}
   .loading.card.align-center(v-if='bookLoading || !book')
     placeholder
   .card(v-if='book')
     .details.flex.gap-1
       .left
-        .thumb
+        e-link.no-icon.thumb(:href='book.thumb.fileUrl')
           lazyload.img(:src='book.thumb.fileUrl', :width='200', :height='266')
       .right.flex(style='position: relative')
-        h1.title {{ book.title }}
+        .flex.title-area.flex-center
+          h1.title.flex-1 {{ book.title }}
+          a.bookmark.pointer(
+            :class='book.isFavourite ? "is-favourite" : "not-favourite"',
+            :title='book.isFavourite ? "Click to remove bookmark" : "Click to add bookmark"',
+            @click='handleBookmark'
+          )
+            icon
+              bookmark(v-if='book.isFavourite')
+              bookmark-regular(v-else)
         .flex-column.flex-1.gap-1
           .finished
             icon
@@ -74,7 +81,15 @@ import { API_BASE } from '../config'
 import { getErrMsg } from '../utils/getErrMsg'
 import { setTitle } from '../utils/setTitle'
 
-import { CheckCircle, PenNib, ThumbsUp, Heart, Eye } from '@vicons/fa'
+import {
+  CheckCircle,
+  PenNib,
+  ThumbsUp,
+  Heart,
+  Eye,
+  Bookmark,
+  BookmarkRegular,
+} from '@vicons/fa'
 
 const route = useRoute()
 
@@ -95,15 +110,11 @@ function init() {
 
   // Get comic meta
   axios
-    .get(`${API_BASE}/fetch/comic`, {
-      params: {
-        id: bookid.value,
-      },
-    })
+    .get(`${API_BASE}/comics/${bookid.value}`)
     .then(
       ({ data }: any) => {
-        book.value = data.body
-        setTitle(data.body.title, 'Book')
+        book.value = data.body.comic
+        setTitle(data.body.comic.title, 'Book')
       },
       (err) => {
         errorTitle.value = 'Failed to get book info'
@@ -120,15 +131,15 @@ function init() {
 function getEps(page = 1) {
   epsLoading.value = true
   axios
-    .get(`${API_BASE}/fetch/comic_episodes`, {
-      params: { comicId: bookid.value, page },
+    .get(`${API_BASE}/comics/${bookid.value}/eps`, {
+      params: { page },
     })
     .then(
       ({ data }: any) => {
-        eps.value = [...eps.value, ...data.body.docs]
-        if (data.body.page < data.body.pages) {
+        eps.value = [...eps.value, ...data.body.eps.docs]
+        if (data.body.eps.page < data.body.eps.pages) {
           console.info('Get more eps')
-          getEps(data.body.page + 1)
+          getEps(data.body.eps.page + 1)
         }
       },
       (err) => {
@@ -138,6 +149,29 @@ function getEps(page = 1) {
     )
     .finally(() => {
       epsLoading.value = false
+    })
+}
+
+let bookmarkLoading = false
+function handleBookmark(e) {
+  if (bookmarkLoading) return
+  bookmarkLoading = true
+  axios
+    .post(`${API_BASE}/comics/${bookid.value}/favourite`)
+    .then(
+      ({ data }: any) => {
+        if (data.body.action === 'favourite') {
+          book.value.isFavourite = true
+        } else if (data.body.action === 'un_favourite') {
+          book.value.isFavourite = false
+        }
+      },
+      (err) => {
+        console.warn('Faild to set favourite status')
+      }
+    )
+    .finally(() => {
+      bookmarkLoading = false
     })
 }
 
@@ -173,6 +207,12 @@ onMounted(() => {
     .title
       margin: 0 0 1rem 0
       font-size: 1.6rem
+    .bookmark
+      font-size: 1.4rem
+      &.is-favourite
+        --color: var(--theme-bookmark-color)
+      &.not-favourite
+        --color: #aaa
 
 .book-eps
   margin-top: 1.5rem

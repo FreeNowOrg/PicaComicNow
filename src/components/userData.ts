@@ -15,7 +15,7 @@ export async function getToken(
   })
 
   const { data }: any = await axios.post(
-    `${API_BASE}/auth`,
+    `${API_BASE}/users/sign-in`,
     {
       email,
       password,
@@ -32,7 +32,7 @@ export async function getToken(
 
 export async function getProfile(): Promise<UserProfile> {
   console.info('Get profile')
-  const { data }: any = await axios.get(`${API_BASE}/profile`)
+  const { data }: any = await axios.get(`${API_BASE}/users/profile`)
   const p = data?.body?.user || null
   userData.value = p
   return p

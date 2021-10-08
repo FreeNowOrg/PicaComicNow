@@ -12,32 +12,32 @@ mixin pagenator
       icon
         arrow-right
 
-.bread-crumb
-  router-link.button(to='/categories') 
-    icon
-      arrow-left
-    | 
-    | Categories Index
+.favourite
+  .bread-crumb
+    router-link.button(to='/profile') 
+      icon
+        arrow-left
+      |
+      | Profile
 
-h1(v-if='category') Comics in {{ category }}
-h1(v-else) Comics list
+  h1 My Favourites
 
-.info.error(v-if='error')
-  .title Failed to get comics data
-  p {{ error }}
+  .info.error(v-if='error')
+    .title Failed to get list
+    p {{ error }}
 
-.loading.align-center(v-if='loading && !comics.length')
-  placeholder
+  .loading.align-center(v-if='loading && !comics.length')
+    placeholder
 
-section(v-if='comics.length', :class='{ "loading-cover": loading }')
-  +pagenator
-  books-list(:data='comics', :backTo='"/comics/" + category')
-  +pagenator
+  section(v-if='comics.length', :class='{ "loading-cover": loading }')
+    +pagenator
+    books-list(:data='comics', :backTo='"/favourite"')
+    +pagenator
 </template>
 
 <script setup lang="ts">
 import axios from 'axios'
-import { defineComponent, onMounted, ref, watch } from 'vue'
+import { onMounted, ref, watch } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
 import { ArrowLeft, ArrowRight } from '@vicons/fa'
 import { API_BASE } from '../config'
@@ -47,59 +47,28 @@ const router = useRouter()
 
 import BooksList from '../components/BooksList.vue'
 import { getErrMsg } from '../utils/getErrMsg'
-// const components = defineComponent({ BooksList })
 
 type SortTypes = 'ua' | 'dd' | 'da' | 'ld' | 'vd'
-const category = ref('')
 const page = ref(1)
 const totalPages = ref(1)
-const sort = ref<SortTypes>('ua')
+const sort = ref<SortTypes>('dd')
 
 const comics = ref<any[]>([])
 const loading = ref(false)
 const error = ref('')
 
-// Refresh when the category changes
-router.afterEach((to, from) => {
-  console.log('after route', { to })
-  if (to.name === from.name && to !== from) {
-    category.value = route.params.category as string
-  }
-})
-
-/**
- * @param arg1.category 分区名字，categories里面的title，如"嗶咔漢化"
- * @param arg1.page 分页，从1开始
- * @param arg1.sort 排序依据：
- * ```
- * ua: 默认
- * dd: 新到旧
- * da: 旧到新
- * ld: 最多爱心
- * vd: 最多指名
- * ```
- */
 function init() {
-  category.value = (route.params.category as string) || ''
   page.value = parseInt(route.query.page as string) || 1
-  sort.value = (route.query.sort as SortTypes) || 'ua'
-
-  if (category.value) {
-    setTitle(`${category.value} (page ${page.value})`, 'Comics')
-  } else {
-    setTitle(`page ${page.value}`, 'Comics')
-  }
+  sort.value = (route.query.sort as SortTypes) || 'dd'
 
   loading.value = true
   error.value = ''
 
   axios
-    .get(`${API_BASE}/comics`, {
+    .get(`${API_BASE}/users/favourite`, {
       params: {
-        c: category.value,
-        // t: '',
-        page: page.value,
         s: sort.value,
+        page: page.value,
       },
     })
     .then(
@@ -119,7 +88,9 @@ function init() {
 
 function handlePageChange(toPage: number) {
   router.push({
-    query: { page: Math.min(totalPages.value, Math.max(1, toPage)) },
+    query: {
+      page: Math.min(totalPages.value, Math.max(1, toPage)),
+    },
   })
 }
 
@@ -131,15 +102,14 @@ function handlePagePrompt() {
 }
 
 router.afterEach((to) => {
-  if (to.name !== 'comics') return
-  category.value = to.params.category as string
+  if (to.name !== 'favourite') return
   page.value = parseInt(to.query.page as string) || 1
   init()
 })
 
 onMounted(() => {
   init()
-  setTitle('Comics')
+  setTitle('Favourites')
 })
 </script>
 

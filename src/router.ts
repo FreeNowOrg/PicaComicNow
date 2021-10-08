@@ -51,11 +51,22 @@ router.addRoute({
   component: () => import('./view/read.vue'),
 })
 
-// Auth
+// User
 router.addRoute({
   path: '/auth',
   name: 'auth',
   component: () => import('./view/auth.vue'),
+})
+router.addRoute({
+  path: '/profile',
+  name: 'profile',
+  component: () => import('./view/profile.vue'),
+})
+router.addRoute({
+  path: '/favourite',
+  name: 'favourite',
+  alias: ['/bookmark', '/bookmarks', '/favorite', '/favourites'],
+  component: () => import('./view/favourite.vue'),
 })
 
 // About

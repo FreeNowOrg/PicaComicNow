@@ -210,10 +210,10 @@
     "@intlify/runtime" "9.1.7"
     "@intlify/shared" "9.1.7"
 
-"@l2studio/picacomic-api@^0.1.6":
-  version "0.1.6"
-  resolved "https://registry.npmjs.org/@l2studio/picacomic-api/-/picacomic-api-0.1.6.tgz#0021ac380ec17a546f4b8fb367dcd88c9baab187"
-  integrity sha512-F0FXUywLl94jGDtlY4P5EDP/pj8x0UBNBYbuhcAwfjs3co2IvAnhWzdskmV/3NB6XcyyuBmU/T5MWWEFCkz7gQ==
+"@l2studio/picacomic-api@^0.1.7":
+  version "0.1.7"
+  resolved "https://registry.npmjs.org/@l2studio/picacomic-api/-/picacomic-api-0.1.7.tgz#466d14c1b6d7f5c9d93fe6949c60747503d5cccb"
+  integrity sha512-91eEG8sYUGl1U/TFt7FgiX6pX2MQcROXrq+vY58VNE9pPaPxgjDeqODtkHe43zZ1S+5jlOhhJZRYfi+Su+80BA==
   dependencies:
     debug "^4.3.2"
     got "^11.8.2"

@@ -4,15 +4,17 @@ import { HandleResponse } from 'serverless-kit'
 
 export default async (req: VercelRequest, res: VercelResponse) => {
   const http = new HandleResponse(req, res)
+  const client = new PicaComicAPI({})
+
   if (req.method !== 'POST') {
-    return http.send(403, 'Method not allowed')
+    return http.send(405, 'Method Not Allowed')
   }
-  const email = req.body?.email
-  const password = req.body?.password
+
+  const { email, password } = req.body || {}
   if (!email || !password) {
     return http.send(400, 'Missing params')
   }
-  const client = new PicaComicAPI({})
+
   try {
     const token = await client.signIn({ email, password })
     const time = new Date()

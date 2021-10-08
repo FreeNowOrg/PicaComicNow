@@ -46,10 +46,10 @@ function init() {
   // return
 
   axios
-    .get(`${API_BASE}/fetch/categories`)
+    .get(`${API_BASE}/categories`)
     .then(
       ({ data }: any) => {
-        list.value = data.body
+        list.value = data.body.categories
       },
       (err) => {
         console.warn('Failed to get categories data', err)

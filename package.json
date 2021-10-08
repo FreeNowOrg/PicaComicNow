@@ -1,6 +1,6 @@
 {
   "name": "vite-vue-ts-template",
-  "version": "0.0.2",
+  "version": "0.1.0",
   "main": "index.js",
   "repository": "git@github.com:FreeNowOrg/vite-vue-ts-template.git",
   "author": "FreeNowOrg <https://github.com/FreeNowOrg>",
@@ -19,7 +19,7 @@
     "vue-router": "^4.0.11"
   },
   "devDependencies": {
-    "@l2studio/picacomic-api": "^0.1.6",
+    "@l2studio/picacomic-api": "^0.1.7",
     "@types/js-cookie": "^3.0.0",
     "@types/node": "^16.10.2",
     "@types/nprogress": "^0.2.0",

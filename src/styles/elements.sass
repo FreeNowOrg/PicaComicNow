@@ -16,6 +16,11 @@ h2
   /* margin: 0.4rem auto */
   padding: 0 0.4rem
 
+.align-center
+  h2
+    left: unset
+    transform: unset
+
 // Links
 a
   --color: var(--theme-link-color)
@@ -112,6 +117,20 @@ button
     &.router-link-active
       color: #fff
       background-color: var(--theme-link-color)
+
+input,
+textarea
+  padding: 4px 0.75rem
+  font-size: 1rem
+  line-height: 1em
+  border: none
+  border-radius: 1em
+  background-color: rgba(0, 0, 0, 0.05)
+  outline: none
+  &:hover
+    box-shadow: 0 0 0 2px rgba(0, 0, 0, 0.25)
+  &:focus
+    box-shadow: 0 0 0 2px var(--theme-accent-color)
 
 // Responsive
 .responsive

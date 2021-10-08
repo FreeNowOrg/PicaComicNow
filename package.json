@@ -1,6 +1,6 @@
 {
   "name": "vite-vue-ts-template",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "main": "index.js",
   "repository": "git@github.com:FreeNowOrg/vite-vue-ts-template.git",
   "author": "FreeNowOrg <https://github.com/FreeNowOrg>",
@@ -34,6 +34,7 @@
     "eslint": "^7.32.0",
     "eslint-config-prettier": "^8.3.0",
     "eslint-plugin-vue": "^7.18.0",
+    "form-data": "^4.0.0",
     "prettier": "^2.4.1",
     "pug": "^3.0.2",
     "sass": "^1.42.1",

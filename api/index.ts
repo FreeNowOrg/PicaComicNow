@@ -12,19 +12,13 @@ export default async (req: VercelRequest, res: VercelResponse) => {
   const { __PATH } = req.query
   delete req.query.__PATH
 
-  let body: FormData
-  if (req.body) {
-    body = new FormData()
-    for (const key in req.body) body.append(key, req.body[key])
-  }
-
   try {
     const { data } = await client
       .fetch(__PATH as string, {
         headers: { authorization },
         method: req.method as 'GET' | 'POST' | 'PUT',
         searchParams: req.query as Record<string, string>,
-        body,
+        json: req.body,
       })
       .json()
 

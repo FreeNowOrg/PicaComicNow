@@ -15,7 +15,7 @@ export async function getToken(
   })
 
   const { data }: any = await axios.post(
-    `${API_BASE}/users/sign-in`,
+    `${API_BASE}/auth/sign-in`,
     {
       email,
       password,

@@ -12,7 +12,7 @@
 
 <script setup lang="ts">
 import { defineComponent, onMounted } from 'vue'
-import GlobalHeader from './components/GobalHeader.vue'
+import GlobalHeader from './components/GlobalHeader.vue'
 import GlobalFooter from './components/GlobalFooter.vue'
 import NProgress from './components/NProgress.vue'
 import { getProfile, userData } from './components/userData'

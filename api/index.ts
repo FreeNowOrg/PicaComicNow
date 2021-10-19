@@ -2,7 +2,6 @@ import { PicaComicAPI } from '@l2studio/picacomic-api'
 import { VercelRequest, VercelResponse } from '@vercel/node'
 import { HandleResponse } from 'serverless-kit'
 import { getTokenFromReq, replaceFileUrl } from './utils'
-import FormData from 'form-data'
 
 export default async (req: VercelRequest, res: VercelResponse) => {
   const http = new HandleResponse(req, res)

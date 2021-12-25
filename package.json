@@ -12,14 +12,14 @@
     "build": "vuedx-typecheck . && vite build"
   },
   "dependencies": {
-    "axios": "^0.22.0",
+    "axios": "^0.24.0",
     "js-cookie": "^3.0.1",
     "nprogress": "^0.2.0",
     "vue": "^3.2.19",
     "vue-router": "^4.0.11"
   },
   "devDependencies": {
-    "@l2studio/picacomic-api": "^0.1.7",
+    "@l2studio/picacomic-api": "^0.1.8",
     "@types/js-cookie": "^3.0.0",
     "@types/node": "^16.10.2",
     "@types/nprogress": "^0.2.0",
@@ -38,7 +38,7 @@
     "prettier": "^2.4.1",
     "pug": "^3.0.2",
     "sass": "^1.42.1",
-    "serverless-kit": "^0.0.3",
+    "serverless-kit": "^0.2.3",
     "typescript": "^4.4.3",
     "vercel": "^23.1.2",
     "vite": "^2.6.2"

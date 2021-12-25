@@ -11,7 +11,7 @@
 </template>
 
 <script setup lang="ts">
-import { defineComponent, onMounted } from 'vue'
+import { onMounted } from 'vue'
 import GlobalHeader from './components/GlobalHeader.vue'
 import GlobalFooter from './components/GlobalFooter.vue'
 import NProgress from './components/NProgress.vue'
@@ -21,11 +21,6 @@ import Cookies from 'js-cookie'
 
 const route = useRoute()
 const router = useRouter()
-const components = defineComponent({
-  GlobalHeader,
-  GlobalFooter,
-  NProgress,
-})
 
 onMounted(async () => {
   if (!userData.value) {

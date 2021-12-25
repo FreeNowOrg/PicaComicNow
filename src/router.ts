@@ -4,9 +4,15 @@ import { getProfile, userData } from './components/userData'
 export const router = createRouter({
   history: createWebHistory(),
   routes: [],
-  scrollBehavior(to, from) {
-    if (to === from) return
-    return { top: 0 }
+  scrollBehavior(to, from, savedPosition) {
+    if (savedPosition) {
+      return savedPosition
+    } else {
+      return {
+        top: 0,
+        behavior: 'smooth',
+      }
+    }
   },
 })
 
@@ -67,6 +73,13 @@ router.addRoute({
   name: 'favourite',
   alias: ['/bookmark', '/bookmarks', '/favorite', '/favourites'],
   component: () => import('./view/favourite.vue'),
+})
+
+// Search
+router.addRoute({
+  path: '/search/:keyword?',
+  name: 'search',
+  component: () => import('./view/search.vue'),
 })
 
 // About

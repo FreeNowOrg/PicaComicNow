@@ -210,10 +210,10 @@
     "@intlify/runtime" "9.1.7"
     "@intlify/shared" "9.1.7"
 
-"@l2studio/picacomic-api@^0.1.7":
-  version "0.1.7"
-  resolved "https://registry.npmjs.org/@l2studio/picacomic-api/-/picacomic-api-0.1.7.tgz#466d14c1b6d7f5c9d93fe6949c60747503d5cccb"
-  integrity sha512-91eEG8sYUGl1U/TFt7FgiX6pX2MQcROXrq+vY58VNE9pPaPxgjDeqODtkHe43zZ1S+5jlOhhJZRYfi+Su+80BA==
+"@l2studio/picacomic-api@^0.1.8":
+  version "0.1.8"
+  resolved "https://registry.yarnpkg.com/@l2studio/picacomic-api/-/picacomic-api-0.1.8.tgz#a856dc9674e6d04032031c3595e67043676fc2af"
+  integrity sha512-TTX5SqRqLm1+6Ksd1hb1hKJ1Ncz2qh3Fw2uTgLzI1yeoTcg4DCqe5GSg3ZVqwlI9saCylIeDHwbjTAavXhXJqw==
   dependencies:
     debug "^4.3.2"
     got "^11.8.2"
@@ -860,6 +860,13 @@ axios@^0.22.0:
   version "0.22.0"
   resolved "https://registry.npmjs.org/axios/-/axios-0.22.0.tgz#bf702c41fb50fbca4539589d839a077117b79b25"
   integrity sha512-Z0U3uhqQeg1oNcihswf4ZD57O3NrR1+ZXhxaROaWpDmsDTx7T2HNBV2ulBtie2hwJptu8UvgnJoK+BIqdzh/1w==
+  dependencies:
+    follow-redirects "^1.14.4"
+
+axios@^0.24.0:
+  version "0.24.0"
+  resolved "https://registry.yarnpkg.com/axios/-/axios-0.24.0.tgz#804e6fa1e4b9c5288501dd9dff56a7a0940d20d6"
+  integrity sha512-Q6cWsys88HoPgAaFAVUb0WpPk0O8iTeisR9IMqy9G8AbO4NlpVknrnQS03zzF9PGAWgO3cgletO3VjV/P7VztA==
   dependencies:
     follow-redirects "^1.14.4"
 
@@ -2673,10 +2680,10 @@ semver@^7.2.1, semver@^7.3.5:
   dependencies:
     lru-cache "^6.0.0"
 
-serverless-kit@^0.0.3:
-  version "0.0.3"
-  resolved "https://registry.npmjs.org/serverless-kit/-/serverless-kit-0.0.3.tgz#2a8a3eca59613ada8ace3da0ad965ba23de5b5aa"
-  integrity sha512-WoOU3u5yln6J1lvcPa/ms1Mhal5ovLOLPUa03qbasP9Z/AhyNezJdbpsh8PwnhxS/drtqjZSFL0T67327A3uyg==
+serverless-kit@^0.2.3:
+  version "0.2.3"
+  resolved "https://registry.yarnpkg.com/serverless-kit/-/serverless-kit-0.2.3.tgz#da04b8e86e2f989df729b118f705aaf5e934f387"
+  integrity sha512-R94B0IJqa0U5hEDsVgSdLDO06H23FwJ/hoFQnnJ0iJtcLKYSiw1ZCNZaSfBSazROfBAzUr5sS43igV0PlBjvpQ==
   dependencies:
     axios "^0.22.0"
     mongodb "^4.1.2"

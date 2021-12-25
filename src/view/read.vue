@@ -87,7 +87,7 @@ onMounted(() => {
   margin: 0 auto
   .page
     position: relative
-    .img
+    .lazyload
       width: 100%
     .page-tag-container
       pointer-events: none

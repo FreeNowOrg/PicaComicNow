@@ -1,32 +1,19 @@
 <template lang="pug">
-svg.layload.isLoading(
-  v-show="!loaded && !error"
-  :width="width"
-  :height="height"
-  role="img"
-  :class="class"
-  )
-svg.layload.isError(
-  v-show="error"
-  :width="width"
-  :height="height"
-  role="img"
-  :class="class"
-  )
-img.lazyload.isLoaded(
-  v-show="loaded"
-  :width="width"
-  :height="height"
-  :src="src"
-  role="img"
-  :class="class"
-  )
+component(
+  :is='loaded ? "img" : "svg"',
+  :width='width',
+  :height='height',
+  :src='src',
+  :class='{ lazyload: true, isLoading: !loaded && !error, isLoaded: loaded, isError: error }',
+  role='img'
+)
 </template>
 
 <script lang="ts">
 import { defineComponent } from 'vue'
 
 export default defineComponent({
+  // eslint-disable-next-line vue/require-prop-types
   props: ['src', 'width', 'height', 'class'],
   data() {
     return {

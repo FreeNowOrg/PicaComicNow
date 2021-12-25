@@ -97,7 +97,7 @@ function init() {
   axios
     .post(`${API_BASE}/comics/advanced-search`, {
       keyword: keyword.value,
-      categories: category.value.split('|'),
+      categories: category.value,
       page: page.value,
       s: sort.value,
     })

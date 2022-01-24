@@ -226,4 +226,14 @@ onMounted(() => {
       padding: 0.5rem 1rem
       border-radius: 4px
       box-shadow: 0 0 0 1px var(--theme-accent-color)
+
+@media screen and(max-width: 600px)
+  .book-info
+    flex-direction: column
+    .left
+      width: 100%
+      margin-bottom: 1.5rem
+      .lazyload
+        width: 100%
+        height: auto
 </style>

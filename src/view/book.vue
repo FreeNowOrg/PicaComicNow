@@ -231,9 +231,13 @@ onMounted(() => {
   .book-info
     .details
       flex-direction: column
-    .left
-      width: 100%
-      .lazyload
+      .left
         width: 100%
-        height: auto
+        text-align: center
+        // a
+        //   display: block
+        .lazyload
+          width: 320px
+          max-width: 100%
+          height: auto
 </style>

@@ -90,7 +90,7 @@ onMounted(() => {
       width: 100%
       height: 0
       padding-top: 100%
-      .img
+      .lazyload
         position: absolute
         top: 0
         left: 0

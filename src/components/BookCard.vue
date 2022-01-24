@@ -51,7 +51,7 @@ li.book-card
     width: 100%
     .thumb
       position: relative
-      .img
+      .lazyload
         display: block
         top: 0
         left: 0

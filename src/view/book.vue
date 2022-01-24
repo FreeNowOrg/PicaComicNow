@@ -229,10 +229,10 @@ onMounted(() => {
 
 @media screen and(max-width: 600px)
   .book-info
-    flex-direction: column
+    .details
+      flex-direction: column
     .left
       width: 100%
-      margin-bottom: 1.5rem
       .lazyload
         width: 100%
         height: auto

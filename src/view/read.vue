@@ -83,7 +83,7 @@ onMounted(() => {
 <style lang="sass">
 .pages-list
   width: 70%
-  max-width: 1080px
+  max-width: 600px
   margin: 0 auto
   .page
     position: relative
@@ -108,7 +108,7 @@ onMounted(() => {
         color: #fff
         border-radius: 50%
 
-@media screen and(max-width: 800px)
+@media screen and(max-width: 600px)
   .pages-list
     width: unset
     max-width: unset

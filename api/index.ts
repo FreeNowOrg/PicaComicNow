@@ -21,7 +21,11 @@ export default async (req: VercelRequest, res: VercelResponse) => {
       })
       .json()
 
-    return http.send(200, 'ok', replaceFileUrl(data))
+    return http.send(
+      200,
+      'ok',
+      replaceFileUrl({ ...data, debug: { body: req.body, params: req.query } })
+    )
   } catch (e) {
     return http.axiosError(e)
   }

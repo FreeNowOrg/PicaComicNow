@@ -12,40 +12,41 @@ mixin pagenator
       icon
         arrow-right
 
-.bread-crumb
-  router-link.button(to='/categories') 
-    icon
-      arrow-left
-    | 
-    | Categories Index
+#search-container
+  .bread-crumb
+    router-link.button(to='/categories') 
+      icon
+        arrow-left
+      | 
+      | Categories Index
 
-h1 Search『{{ keyword }}』comics
+  h1 Search『{{ keyword }}』comics
 
-.info.error(v-if='error')
-  .title Failed to get comics data
-  p {{ error }}
+  .info.error(v-if='error')
+    .title Failed to get comics data
+    p {{ error }}
 
-.loading.align-center(v-if='loading && !comics.length')
-  placeholder
+  .loading.align-center(v-if='loading && !comics.length')
+    placeholder
 
-section(v-if='comics.length', :class='{ "loading-cover": loading }')
-  +pagenator
-  books-list(:data='comics', :backTo='"/search/" + keyword')
-  +pagenator
+  section(v-if='comics.length', :class='{ "loading-cover": loading }')
+    +pagenator
+    books-list(:data='comics', :backTo='"/search/" + keyword')
+    +pagenator
 </template>
 
 <script setup lang="ts">
 import axios from 'axios'
-import { defineComponent, onMounted, ref, watch } from 'vue'
+import { onMounted, ref, watch } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
-import { ArrowLeft, ArrowRight } from '@vicons/fa'
-import { API_BASE } from '../config'
+import { getErrMsg } from '../utils/getErrMsg'
 import { setTitle } from '../utils/setTitle'
+import { ArrowLeft, ArrowRight } from '@vicons/fa'
+import BooksList from '../components/BooksList.vue'
+import { API_BASE } from '../config'
 const route = useRoute()
 const router = useRouter()
 
-import BooksList from '../components/BooksList.vue'
-import { getErrMsg } from '../utils/getErrMsg'
 // const components = defineComponent({ BooksList })
 
 type SortTypes = 'ua' | 'dd' | 'da' | 'ld' | 'vd'
@@ -58,14 +59,6 @@ const sort = ref<SortTypes>('ua')
 const comics = ref<any[]>([])
 const loading = ref(false)
 const error = ref('')
-
-// Refresh when the category changes
-router.afterEach((to, from) => {
-  console.log('after route', { to })
-  if (to.name === from.name && to !== from) {
-    keyword.value = route.params.keyword as string
-  }
-})
 
 /**
  * @param arg1.category 分区名字，categories里面的title，如"嗶咔漢化"
@@ -129,11 +122,14 @@ function handlePagePrompt() {
   }
 }
 
-router.afterEach((to) => {
-  if (to.name !== 'comics') return
-  category.value = to.params.category as string
-  page.value = parseInt(to.query.page as string) || 1
-  init()
+// Refresh when the keyword changes
+router.afterEach((to, from) => {
+  console.log('after route', { to })
+  if (to.name === from.name && to !== from) {
+    keyword.value = route.params.keyword as string
+    page.value = parseInt(to.query.page as string) || 1
+    init()
+  }
 })
 
 onMounted(() => {

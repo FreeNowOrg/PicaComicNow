@@ -1,6 +1,7 @@
 import { VercelRequest, VercelResponse } from '@vercel/node'
 import { HandleResponse } from 'serverless-kit'
 import { FileThumb } from '../src/types'
+import { PicaComicAPI } from '@l2studio/picacomic-api'
 
 export default async (req: VercelRequest, res: VercelResponse) => {
   const http = new HandleResponse(req, res)
@@ -49,7 +50,7 @@ export function replaceFileUrl(obj: Record<string, any>) {
     else if (typeof val === 'object') {
       obj[key] = replaceFileUrl(val)
       if (val.fileServer && val.path) {
-        obj[key].fileUrl = getFileUrl(val)
+        obj[key].fileUrl = PicaComicAPI.prototype.stringifyImageUrl(val)
       }
     }
   }

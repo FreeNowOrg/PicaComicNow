@@ -42,6 +42,7 @@ import { useRoute, useRouter } from 'vue-router'
 import { ArrowLeft, ArrowRight } from '@vicons/fa'
 import { API_BASE } from '../config'
 import { setTitle } from '../utils/setTitle'
+import type { ApiResponseComics } from '../types'
 const route = useRoute()
 const router = useRouter()
 
@@ -94,7 +95,7 @@ function init() {
   error.value = ''
 
   axios
-    .get(`${API_BASE}/comics`, {
+    .get<ApiResponseComics>(`${API_BASE}/comics`, {
       params: {
         c: category.value,
         // t: '',
@@ -103,7 +104,7 @@ function init() {
       },
     })
     .then(
-      ({ data }: any) => {
+      ({ data }) => {
         comics.value = data.body?.comics.docs
         totalPages.value = data.body?.comics.pages
       },

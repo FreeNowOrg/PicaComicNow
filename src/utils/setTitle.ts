@@ -1,7 +1,6 @@
 import { PROJECT_NAME } from '../config'
 
 export function setTitle(...title: string[]) {
-  title.push(PROJECT_NAME)
-  document.title = title.join(' | ')
+  document.title = [...title, PROJECT_NAME].join(' | ')
   return document.title
 }

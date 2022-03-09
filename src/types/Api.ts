@@ -1,8 +1,10 @@
 import { FileThumb } from './File'
 
-export interface ApiResponseCommon {
+export type ApiResponse<T = unknown> = {
   code: number
   message: string
+  body: T
+  debug?: any
 }
 
 export interface Category {
@@ -12,9 +14,7 @@ export interface Category {
   active: boolean
   link: string
 }
-export type ApiResponseCategories = {
-  body: Category[]
-} & ApiResponseCommon
+export type ApiResponseCategories = ApiResponse<Category[]>
 
 export interface Comic {
   _id: string
@@ -36,15 +36,15 @@ export interface Comic {
   likesCount: number
 }
 
-export type ApiResponseComics = {
-  body: {
+export type ApiResponseComics = ApiResponse<{
+  comics: {
     docs: Comic[]
     total: number
     limit: 20
     page: number
     pages: number
   }
-} & ApiResponseCommon
+}>
 
 export interface UserProfile {
   _id: string
@@ -63,9 +63,7 @@ export interface UserProfile {
   isPunched: boolean
 }
 
-export type ApiResponseUserProfile = {
-  body: { user: UserProfile }
-} & ApiResponseCommon
+export type ApiResponseUserProfile = ApiResponse<{ user: UserProfile }>
 
 export interface ComicInfo {
   _id: string

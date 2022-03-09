@@ -20,7 +20,7 @@ mixin pagenator
       | 
       | Categories Index
 
-  h1 Search『{{ keyword }}』comics
+  h1 Search『{{ keyword }}』comics (page {{ page }})
 
   .info.error(v-if='error')
     .title Failed to get comics data
@@ -44,6 +44,7 @@ import { setTitle } from '../utils/setTitle'
 import { ArrowLeft, ArrowRight } from '@vicons/fa'
 import BooksList from '../components/BooksList.vue'
 import { API_BASE } from '../config'
+import type { ApiResponseComics } from '../types'
 const route = useRoute()
 const router = useRouter()
 
@@ -88,14 +89,21 @@ function init() {
   error.value = ''
 
   axios
-    .post(`${API_BASE}/comics/advanced-search`, {
-      keyword: keyword.value,
-      categories: category.value,
-      page: page.value,
-      s: sort.value,
-    })
+    .post<ApiResponseComics>(
+      `${API_BASE}/comics/advanced-search`,
+      {
+        keyword: keyword.value,
+        categories: category.value,
+        s: sort.value,
+      },
+      {
+        params: {
+          page: page.value,
+        },
+      }
+    )
     .then(
-      ({ data }: any) => {
+      ({ data }) => {
         comics.value = data.body?.comics.docs
         totalPages.value = data.body?.comics.pages
       },

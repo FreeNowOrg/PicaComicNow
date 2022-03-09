@@ -1,76 +1,77 @@
 <template lang="pug">
-section.book-info
-  .bread-crumb(v-if='$route.query.backTo')
-    router-link.button(:to='$route.query.backTo') ← Back to {{ $route.query.backTo }}
-  .loading.card.align-center(v-if='bookLoading || !book')
-    placeholder
-  .card(v-if='book')
-    .details.flex.gap-1
-      .left
-        e-link.no-icon.thumb(:href='book.thumb.fileUrl')
-          lazyload.img(:src='book.thumb.fileUrl', :width='200', :height='266')
-      .right.flex(style='position: relative')
-        .flex.title-area.flex-center
-          h1.title.flex-1 {{ book.title }}
-          a.bookmark.pointer(
-            :class='book.isFavourite ? "is-favourite" : "not-favourite"',
-            :title='book.isFavourite ? "Click to remove bookmark" : "Click to add bookmark"',
-            @click='handleBookmark'
-          )
-            icon
-              bookmark(v-if='book.isFavourite')
-              bookmark-regular(v-else)
-        .flex-column.flex-1.gap-1
-          .finished
-            icon
-              CheckCircle(v-if='book.finished')
-              PenNib(v-else)
-            |
-            | {{ book.finished ? "Finished" : "Writing" }}
-          .pages
-            strong Pages:
-            | {{ book.pagesCount }} Pages, {{ book.epsCount }} Episodes
-          .author
-            strong Author:
-            router-link(:to='"/search/" + book.author') @{{ book.author }}
-          .chinese-team
-            strong Chinese translator:
-            router-link(:to='"/search/" + book.chineseTeam') {{ book.chineseTeam }}
-          .tags-list
-            strong Categories:
-            router-link.tag(
-              v-for='item in book.categories',
-              :to='"/comics/" + item'
-            ) {{ item }}
-          .stats.flex
-            .likes.flex-1
-              strong Likes
-              span {{ book.likesCount }}
-            .views.flex-1
-              strong views
-              span {{ book.viewsCount }}
-
-    .tags-list
-      strong Tags:
-      router-link.tag(v-for='item in book.tags', :to='"/search/" + item') {{ item }}
-
-    .description {{ book.description }}
-
-    details
-      pre {{ book }}
-
-section.book-eps
-  .card
-    h2#eps Episodes
-    p.loading.align-center(v-if='epsLoading || !eps.length')
+#book-container
+  section.book-info
+    .bread-crumb(v-if='$route.query.backTo')
+      router-link.button(:to='$route.query.backTo') ← Back to {{ $route.query.backTo }}
+    .loading.card.align-center(v-if='bookLoading || !book')
       placeholder
-    .eps-list(v-if='eps.length')
-      router-link.ep-link.plain(
-        v-for='item in eps',
-        :to='{ name: "read", params: { bookid: bookid, epsid: item.order }, query: { category: $route.query.category } }'
-      ) {{ item.title }}
-    details
-      pre {{ eps }}
+    .card(v-if='book')
+      .details.flex.gap-1
+        .left
+          e-link.no-icon.thumb(:href='book.thumb.fileUrl')
+            lazyload.img(:src='book.thumb.fileUrl', :width='200', :height='266')
+        .right.flex(style='position: relative')
+          .flex.title-area.flex-center
+            h1.title.flex-1 {{ book.title }}
+            a.bookmark.pointer(
+              :class='book.isFavourite ? "is-favourite" : "not-favourite"',
+              :title='book.isFavourite ? "Click to remove bookmark" : "Click to add bookmark"',
+              @click='handleBookmark'
+            )
+              icon
+                bookmark(v-if='book.isFavourite')
+                bookmark-regular(v-else)
+          .flex-column.flex-1.gap-1
+            .finished
+              icon
+                CheckCircle(v-if='book.finished')
+                PenNib(v-else)
+              |
+              | {{ book.finished ? "Finished" : "Writing" }}
+            .pages
+              strong Pages:
+              | {{ book.pagesCount }} Pages, {{ book.epsCount }} Episodes
+            .author
+              strong Author:
+              router-link(:to='"/search/" + book.author') @{{ book.author }}
+            .chinese-team
+              strong Chinese translator:
+              router-link(:to='"/search/" + book.chineseTeam') {{ book.chineseTeam }}
+            .tags-list
+              strong Categories:
+              router-link.tag(
+                v-for='item in book.categories',
+                :to='"/comics/" + item'
+              ) {{ item }}
+            .stats.flex
+              .likes.flex-1
+                strong Likes
+                span {{ book.likesCount }}
+              .views.flex-1
+                strong views
+                span {{ book.viewsCount }}
+
+      .tags-list
+        strong Tags:
+        router-link.tag(v-for='item in book.tags', :to='"/search/" + item') {{ item }}
+
+      .description {{ book.description }}
+
+      details
+        pre {{ book }}
+
+  section.book-eps
+    .card
+      h2#eps Episodes
+      p.loading.align-center(v-if='epsLoading || !eps.length')
+        placeholder
+      .eps-list(v-if='eps.length')
+        router-link.ep-link.plain(
+          v-for='item in eps',
+          :to='{ name: "read", params: { bookid: bookid, epsid: item.order }, query: { category: $route.query.category } }'
+        ) {{ item.title }}
+      details
+        pre {{ eps }}
 </template>
 
 <script setup lang="ts">

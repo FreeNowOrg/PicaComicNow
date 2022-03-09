@@ -12,27 +12,28 @@ mixin pagenator
       icon
         arrow-right
 
-.bread-crumb
-  router-link.button(to='/categories') 
-    icon
-      arrow-left
-    | 
-    | Categories Index
+#comics-container
+  .bread-crumb
+    router-link.button(to='/categories') 
+      icon
+        arrow-left
+      | 
+      | Categories Index
 
-h1(v-if='category') Comics in {{ category }}
-h1(v-else) Comics list
+  h1(v-if='category') Comics in {{ category }}
+  h1(v-else) Comics list
 
-.info.error(v-if='error')
-  .title Failed to get comics data
-  p {{ error }}
+  .info.error(v-if='error')
+    .title Failed to get comics data
+    p {{ error }}
 
-.loading.align-center(v-if='loading && !comics.length')
-  placeholder
+  .loading.align-center(v-if='loading && !comics.length')
+    placeholder
 
-section(v-if='comics.length', :class='{ "loading-cover": loading }')
-  +pagenator
-  books-list(:data='comics', :backTo='"/comics/" + category')
-  +pagenator
+  section(v-if='comics.length', :class='{ "loading-cover": loading }')
+    +pagenator
+    books-list(:data='comics', :backTo='"/comics/" + category')
+    +pagenator
 </template>
 
 <script setup lang="ts">

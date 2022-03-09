@@ -1,38 +1,39 @@
 <template lang="pug">
-section.user-profile
-  //- h1 My Profile
-  .card.metadata.align-center
-    .avatar
-      img(src='https://i.loli.net/2021/03/26/QPOtzh1XbF2eujd.png')
-    h1.name {{ userData.name }}
-    .extra
-      span.title {{ userData.title }}
-      | &nbsp;
-      span.uid @{{ userData.email }}
-  .card.slogan
-    h2 Slogan
-    .slogan-view.flex(
-      v-if='!sloganEdit',
-      :class='{ "loading-cover": sloganLoading }'
-    )
-      p.pre.flex-1 {{ userData.slogan || "-" }}
-      .edit-btn
-        a.pointer(@click='sloganEdit = true') edit
-    .slogan-edit(v-else)
-      .flex
-        label.flex-1(for='sloganEdit')
-          strong Update slogan
-        .cancel-btn
-          a.pointer(@click='sloganEdit = false') cancel
-      .flex.gap-1
-        .edit-area.flex-1
-          textarea#sloganEdit(v-model='sloganInput')
-        .btn-area
-          button(:disabled='sloganLoading', @click='handleSloganEdit') Submit
+#profile-container
+  section.user-profile
+    //- h1 My Profile
+    .card.metadata.align-center
+      .avatar
+        img(src='https://i.loli.net/2021/03/26/QPOtzh1XbF2eujd.png')
+      h1.name {{ userData.name }}
+      .extra
+        span.title {{ userData.title }}
+        | &nbsp;
+        span.uid @{{ userData.email }}
+    .card.slogan
+      h2 Slogan
+      .slogan-view.flex(
+        v-if='!sloganEdit',
+        :class='{ "loading-cover": sloganLoading }'
+      )
+        p.pre.flex-1 {{ userData.slogan || "-" }}
+        .edit-btn
+          a.pointer(@click='sloganEdit = true') edit
+      .slogan-edit(v-else)
+        .flex
+          label.flex-1(for='sloganEdit')
+            strong Update slogan
+          .cancel-btn
+            a.pointer(@click='sloganEdit = false') cancel
+        .flex.gap-1
+          .edit-area.flex-1
+            textarea#sloganEdit(v-model='sloganInput')
+          .btn-area
+            button(:disabled='sloganLoading', @click='handleSloganEdit') Submit
 
-  .card
-    details
-      pre {{ userData }}
+    .card
+      details
+        pre {{ userData }}
 </template>
 
 <script setup lang="ts">

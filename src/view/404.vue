@@ -1,6 +1,7 @@
 <template lang="pug">
-h1 404 Not Found
-p This page has been lost
+#error-404
+  h1 404 Not Found
+  p This page has been lost
 </template>
 
 <script setup lang="ts">

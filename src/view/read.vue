@@ -1,19 +1,20 @@
 <template lang="pug">
-.bread-crumb
-  router-link.button(
-    :to='{ name: "book", params: { bookid }, query: { category: $route.query.category } }'
-  ) ← Back to book
+#read-container
+  .bread-crumb
+    router-link.button(
+      :to='{ name: "book", params: { bookid }, query: { category: $route.query.category } }'
+    ) ← Back to book
 
-h1 {{ title || "Loading..." }}
+  h1 {{ title || "Loading..." }}
 
-.pages-list
-  .page(v-for='(item, index) in docs', :id='"page-" + (index + 1)')
-    .page-tag-container(:href='"#page-" + index')
-      .page-tag {{ index + 1 }}
-    lazyload.img(:src='item.media.fileUrl')
+  .pages-list
+    .page(v-for='(item, index) in docs', :id='"page-" + (index + 1)')
+      .page-tag-container(:href='"#page-" + index')
+        .page-tag {{ index + 1 }}
+      lazyload.img(:src='item.media.fileUrl')
 
-p.align-center(v-if='hasNext > 0')
-  a.pointer.button(@click='getPage()') {{ nextLoading ? "Loading..." : "See more" }} ({{ hasNext }} pages left)
+  p.align-center(v-if='hasNext > 0')
+    a.pointer.button(@click='getPage()') {{ nextLoading ? "Loading..." : "See more" }} ({{ hasNext }} pages left)
 </template>
 
 <script setup lang="ts">

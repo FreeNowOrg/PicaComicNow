@@ -1,18 +1,19 @@
 <template lang="pug">
-h1 PicACG
+#index-container
+  h1 PicACG
 
-.info.tips(style='margin-bottom: 1.5rem')
-  .title Tips
-  p This site is under construction
+  .info.tips(style='margin-bottom: 1.5rem')
+    .title Tips
+    p This site is under construction
 
-.flex.gap-1
-  .card.flex-1
-    h2 Greeting
-    p hello, world
-    p {{ time }}
-  .card.flex-1
-    h2 Profile
-    p pforile →
+  .flex.gap-1
+    .card.flex-1
+      h2 Greeting
+      p hello, world
+      p {{ time }}
+    .card.flex-1
+      h2 Profile
+      p pforile →
 </template>
 
 <script setup lang="ts">

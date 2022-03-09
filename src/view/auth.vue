@@ -1,35 +1,36 @@
 <template lang="pug">
-h1 Authorization
+#auth-container
+  h1 Authorization
 
-p.info.tips(v-if='$route.query.tips')
-  .title Tips
-  p You must log in to use this website
+  p.info.tips(v-if='$route.query.tips')
+    .title Tips
+    p You must log in to use this website
 
-section(v-if='userData')
-  .card
-    h2 Sign out
-    .align-center
-      button(@click='handleSignOut') Sign out
+  section(v-if='userData')
+    .card
+      h2 Sign out
+      .align-center
+        button(@click.prevent='handleSignOut') Sign out
 
-section(v-else)
-  form.form.card.align-center(:class='{ "loading-cover": onAuthenticating }')
-    h2(style='left: 0; transform: none') Login
-    label
-      strong Username/email
-      input(v-model='email')
-    label
-      strong Password
-      input(v-model='password', type='password')
-    div
-      button(@click='handleLogin') Login
-    //- OK
-    .info.tips(v-if='token')
-      .title Login succeeded
-      p Your App token: <code>{{ token }}</code>
-    //- Error
-    .info.error(v-if='errorMsg')
-      .title {{ errorTitle }}
-      p {{ errorMsg }}
+  section(v-else)
+    form.form.card.align-center(:class='{ "loading-cover": onAuthenticating }')
+      h2(style='left: 0; transform: none') Login
+      label
+        strong Username/email
+        input(v-model='email')
+      label
+        strong Password
+        input(v-model='password', type='password')
+      div
+        button(@click.prevent='handleLogin') Login
+      //- OK
+      .info.tips(v-if='token')
+        .title Login succeeded
+        p Your App token: <code>{{ token }}</code>
+      //- Error
+      .info.error(v-if='errorMsg')
+        .title {{ errorTitle }}
+        p {{ errorMsg }}
 </template>
 
 <script setup lang="ts">
@@ -49,9 +50,7 @@ const token = ref('')
 const errorTitle = ref('')
 const errorMsg = ref('')
 
-function handleLogin(e) {
-  e.preventDefault()
-
+function handleLogin() {
   if (!email.value || !password.value) return
 
   onAuthenticating.value = true

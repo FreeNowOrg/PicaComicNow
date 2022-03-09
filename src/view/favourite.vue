@@ -12,7 +12,7 @@ mixin pagenator
       icon
         arrow-right
 
-.favourite
+#favourite-container
   .bread-crumb
     router-link.button(to='/profile') 
       icon

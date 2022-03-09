@@ -7,22 +7,23 @@ mixin thumb(item)
       icon(v-if='item.isWeb', style='float: right')
         external-link-alt
 
-h1 Categories Index
+#categories-container
+  h1 Categories Index
 
-.loading.align-center(v-if='loading')
-  placeholder
+  .loading.align-center(v-if='loading')
+    placeholder
 
-.info.error(v-if='error')
-  .title Failed to get categories data
-  p {{ error }}
+  .info.error(v-if='error')
+    .title Failed to get categories data
+    p {{ error }}
 
-ul.categories-list
-  li(v-for='item in list')
-    .card(v-if='item.active !== false')
-      e-link.no-icon(v-if='item.isWeb', :href='item.link')
-        +thumb(item)
-      router-link(v-else, :to='"/comics/" + item.title')
-        +thumb(item)
+  ul.categories-list
+    li(v-for='item in list')
+      .card(v-if='item.active !== false')
+        e-link.no-icon(v-if='item.isWeb', :href='item.link')
+          +thumb(item)
+        router-link(v-else, :to='"/comics/" + item.title')
+          +thumb(item)
 </template>
 
 <script setup lang="ts">

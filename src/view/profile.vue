@@ -1,6 +1,6 @@
 <template lang="pug">
 #profile-container
-  section.user-profile
+  section.user-profile(v-if='userData')
     //- h1 My Profile
     .card.metadata.align-center
       .avatar
@@ -30,10 +30,12 @@
             textarea#sloganEdit(v-model='sloganInput')
           .btn-area
             button(:disabled='sloganLoading', @click='handleSloganEdit') Submit
-
     .card
       details
         pre {{ userData }}
+
+  section.user-profile.no-profile(v-else)
+    h1.name Please login
 </template>
 
 <script setup lang="ts">

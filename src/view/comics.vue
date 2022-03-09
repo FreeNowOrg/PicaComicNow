@@ -39,16 +39,16 @@ mixin pagenator
 <script setup lang="ts">
 import axios from 'axios'
 import { defineComponent, onMounted, ref, watch } from 'vue'
-import { useRoute, useRouter } from 'vue-router'
+import BooksList from '../components/BooksList.vue'
 import { ArrowLeft, ArrowRight } from '@vicons/fa'
 import { API_BASE } from '../config'
 import { setTitle } from '../utils/setTitle'
+import { getErrMsg } from '../utils/getErrMsg'
 import type { ApiResponseComics } from '../types'
+import { useRoute, useRouter } from 'vue-router'
 const route = useRoute()
 const router = useRouter()
 
-import BooksList from '../components/BooksList.vue'
-import { getErrMsg } from '../utils/getErrMsg'
 // const components = defineComponent({ BooksList })
 
 type SortTypes = 'ua' | 'dd' | 'da' | 'ld' | 'vd'

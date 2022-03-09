@@ -38,15 +38,14 @@ mixin pagenator
 <script setup lang="ts">
 import axios from 'axios'
 import { onMounted, ref, watch } from 'vue'
-import { useRoute, useRouter } from 'vue-router'
 import { ArrowLeft, ArrowRight } from '@vicons/fa'
+import BooksList from '../components/BooksList.vue'
 import { API_BASE } from '../config'
 import { setTitle } from '../utils/setTitle'
+import { getErrMsg } from '../utils/getErrMsg'
+import { useRoute, useRouter } from 'vue-router'
 const route = useRoute()
 const router = useRouter()
-
-import BooksList from '../components/BooksList.vue'
-import { getErrMsg } from '../utils/getErrMsg'
 
 type SortTypes = 'ua' | 'dd' | 'da' | 'ld' | 'vd'
 const page = ref(1)

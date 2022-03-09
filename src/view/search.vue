@@ -138,7 +138,7 @@ router.afterEach((to) => {
 
 onMounted(() => {
   init()
-  setTitle('Comics')
+  setTitle('Search')
 })
 </script>
 

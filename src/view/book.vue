@@ -68,7 +68,7 @@
       .eps-list(v-if='eps.length')
         router-link.ep-link.plain(
           v-for='item in eps',
-          :to='{ name: "read", params: { bookid: bookid, epsid: item.order }, query: { category: $route.query.category } }'
+          :to='{ name: "read", params: { bookid: bookid, epsid: item.order }, query: { backTo: $route.query.backTo } }'
         ) {{ item.title }}
       details
         pre {{ eps }}
@@ -154,7 +154,7 @@ function getEps(page = 1) {
 }
 
 let bookmarkLoading = false
-function handleBookmark(e) {
+function handleBookmark() {
   if (bookmarkLoading) return
   bookmarkLoading = true
   axios

@@ -2,7 +2,7 @@
 #read-container
   .bread-crumb
     router-link.button(
-      :to='{ name: "book", params: { bookid }, query: { category: $route.query.category } }'
+      :to='{ name: "book", params: { bookid }, query: { backTo: $route.query.backTo } }'
     ) ← Back to book
 
   h1 {{ title || "Loading..." }}

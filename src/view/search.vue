@@ -20,7 +20,8 @@ mixin pagenator
       | 
       | Categories Index
 
-  h1 Search『{{ keyword }}』comics (page {{ page }})
+  h1(v-if='keyword') Search『{{ keyword }}』comics (page {{ page }})
+  h1(v-else) Advanced Search
 
   .info.error(v-if='error')
     .title Failed to get comics data

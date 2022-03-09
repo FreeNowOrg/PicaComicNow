@@ -13,7 +13,12 @@
       p {{ time }}
     .card.flex-1
       h2 Profile
-      p pforile →
+      ul
+        li
+          router-link.button(to='/profile') pforile
+        li
+          router-link.buggon(to='/favourite') favourite
+
 </template>
 
 <script setup lang="ts">
@@ -25,5 +30,4 @@ setInterval(() => {
 }, 1000)
 </script>
 
-<style scoped lang="sass">
-</style>
+<style scoped lang="sass"></style>

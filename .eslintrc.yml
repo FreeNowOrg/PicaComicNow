@@ -3,7 +3,7 @@ env:
   commonjs: true
   es2021: true
 parser:
-  vue-eslint-parser
+  - vue-eslint-parser
 plugins:
   - '@typescript-eslint'
 extends:
@@ -13,8 +13,6 @@ extends:
   - 'prettier'
 parserOptions:
   parser: '@typescript-eslint/parser'
-  extraFileExtensions:
-    - .vue
   ecmaVersion: 12
 rules: 
   indent: ['error', 2, { SwitchCase: 1 }]

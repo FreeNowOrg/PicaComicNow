@@ -1,12 +1,20 @@
 # PicACG Web App
 
+<div align="center">
+
+Deploy your own
+
 [![Deploy with Vercel](https://vercel.com/button)](https://vercel.com/new/clone?repository-url=https%3A%2F%2Fgithub.com%2FFreeNowOrg%2FPicaComicNow&demo-title=PicACG%20Web%20App&demo-url=https%3A%2F%2Fpica-comic.vercel.app)
+
+想用的话点上面的按钮自己部署一个，一直点下一步就行了。别让我的被封了，我还要看本子呢，谢谢。
+
+</div>
 
 ## Attention please
 
 This is a fan made website. We are NOT PicACG official. Please DO NOT share this website anywhere.
 
-这是一个粉丝向网站，我们与 PicACG 官方没有任何关系。请勿在任何地方传播本网站——珍惜眼前。
+这是一个粉丝向网站，我们与 PicACG 官方没有任何关系。请勿在任何地方传播本网站。
 
 ---
 

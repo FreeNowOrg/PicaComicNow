@@ -13,10 +13,10 @@
       p {{ time }}
     .card.flex-1
       h2 Profile
-        p
-          router-link.button(to='/profile') profile
-          | 
-          router-link.button(to='/favourite') favourite
+      p
+        router-link.button(to='/profile') profile
+        | 
+        router-link.button(to='/favourite') favourite
 
 </template>
 

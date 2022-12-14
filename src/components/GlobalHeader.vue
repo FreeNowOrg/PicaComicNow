@@ -81,12 +81,14 @@ import { sideNavShow } from './states'
 import { userData } from './userData'
 import { Github, Bars, UserCircle, AngleDown } from '@vicons/fa'
 import GlobalSideNav from './GlobalSideNav.vue'
+import { useRouter } from 'vue-router'
 
 const components = defineComponent({ Github, Bars, GlobalSideNav })
 // const props = defineProps()
 const notAtTop = ref(document.documentElement.scrollTop > 50)
 const isHide = ref(false)
 const userDropdownShow = ref(false)
+const router = useRouter()
 
 onMounted(() => {
   let oldTop = document.documentElement.scrollTop
@@ -104,6 +106,10 @@ onMounted(() => {
     }
     oldTop = scrollTop
   })
+})
+
+router.afterEach(() => {
+  userDropdownShow.value = false
 })
 
 watch(notAtTop, () => {

@@ -83,6 +83,8 @@ onMounted(() => {
 
   .card
     position: relative
+    line-height: 0
+    padding: 0
     > a
       width: 100%
     .thumb

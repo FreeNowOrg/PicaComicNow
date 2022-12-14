@@ -5,54 +5,53 @@ component(
   :height='height',
   :src='src',
   :class='{ lazyload: true, isLoading: !loaded && !error, isLoaded: loaded, isError: error }',
-  role='img'
+  role='img',
+  ref='imgRef'
 )
 </template>
 
-<script lang="ts">
-import { defineComponent } from 'vue'
-
-export default defineComponent({
-  // eslint-disable-next-line vue/require-prop-types
-  props: ['src', 'width', 'height', 'class'],
-  data() {
-    return {
-      loaded: false,
-      error: false,
+<script lang="ts" setup>
+import { nextTick, onBeforeUnmount, onMounted, ref } from 'vue'
+const props = defineProps<{
+  src: string
+  width?: number
+  height?: number
+}>()
+const loaded = ref(false)
+const error = ref(false)
+const imgRef = ref<HTMLImageElement>()
+function init() {
+  const img = new Image()
+  img.src = props.src
+  img.onload = () => {
+    loaded.value = true
+    error.value = false
+  }
+  img.onerror = () => {
+    loaded.value = false
+    error.value = true
+  }
+}
+let observer: IntersectionObserver
+onMounted(async () => {
+  await nextTick()
+  const img = imgRef.value
+  if (!img) return
+  observer = new IntersectionObserver((entries) => {
+    const [entry] = entries
+    if (entry.isIntersecting) {
+      init()
+      observer.disconnect()
     }
-  },
-  watch: {
-    src() {
-      this.init()
-    },
-  },
-  mounted() {
-    this.init()
-  },
-  methods: {
-    init() {
-      this.loaded = false
-      this.error = false
-      const img = new Image()
-      img.src = this.src
-      img.onload = () => {
-        this.loaded = true
-      }
-      img.onerror = () => {
-        this.error = true
-      }
-    },
-  },
+  })
+  observer.observe(img)
+})
+onBeforeUnmount(() => {
+  observer && observer.disconnect()
 })
 </script>
 
 <style scoped lang="sass">
 .isLoading
   animation: imgProgress 0.6s ease infinite alternate
-
-@keyframes imgProgress
-  from
-    background-color: lighten(#e8e8e8, 4%)
-  to
-    background-color: #e8e8e8
 </style>

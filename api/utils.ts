@@ -49,7 +49,10 @@ export function replaceFileUrl(obj: Record<string, any>) {
     else if (typeof val === 'object') {
       obj[key] = replaceFileUrl(val)
       if (val.fileServer && val.path) {
-        obj[key].fileUrl = getFileUrl(val)
+        obj[key].fileUrl = `${val.fileServer.replace(
+          /\/$/,
+          ''
+        )}/${val.path.replace(/^\//, '')}`
       }
     }
   }

@@ -52,18 +52,13 @@ export function replaceFileUrl(obj: Record<string, any>) {
         obj[key].fileUrl = `${val.fileServer.replace(
           /\/$/,
           ''
-        )}/${val.path.replace(/^\//, '')}`
+        )}/static/${val.path.replace(/^\//, '')}`.replace(
+          '/static/static',
+          '/static'
+        )
       }
     }
   }
 
   return obj
-}
-
-export function getFileUrl(image: FileThumb) {
-  const { path, fileServer } = image
-  return `${fileServer.replace(/\/$/, '')}/${path.replace(/^\//, '')}`
-    .replace('storage1.picacomic.com', 's3.picacomic.com')
-    .replace('img.picacomic.com', 's3.picacomic.com')
-    .replace('www.picacomic.com', 'pica-pica.wikawika.xyz')
 }

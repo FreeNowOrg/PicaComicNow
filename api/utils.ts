@@ -59,19 +59,8 @@ export function replaceFileUrl(obj: Record<string, any>) {
 
 export function getFileUrl(image: FileThumb) {
   const { path, fileServer } = image
-  const url = new URL(
-    `${fileServer.replace(/\/$/, '')}/static/${path.replace(/^\//, '')}`
-  )
-
-  if (url.pathname.startsWith('/static/tobeimg')) {
-    url.host = 's3.picacomic.com'
-    url.pathname = url.pathname.replace('/static/tobeimg', '')
-    return url.href
-  }
-
-  if (url.pathname.startsWith('/static/static')) {
-    url.host = `s3.picacomic.com`
-    url.pathname = url.pathname.replace('/static/static', '/static')
-  }
-  return url.href
+  return `${fileServer.replace(/\/$/, '')}/${path.replace(/^\//, '')}`
+    .replace('storage1.picacomic.com', 's3.picacomic.com')
+    .replace('img.picacomic.com', 's3.picacomic.com')
+    .replace('www.picacomic.com', 'pica-pica.wikawika.xyz')
 }

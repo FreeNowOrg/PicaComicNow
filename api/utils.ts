@@ -40,8 +40,8 @@ export function replaceFileUrl(obj: Record<string, any>) {
     if (typeof val === 'string') {
       if (val.startsWith('https://')) {
         obj[key] = val
-          .replace('storage1.picacomic.com', 'storage.wikawika.xyz')
-          .replace('img.picacomic.com', 'img.tipatipa.xyz')
+          .replace('storage1.picacomic.com', 's3.picacomic.com')
+          .replace('img.picacomic.com', 's3.picacomic.com')
           .replace('www.picacomic.com', 'pica-pica.wikawika.xyz')
       }
     }
@@ -64,13 +64,13 @@ export function getFileUrl(image: FileThumb) {
   )
 
   if (url.pathname.startsWith('/static/tobeimg')) {
-    url.host = 'img.tipatipa.xyz'
+    url.host = 's3.picacomic.com'
     url.pathname = url.pathname.replace('/static/tobeimg', '')
     return url.href
   }
 
   if (url.pathname.startsWith('/static/static')) {
-    url.host = `storage.${url.host}`
+    url.host = `s3.picacomic.com`
     url.pathname = url.pathname.replace('/static/static', '/static')
   }
   return url.href

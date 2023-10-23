@@ -20,7 +20,10 @@ export default async (req: VercelRequest, res: VercelResponse) => {
         headers: { authorization },
         method: req.method as 'GET' | 'POST' | 'PUT',
         searchParams: req.query as Record<string, string>,
-        json: Object.keys(req.body).length > 0 ? req.body : undefined,
+        json:
+          typeof req.body === 'object' && Object.keys(req.body).length > 0
+            ? req.body
+            : undefined,
       })
       .json<any>()
 

@@ -11,6 +11,8 @@ footer.global-footer
           ul
             li
               router-link(to='/comics/妹妹系') 妹妹系
+            li
+              router-link(to='/search/獸耳') 兽耳娘，我现在就要看兽耳娘
 
     section.flex-1
       h4 Follow us

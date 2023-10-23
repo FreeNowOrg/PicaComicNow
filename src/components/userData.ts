@@ -1,7 +1,7 @@
 import axios from 'axios'
 import { ref } from 'vue'
 import { API_BASE } from '../config'
-import { UserProfile } from '../types'
+import { type UserProfile } from '../types'
 
 export const userData = ref<UserProfile | null>(null)
 

@@ -131,7 +131,7 @@ onMounted(() => {
     text-align: left
     margin-top: 1rem
 
-@media screen and(max-width: 600px)
+@media (max-width: 600px)
   .form
     width: 90%
     label

@@ -1,7 +1,8 @@
 import { PicaComicAPI } from '@l2studio/picacomic-api'
 import { VercelRequest, VercelResponse } from '@vercel/node'
-import { HandleResponse } from 'serverless-kit'
 import { getTokenFromReq } from '../utils.js'
+import kit from 'serverless-kit'
+const { HandleResponse } = kit
 
 export default async (req: VercelRequest, res: VercelResponse) => {
   const http = new HandleResponse(req, res)
@@ -25,7 +26,7 @@ export default async (req: VercelRequest, res: VercelResponse) => {
         method: 'PUT',
         body: req.body,
       })
-      .json()
+      .json<any>()
 
     res.setHeader('cache-control', 'no-cache')
     res.setHeader(

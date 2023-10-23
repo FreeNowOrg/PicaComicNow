@@ -30,9 +30,6 @@ header.global-header.flex-center(
       )
         .avatar
           img(src='https://i.loli.net/2021/03/26/QPOtzh1XbF2eujd.png')
-        .angle
-          icon
-            angle-down
       transition(
         name='fade',
         mode='out-in',
@@ -206,7 +203,7 @@ onMounted(() => {
 
       .dropdown-content
         position: absolute
-        top: 1.4rem
+        top: 1.8rem
         right: 0
         padding: 0
         padding-top: 0.4rem

@@ -228,7 +228,7 @@ onMounted(() => {
       border-radius: 4px
       box-shadow: 0 0 0 1px var(--theme-accent-color)
 
-@media screen and(max-width: 600px)
+@media (max-width: 600px)
   .book-info
     .details
       flex-direction: column

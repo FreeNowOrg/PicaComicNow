@@ -109,7 +109,7 @@ onMounted(() => {
         color: #fff
         border-radius: 50%
 
-@media screen and(max-width: 600px)
+@media (max-width: 600px)
   .pages-list
     width: unset
     max-width: unset

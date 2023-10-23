@@ -11,6 +11,8 @@ footer.global-footer
           ul
             li
               router-link(to='/comics/妹妹系') 妹妹系
+            li
+              router-link(to='/search/獸耳') 兽耳娘，我现在就要看兽耳娘
 
     section.flex-1
       h4 Follow us
@@ -86,7 +88,7 @@ a
   --color: #eee
   font-weight: 600
 
-@media screen and (max-width: 800px)
+@media  (max-width: 800px)
   .top
     flex-direction: column
 </style>

@@ -1,23 +1,9 @@
 {
-  "headers": [
-    {
-      "source": "/api(/)?(.*)",
-      "headers": [
-        {
-          "key": "Access-Control-Allow-Origin",
-          "value": "*"
-        }
-      ]
-    }
-  ],
+  "headers": [],
   "rewrites": [
     {
       "source": "/api/:__PATH*",
       "destination": "/api/index"
-    },
-    {
-      "source": "/(.*)",
-      "destination": "/index.html"
     }
   ]
 }

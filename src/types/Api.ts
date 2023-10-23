@@ -1,4 +1,4 @@
-import { FileThumb } from './File'
+import { type FileThumb } from './File'
 
 export type ApiResponse<T = unknown> = {
   code: number

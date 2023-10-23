@@ -257,7 +257,7 @@ onMounted(() => {
         font-size: 0.8rem
         color: #aaa
 
-@media screen and (max-width: 800px)
+@media  (max-width: 800px)
   .global-header
     .nav-links > .item
       display: none

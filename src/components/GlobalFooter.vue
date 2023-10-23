@@ -88,7 +88,7 @@ a
   --color: #eee
   font-weight: 600
 
-@media screen and (max-width: 800px)
+@media  (max-width: 800px)
   .top
     flex-direction: column
 </style>

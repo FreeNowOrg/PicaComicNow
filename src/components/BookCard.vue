@@ -4,13 +4,13 @@ li.book-card.card
     :to='{ name: "book", params: { bookid: data._id }, query: { backTo } }'
   )
     .thumb
-      lazyload.img(:src='data.thumb.fileUrl')
+      lazyload.img(:src='data.thumb.fileUrl', :key='data._id')
   .desc
     router-link(
       :to='{ name: "book", params: { bookid: data._id }, query: { backTo } }'
     )
       .title
-        .pages [{{ data.epsCount > 1 ? data.epsCount + "EP/" : "" }}{{ data.pagesCount }}P]
+        .pages [{{ data.epsCount > 1 ? data.epsCount + 'EP/' : '' }}{{ data.pagesCount }}P]
         .name {{ data.title }}
     .author
       router-link(:to='"/search/" + data.author') @{{ data.author }}
@@ -21,7 +21,7 @@ li.book-card.card
         :to='{ name: "comics", params: { category: item } }'
       ) {{ item }}
     .stats
-      .likes 
+      .likes
         icon
           Heart
         | {{ data.likesCount }}
@@ -34,10 +34,11 @@ li.book-card.card
 </template>
 
 <script setup lang="ts">
-import { defineProps } from 'vue'
-import { CheckCircle, PenNib, ThumbsUp, Heart, Eye } from '@vicons/fa'
+import {} from 'vue'
+import { Heart, Eye } from '@vicons/fa'
+import type { ComicListItem } from '@/types'
 
-const props = defineProps<{ data: any; backTo: string }>()
+defineProps<{ data: ComicListItem; backTo: string }>()
 </script>
 
 <style lang="sass">

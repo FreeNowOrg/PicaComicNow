@@ -22,6 +22,15 @@ header.global-header.flex-center(
     .item
       router-link(to='/about') About
 
+  .item.search-area
+    input.search-input(
+      type='text',
+      placeholder='Search...',
+      v-model='searchInput',
+      @keydown.enter='() => (router.push({ name: "search", params: { keyword: searchInput } }), (searchInput = ""))',
+      :style='{ height: "2rem" }'
+    )
+
   .item.user-area
     .user-dropdown(@click.stop='')
       a.pointer.plain.dropdown-btn(
@@ -66,7 +75,7 @@ header.global-header.flex-center(
               router-link.plain(to='/favourite') My Favourites
 
             li(v-if='$route.path !== "/auth"')
-              router-link.plain(to='/auth') {{ userData ? "Logout" : "Login" }}
+              router-link.plain(to='/auth') {{ userData ? 'Logout' : 'Login' }}
 
 global-side-nav
 </template>
@@ -108,6 +117,8 @@ onMounted(() => {
 router.afterEach(() => {
   userDropdownShow.value = false
 })
+
+const searchInput = ref('')
 
 watch(notAtTop, () => {
   if (notAtTop.value) {
@@ -188,6 +199,7 @@ onMounted(() => {
             width: 2rem
             height: 2rem
             box-shadow: 0 0 0 2px #fff
+            vertical-align: middle
         .angle svg
           transition: all 0.12s ease
         &:hover

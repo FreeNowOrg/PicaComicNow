@@ -5,7 +5,7 @@
       :to='{ name: "book", params: { bookid }, query: { backTo: $route.query.backTo } }'
     ) ← Back to book
 
-  h1 {{ title || "Loading..." }}
+  h1 {{ title || 'Loading...' }}
 
   .pages-list
     .page(v-for='(item, index) in docs', :id='"page-" + (index + 1)')
@@ -14,7 +14,7 @@
       lazyload.img(:src='item.media.fileUrl')
 
   p.align-center(v-if='hasNext > 0')
-    a.pointer.button(@click='getPage()') {{ nextLoading ? "Loading..." : "See more" }} ({{ hasNext }} pages left)
+    a.pointer.button(@click='getPage()') {{ nextLoading ? 'Loading...' : 'See more' }} ({{ hasNext }} pages left)
 </template>
 
 <script setup lang="ts">
@@ -23,6 +23,7 @@ import { onMounted, ref } from 'vue'
 import { useRoute } from 'vue-router'
 import { API_BASE } from '../config'
 import { setTitle } from '../utils/setTitle'
+import type { ComicPagesItem } from '@/types'
 
 const route = useRoute()
 
@@ -30,7 +31,7 @@ const bookid = ref(route.params.bookid as string)
 const epsid = ref(route.params.epsid as string)
 
 const title = ref('')
-const docs = ref<any[]>([])
+const docs = ref<ComicPagesItem[]>([])
 
 const hasNext = ref(0)
 const nextPage = ref(1)

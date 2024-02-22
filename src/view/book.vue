@@ -85,10 +85,13 @@ import { useRoute } from 'vue-router'
 import { API_BASE } from '../config'
 import { getErrMsg } from '../utils/getErrMsg'
 import { setTitle } from '../utils/setTitle'
-import { FishStore } from 'fish-store'
-
 import { CheckCircle, PenNib, Bookmark, BookmarkRegular } from '@vicons/fa'
-import { ApiResponseComicEps, EpsItem } from '@/types'
+import type {
+  ApiResponseComicEps,
+  ApiResponseComicInfo,
+  EpsItem,
+} from '@/types'
+import { useBookEpsStore, useBookMetaStore } from '@/utils/caches'
 
 const route = useRoute()
 
@@ -100,32 +103,32 @@ const epsLoading = ref(false)
 const errorTitle = ref('')
 const errorMsg = ref('')
 
-const cache = new FishStore<{ book: any; eps: any[] }>(
-  `pica:book/${bookid.value}`,
-  30 * 60 * 1000
-)
-
 async function init() {
   book.value = null
   eps.value = []
-  bookLoading.value = true
-  epsLoading.value = false
   errorMsg.value = ''
 
-  // handle cache
-  const cacheData = cache.getItem()
-  if (cacheData) {
-    book.value = cacheData.book
-    eps.value = cacheData.eps
+  loadDetails()
+  loadEps()
+}
+
+async function loadDetails() {
+  const store = useBookMetaStore(bookid.value)
+  const cachedData = store.getItem()
+  if (cachedData) {
+    book.value = cachedData
+    bookLoading.value = false
     return
   }
 
-  // Get comic meta
-  await axios
-    .get(`${API_BASE}/comics/${bookid.value}`)
-    .then(({ data }: any) => {
+  bookLoading.value = true
+  return axios
+    .get<ApiResponseComicInfo>(`${API_BASE}/comics/${bookid.value}`)
+    .then(({ data }) => {
       book.value = data.body.comic
       setTitle(data.body.comic.title, 'Book')
+      store.setItem(data.body.comic)
+      return book.value
     })
     .catch((err: any) => {
       errorTitle.value = 'Failed to get book info'
@@ -134,39 +137,44 @@ async function init() {
     .finally(() => {
       bookLoading.value = false
     })
-
-  epsLoading.value = true
-  const epsResult = await getEps().finally(() => {
-    epsLoading.value = false
-  })
-  if (epsResult.length) {
-    eps.value = epsResult
-  }
-
-  if (book.value && eps.value.length) {
-    cache.setItem({ book: book.value, eps: eps.value })
-  }
 }
 
-async function getEps(): Promise<EpsItem[]> {
-  let list: EpsItem[] = []
+async function loadEps(): Promise<EpsItem[]> {
+  const store = useBookEpsStore(bookid.value)
+  const cachedData = store.getItem()
+  if (cachedData && cachedData.length) {
+    eps.value = cachedData
+    epsLoading.value = false
+    return cachedData
+  }
+
   async function mainLoop(page = 1): Promise<void> {
     return axios
-      .get<ApiResponseComicEps>(`${API_BASE}/comics/${bookid.value}/order`, {
+      .get<ApiResponseComicEps>(`${API_BASE}/comics/${bookid.value}/eps`, {
         params: {
           page,
         },
       })
       .then(({ data }) => {
-        const eps = data.body.eps
-        list = [...list, ...eps.docs]
-        if (eps.page < eps.pages) {
+        const epsData = data.body.eps
+        eps.value = [...eps.value, ...epsData.docs]
+        if (epsData.page < epsData.pages) {
           return mainLoop(data.body.eps.page + 1)
         }
       })
   }
-  await mainLoop(1)
-  return list
+
+  epsLoading.value = true
+  return await mainLoop(1)
+    .then(() => {
+      if (eps.value.length) {
+        store.setItem(eps.value)
+      }
+      return eps.value
+    })
+    .finally(() => {
+      epsLoading.value = false
+    })
 }
 
 let bookmarkLoading = false

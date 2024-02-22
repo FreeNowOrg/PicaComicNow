@@ -1,10 +1,10 @@
 <template lang="pug">
-component(
+component.lazyload(
   :is='loaded ? "img" : "svg"',
   :width='width',
   :height='height',
   :src='src',
-  :class='{ lazyload: true, isLoading: !loaded && !error, isLoaded: loaded, isError: error }',
+  :data-lazy-state='loaded ? "loaded" : error ? "failed" : "loading"',
   role='img',
   ref='imgRef'
 )
@@ -52,6 +52,19 @@ onBeforeUnmount(() => {
 </script>
 
 <style scoped lang="sass">
-.isLoading
-  animation: imgProgress 0.6s ease infinite alternate
+.lazyload
+  &[data-lazy-state="pending"]
+    background-color: #e8e8e8
+  &[data-lazy-state="loading"],
+  &[data-lazy-state="retry"]
+    animation: img-loading 0.6s ease infinite alternate
+    border: 0
+  &[data-lazy-state="failed"]
+    background: #fff url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAAAAAA6mKC9AAAAGElEQVQYV2N4DwX/oYBhgARgDJjEAAkAAEC99wFuu0VFAAAAAElFTkSuQmCC) repeat
+
+@keyframes img-loading
+  from
+    background-color: lighten(#ddd, 5%)
+  to
+    background-color: #ddd
 </style>

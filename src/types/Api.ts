@@ -113,9 +113,11 @@ export type ApiResponseComicPages = ApiResponse<{
     _id: string
     title: string
   }
-  docs: ComicPagesItem[]
-  limit: number
-  page: number
-  pages: number
-  total: number
+  pages: {
+    docs: ComicPagesItem[]
+    limit: number
+    page: number
+    pages: number
+    total: number
+  }
 }>

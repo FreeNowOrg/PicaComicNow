@@ -1,4 +1,4 @@
-import { type FileThumb } from './File'
+import { FileMedia, type FileThumb } from './File.js'
 
 export type ApiResponse<T = unknown> = {
   code: number
@@ -9,14 +9,16 @@ export type ApiResponse<T = unknown> = {
 
 export interface Category {
   title: string
-  thumb: FileThumb
+  thumb: FileMedia
   isWeb: boolean
   active: boolean
   link: string
 }
-export type ApiResponseCategories = ApiResponse<Category[]>
+export type ApiResponseCategories = ApiResponse<{
+  categories: Category[]
+}>
 
-export interface Comic {
+export interface ComicListItem {
   _id: string
   title: string
   author: string
@@ -26,19 +28,13 @@ export interface Comic {
   epsCount: number
   finished: boolean
   categories: string[]
-  thumb: {
-    fileServer: string
-    path: string
-    originalName: string
-    fileUrl: string
-  }
+  thumb: FileMedia
   id: string
   likesCount: number
 }
-
 export type ApiResponseComics = ApiResponse<{
   comics: {
-    docs: Comic[]
+    docs: ComicListItem[]
     total: number
     limit: 20
     page: number
@@ -59,18 +55,17 @@ export interface UserProfile {
   level: number
   characters: any[]
   created_at: string
-  avatar: FileThumb
+  avatar: FileMedia
   isPunched: boolean
 }
-
 export type ApiResponseUserProfile = ApiResponse<{ user: UserProfile }>
 
-export interface ComicInfo {
+export interface ComicDetails {
   _id: string
   _creator: UserProfile
   title: string
   description: string
-  thumb: FileThumb
+  thumb: FileMedia
   author: string
   chineseTeam: string
   categories: string[]
@@ -87,3 +82,42 @@ export interface ComicInfo {
   isLiked: boolean
   commentsCount: number
 }
+export type ApiResponseComicInfo = ApiResponse<{
+  comic: ComicDetails
+}>
+
+export interface EpsItem {
+  _id: string
+  id: string
+  order: number
+  title: string
+  updated_at: string
+}
+export type ApiResponseComicEps = ApiResponse<{
+  eps: {
+    docs: EpsItem[]
+    total: number
+    limit: number
+    page: number
+    pages: number
+  }
+}>
+
+export interface ComicPagesItem {
+  _id: string
+  id: string
+  media: FileMedia
+}
+export type ApiResponseComicPages = ApiResponse<{
+  ep: {
+    _id: string
+    title: string
+  }
+  pages: {
+    docs: ComicPagesItem[]
+    limit: number
+    page: number
+    pages: number
+    total: number
+  }
+}>

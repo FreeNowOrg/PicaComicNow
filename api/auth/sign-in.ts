@@ -1,7 +1,6 @@
 import { VercelRequest, VercelResponse } from '@vercel/node'
 import { PicaComicAPI } from '@l2studio/picacomic-api'
-import kit from 'serverless-kit'
-const { HandleResponse } = kit
+import { HandleResponse } from 'serverless-kit'
 
 export default async (req: VercelRequest, res: VercelResponse) => {
   const http = new HandleResponse(req, res)

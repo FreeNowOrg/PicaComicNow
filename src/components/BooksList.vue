@@ -4,12 +4,11 @@ ul.books-list
 </template>
 
 <script setup lang="ts">
-import { defineComponent, defineProps } from 'vue'
-// import { Comic } from '../types'
+import {} from 'vue'
 import BookCard from './BookCard.vue'
+import type { ComicListItem } from '@/types'
 
-const components = defineComponent({ BookCard })
-const props = defineProps<{ data: any[]; backTo: string }>()
+defineProps<{ data: ComicListItem[]; backTo: string }>()
 </script>
 
 <style lang="sass">

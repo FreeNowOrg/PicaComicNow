@@ -17,7 +17,7 @@ mixin pagenator
     router-link.button(to='/categories') 
       icon
         arrow-left
-      | 
+      |
       | Categories Index
 
   h1(v-if='category') Comics in {{ category }}
@@ -44,7 +44,7 @@ import { ArrowLeft, ArrowRight } from '@vicons/fa'
 import { API_BASE } from '../config'
 import { setTitle } from '../utils/setTitle'
 import { getErrMsg } from '../utils/getErrMsg'
-import type { ApiResponseComics } from '../types'
+import type { ApiResponseComics, ComicListItem } from '../types'
 import { useRoute, useRouter } from 'vue-router'
 const route = useRoute()
 const router = useRouter()
@@ -57,7 +57,7 @@ const page = ref(1)
 const totalPages = ref(1)
 const sort = ref<SortTypes>('ua')
 
-const comics = ref<any[]>([])
+const comics = ref<ComicListItem[]>([])
 const loading = ref(false)
 const error = ref('')
 

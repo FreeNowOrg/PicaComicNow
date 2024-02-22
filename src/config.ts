@@ -1,4 +1,3 @@
-import axios from 'axios'
 import { version } from '../package.json'
 
 export const ENV = process.env.NODE_ENV === 'development' ? 'dev' : 'prod'

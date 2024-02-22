@@ -44,6 +44,7 @@ import { API_BASE } from '../config'
 import { setTitle } from '../utils/setTitle'
 import { getErrMsg } from '../utils/getErrMsg'
 import { useRoute, useRouter } from 'vue-router'
+import type { ComicListItem } from '@/types'
 const route = useRoute()
 const router = useRouter()
 
@@ -52,7 +53,7 @@ const page = ref(1)
 const totalPages = ref(1)
 const sort = ref<SortTypes>('dd')
 
-const comics = ref<any[]>([])
+const comics = ref<ComicListItem[]>([])
 const loading = ref(false)
 const error = ref('')
 

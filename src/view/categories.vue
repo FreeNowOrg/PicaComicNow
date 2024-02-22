@@ -33,8 +33,9 @@ import { API_BASE } from '../config'
 import { getErrMsg } from '../utils/getErrMsg'
 import { setTitle } from '../utils/setTitle'
 import { ExternalLinkAlt } from '@vicons/fa'
+import type { ApiResponseCategories, Category } from '@/types'
 
-const list = ref<any[]>([])
+const list = ref<Category[]>([])
 const error = ref('')
 const loading = ref(false)
 
@@ -47,9 +48,9 @@ function init() {
   // return
 
   axios
-    .get(`${API_BASE}/categories`)
+    .get<ApiResponseCategories>(`${API_BASE}/categories`)
     .then(
-      ({ data }: any) => {
+      ({ data }) => {
         list.value = data.body.categories
       },
       (err) => {

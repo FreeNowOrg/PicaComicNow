@@ -9,7 +9,11 @@
       .details.flex.gap-1
         .left
           e-link.no-icon.thumb(:href='book.thumb.fileUrl')
-            lazyload.img(:src='book.thumb.fileUrl', :width='200', :height='266')
+            lazyload.img(
+              :src='book.thumb.fileUrl',
+              :width='200',
+              :height='266'
+            )
         .right.flex(style='position: relative')
           .flex.title-area.flex-center
             h1.title.flex-1 {{ book.title }}
@@ -27,7 +31,7 @@
                 CheckCircle(v-if='book.finished')
                 PenNib(v-else)
               |
-              | {{ book.finished ? "Finished" : "Writing" }}
+              | {{ book.finished ? 'Finished' : 'Writing' }}
             .pages
               strong Pages:
               | {{ book.pagesCount }} Pages, {{ book.epsCount }} Episodes
@@ -81,16 +85,13 @@ import { useRoute } from 'vue-router'
 import { API_BASE } from '../config'
 import { getErrMsg } from '../utils/getErrMsg'
 import { setTitle } from '../utils/setTitle'
-
-import {
-  CheckCircle,
-  PenNib,
-  ThumbsUp,
-  Heart,
-  Eye,
-  Bookmark,
-  BookmarkRegular,
-} from '@vicons/fa'
+import { CheckCircle, PenNib, Bookmark, BookmarkRegular } from '@vicons/fa'
+import type {
+  ApiResponseComicEps,
+  ApiResponseComicInfo,
+  EpsItem,
+} from '@/types'
+import { useBookEpsStore, useBookMetaStore } from '@/utils/caches'
 
 const route = useRoute()
 
@@ -102,52 +103,75 @@ const epsLoading = ref(false)
 const errorTitle = ref('')
 const errorMsg = ref('')
 
-function init() {
+async function init() {
   book.value = null
   eps.value = []
-  bookLoading.value = true
-  epsLoading.value = false
   errorMsg.value = ''
 
-  // Get comic meta
-  axios
-    .get(`${API_BASE}/comics/${bookid.value}`)
-    .then(
-      ({ data }: any) => {
-        book.value = data.body.comic
-        setTitle(data.body.comic.title, 'Book')
-      },
-      (err) => {
-        errorTitle.value = 'Failed to get book info'
-        errorMsg.value = getErrMsg(err)
-      }
-    )
+  loadDetails()
+  loadEps()
+}
+
+async function loadDetails() {
+  const store = useBookMetaStore(bookid.value)
+  const cachedData = store.getItem()
+  if (cachedData) {
+    book.value = cachedData
+    bookLoading.value = false
+    return
+  }
+
+  bookLoading.value = true
+  return axios
+    .get<ApiResponseComicInfo>(`${API_BASE}/comics/${bookid.value}`)
+    .then(({ data }) => {
+      book.value = data.body.comic
+      setTitle(data.body.comic.title, 'Book')
+      store.setItem(data.body.comic)
+      return book.value
+    })
+    .catch((err: any) => {
+      errorTitle.value = 'Failed to get book info'
+      errorMsg.value = getErrMsg(err)
+    })
     .finally(() => {
       bookLoading.value = false
     })
-
-  getEps(1)
 }
 
-function getEps(page = 1) {
-  epsLoading.value = true
-  axios
-    .get(`${API_BASE}/comics/${bookid.value}/eps`, {
-      params: { page },
-    })
-    .then(
-      ({ data }: any) => {
-        eps.value = [...eps.value, ...data.body.eps.docs]
-        if (data.body.eps.page < data.body.eps.pages) {
-          console.info('Get more eps')
-          getEps(data.body.eps.page + 1)
+async function loadEps(): Promise<EpsItem[]> {
+  const store = useBookEpsStore(bookid.value)
+  const cachedData = store.getItem()
+  if (cachedData && cachedData.length) {
+    eps.value = cachedData
+    epsLoading.value = false
+    return cachedData
+  }
+
+  async function mainLoop(page = 1): Promise<void> {
+    return axios
+      .get<ApiResponseComicEps>(`${API_BASE}/comics/${bookid.value}/eps`, {
+        params: {
+          page,
+        },
+      })
+      .then(({ data }) => {
+        const epsData = data.body.eps
+        eps.value = [...eps.value, ...epsData.docs]
+        if (epsData.page < epsData.pages) {
+          return mainLoop(data.body.eps.page + 1)
         }
-      },
-      (err) => {
-        errorTitle.value = 'Failed to get book episodes'
-        errorMsg.value = getErrMsg(err)
+      })
+  }
+
+  epsLoading.value = true
+  return await mainLoop(1)
+    .then(() => {
+      if (eps.value.length) {
+        store.setItem(eps.value)
       }
-    )
+      return eps.value
+    })
     .finally(() => {
       epsLoading.value = false
     })

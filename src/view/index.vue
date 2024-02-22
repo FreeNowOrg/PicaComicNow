@@ -21,7 +21,10 @@
 </template>
 
 <script setup lang="ts">
+import { setTitle } from '@/utils/setTitle';
 import { ref } from 'vue'
+
+setTitle()
 
 const time = ref(new Date().toLocaleString())
 setInterval(() => {

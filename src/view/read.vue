@@ -24,10 +24,12 @@
       icon: chevron-right
 
   .pages-list
-    .page(v-for='(item, index) in docs', :id='"page-" + (index + 1)')
+    .align-center(v-if='!docs.length')
+      placeholder
+    .page(v-else, v-for='(item, index) in docs', :id='"page-" + (index + 1)')
       .page-tag-container(:href='"#page-" + index')
         .page-tag {{ index + 1 }}
-      lazyload.img(:src='item.media.fileUrl')
+      lazyload.img(:src='item.media.fileUrl', :key='item.id')
 
   p.align-center(v-if='hasNext > 0')
     a.pointer.button(@click='loadPages()') {{ nextLoading ? 'Loading...' : 'See more' }} ({{ hasNext }} pages left)

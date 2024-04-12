@@ -19,6 +19,13 @@ mixin pagenator
         arrow-left
       |
       | Categories Index
+    
+    select(v-model="route.query.sort" @change="changeSort")
+      option(value="ua") 默认
+      option(value="dd") 新到旧
+      option(value="da") 旧到新
+      option(value="ld") 最多爱心
+      option(value="vd") 最多绅士指名次数
 
   h1(v-if='category') Comics in {{ category }}
   h1(v-else) Comics list
@@ -56,6 +63,8 @@ const category = ref('')
 const page = ref(1)
 const totalPages = ref(1)
 const sort = ref<SortTypes>('ua')
+
+route.query.sort = 'ua'
 
 const comics = ref<ComicListItem[]>([])
 const loading = ref(false)
@@ -119,6 +128,10 @@ function init() {
     })
 }
 
+function changeSort(){
+  init()
+}
+
 function handlePageChange(toPage: number) {
   router.push({
     query: { page: Math.min(totalPages.value, Math.max(1, toPage)) },
@@ -136,6 +149,7 @@ router.afterEach((to) => {
   if (to.name !== 'comics') return
   category.value = to.params.category as string
   page.value = parseInt(to.query.page as string) || 1
+  route.query.sort = sort.value
   init()
 })
 
@@ -160,4 +174,14 @@ onMounted(() => {
     display: inline-flex
     gap: 0.4rem
     cursor: pointer
+.bread-crumb 
+  select
+    float: right
+    margin-left: 10px
+    background-color: #f1f1f1
+    border: 1px solid #ccc
+    border-radius: 4px
+    padding: 5px
+    margin-left: 10px
+    background-color: #ffedf0
 </style>

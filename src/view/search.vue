@@ -19,6 +19,12 @@ mixin pagenator
         arrow-left
       |
       | Categories Index
+    select(v-model="route.query.sort" @change="changeSort")
+      option(value="ua") 默认
+      option(value="dd") 新到旧
+      option(value="da") 旧到新
+      option(value="ld") 最多爱心
+      option(value="vd") 最多绅士指名次数
 
   h1(v-if='keyword') Search『{{ keyword }}』comics (page {{ page }})
   h1(v-else) Advanced Search
@@ -58,6 +64,8 @@ const page = ref(1)
 const totalPages = ref(1)
 const sort = ref<SortTypes>('ua')
 
+route.query.sort = 'ua'
+
 const comics = ref<ComicListItem[]>([])
 const loading = ref(false)
 const error = ref('')
@@ -80,6 +88,8 @@ function init() {
   page.value = parseInt(route.query.page as string) || 1
   sort.value = (route.query.sort as SortTypes) || 'ua'
 
+
+
   if (keyword.value) {
     setTitle(`${keyword.value} (page ${page.value})`, 'Search')
   } else {
@@ -95,11 +105,12 @@ function init() {
       {
         keyword: keyword.value,
         categories: category.value,
-        s: sort.value,
+        sort: sort.value,
       },
       {
         params: {
           page: page.value,
+          s: sort.value,
         },
       }
     )
@@ -116,6 +127,10 @@ function init() {
     .finally(() => {
       loading.value = false
     })
+}
+
+function changeSort(){
+  init()
 }
 
 function handlePageChange(toPage: number) {
@@ -137,6 +152,7 @@ router.afterEach((to, from) => {
   if (to.name === from.name && to !== from) {
     keyword.value = route.params.keyword as string
     page.value = parseInt(to.query.page as string) || 1
+    route.query.sort = sort.value
     init()
   }
 })
@@ -162,4 +178,14 @@ onMounted(() => {
     display: inline-flex
     gap: 0.4rem
     cursor: pointer
+.bread-crumb 
+  select
+    float: right
+    margin-left: 10px
+    background-color: #f1f1f1
+    border: 1px solid #ccc
+    border-radius: 4px
+    padding: 5px
+    margin-left: 10px
+    background-color: #ffedf0
 </style>

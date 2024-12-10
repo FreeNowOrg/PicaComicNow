@@ -4,8 +4,8 @@ header.global-header.flex-center(
 )
   .item
     a.plain.pointer.side-nav-toggler(
-      @click='sideNavShow = !sideNavShow',
-      :class='{ "is-active": sideNavShow }'
+      @click='sidenav.toggle()',
+      :class='{ "is-active": sidenav.isShow }'
     )
       icon
         bars
@@ -48,7 +48,7 @@ header.global-header.flex-center(
         .dropdown-content(v-show='userDropdownShow')
           ul
             //- notLogIn
-            li(v-if='!user.data')
+            li(v-if='!user.profile')
               .nav-user-card
                 .top
                   .banner-bg
@@ -60,7 +60,7 @@ header.global-header.flex-center(
                   .uid Please login
 
             //- isLogedIn
-            li(v-if='user.data')
+            li(v-if='user.profile')
               .nav-user-card
                 .top
                   .banner-bg
@@ -69,27 +69,26 @@ header.global-header.flex-center(
                       src='https://i.loli.net/2021/03/26/QPOtzh1XbF2eujd.png'
                     )
                 .details
-                  router-link.plain.user-name(to='/profile') {{ user.data.name }}
-                  .uid {{ user.data.email }}
-            li(v-if='user.data')
+                  router-link.plain.user-name(to='/profile') {{ user.profile.name }}
+                  .uid {{ user.profile.email }}
+            li(v-if='user.profile')
               router-link.plain(to='/favourite') My Favourites
 
             li(v-if='$route.path !== "/auth"')
-              router-link.plain(to='/auth') {{ user.data ? 'Logout' : 'Login' }}
-
-global-side-nav
+              router-link.plain(to='/auth') {{ user.profile ? 'Logout' : 'Login' }}
 </template>
 
 <script setup lang="ts">
-import { defineComponent, onMounted, ref, watch } from 'vue'
-import { sideNavShow } from './states'
+import { onMounted, ref, watch } from 'vue'
 import { Github, Bars, UserCircle, AngleDown } from '@vicons/fa'
 import GlobalSideNav from './GlobalSideNav.vue'
 import { useRouter } from 'vue-router'
 import { useUserStore } from '@/stores/user'
+import { useSidenavStore } from '@/stores/sidenav'
 
 const user = useUserStore()
-// const props = defineProps()
+const sidenav = useSidenavStore()
+
 const notAtTop = ref(document.documentElement.scrollTop > 50)
 const isHide = ref(false)
 const userDropdownShow = ref(false)

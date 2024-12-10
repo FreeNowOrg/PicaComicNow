@@ -1,7 +1,7 @@
 // Header
 @mixin header-shared($font-size, $shadow-color)
   font-size: $font-size
-  text-shadow: 2px 2px 0 var(--theme-text-shadow-color)
+  text-shadow: 2px 2px 0 var(--theme-text-shadow-color), -2px -2px 0 var(--theme-text-shadow-color), 2px -2px 0 var(--theme-text-shadow-color), -2px 2px 0 var(--theme-text-shadow-color)
   box-shadow: 0 -0.5em 0 $shadow-color inset
 
 h1
@@ -14,7 +14,7 @@ h2
   left: 50%
   transform: translateX(-50%)
   /* margin: 0.4rem auto */
-  padding: 0 0.4rem
+  padding: 0 1rem
 
 .align-center
   h2

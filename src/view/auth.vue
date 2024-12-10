@@ -2,11 +2,11 @@
 #auth-container
   h1 Authorization
 
-  p.info.tips(v-if='$route.query.tips')
+  .info.tips(v-if='$route.query.tips')
     .title Tips
     p You must log in to use this website
 
-  section(v-if='user.data')
+  section(v-if='user.profile')
     .card
       h2 Sign out
       .align-center
@@ -43,7 +43,6 @@ const user = useUserStore()
 const onAuthenticating = ref(false)
 const email = ref('')
 const password = ref('')
-const token = ref('')
 const errorTitle = ref('')
 const errorMsg = ref('')
 
@@ -86,7 +85,7 @@ function handleLogin() {
 }
 
 function handleSignOut() {
-  window.Cookies.remove('PICA_TOKEN')
+  user.logout()
   location.reload()
 }
 

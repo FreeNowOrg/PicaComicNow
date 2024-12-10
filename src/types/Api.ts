@@ -36,14 +36,10 @@ export type ApiResponseBookList = ApiResponse<{
   comics: {
     docs: PicaBookListItem[]
     total: number
-    limit: 20
+    limit: number
     page: number
     pages: number
   }
-  limit: number
-  page: number
-  pages: number
-  total: number
 }>
 
 export interface PicaUserProfile {

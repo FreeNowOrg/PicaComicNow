@@ -9,13 +9,18 @@ import {
 import { defineStore } from 'pinia'
 import { router } from '@/router'
 
+enum StorageKey {
+  TOKEN = 'pica:user/token',
+  PROFILE = 'pica:user/profile',
+}
+
 export const useUserStore = defineStore('user', () => {
-  const data = ref<PicaUserProfile | null>(null)
-  const isLoggedIn = computed(() => !!data.value)
+  const profile = ref<PicaUserProfile | null>(null)
+  const isLoggedIn = computed(() => !!profile.value)
 
   // Inject inspectors
   axios.interceptors.request.use((config) => {
-    const token = localStorage.getItem('PICA_USER_TOKEN')
+    const token = localStorage.getItem(StorageKey.TOKEN)
     if (token) {
       config.headers['authorization'] = token
     }
@@ -61,7 +66,7 @@ export const useUserStore = defineStore('user', () => {
     )
 
     if (d?.body?.token) {
-      localStorage.setItem('PICA_USER_TOKEN', d.body.token)
+      localStorage.setItem(StorageKey.TOKEN, d.body.token)
       return fetchProfile()
     } else {
       throw new Error('Failed to log in, please check your credentials')
@@ -72,23 +77,23 @@ export const useUserStore = defineStore('user', () => {
    * A.K.A. clear user data
    */
   async function logout() {
-    data.value = null
-    localStorage.removeItem('PICA_USER_INFO')
-    localStorage.removeItem('PICA_USER_TOKEN')
+    profile.value = null
+    localStorage.removeItem(StorageKey.PROFILE)
+    localStorage.removeItem(StorageKey.TOKEN)
   }
 
   let _fetchProfilePromise: Promise<PicaUserProfile> | null = null
   async function fetchProfile(): Promise<PicaUserProfile> {
-    if (!localStorage.getItem('PICA_USER_TOKEN')) {
+    if (!localStorage.getItem(StorageKey.TOKEN)) {
       throw new Error('Not logged in')
     }
     if (
-      localStorage.getItem('PICA_USER_TOKEN') &&
-      localStorage.getItem('PICA_USER_INFO')
+      localStorage.getItem(StorageKey.TOKEN) &&
+      localStorage.getItem(StorageKey.PROFILE)
     ) {
       try {
-        data.value = JSON.parse(localStorage.getItem('PICA_USER_INFO')!)
-        return data.value!
+        profile.value = JSON.parse(localStorage.getItem(StorageKey.PROFILE)!)
+        return profile.value!
       } catch (e) {
         console.error('Failed to parse user info from localStorage', e)
       }
@@ -98,7 +103,7 @@ export const useUserStore = defineStore('user', () => {
       _fetchProfilePromise = axios
         .get(`${API_BASE}/users/profile`, {
           headers: {
-            authorization: localStorage.getItem('PICA_USER_TOKEN') || undefined,
+            authorization: localStorage.getItem(StorageKey.TOKEN) || undefined,
           },
         })
         .catch((err) => {
@@ -116,8 +121,8 @@ export const useUserStore = defineStore('user', () => {
       throw new Error('Failed to get user profile, please log in again')
     }
     console.info('Fetched user profile', user)
-    data.value = user
-    localStorage.setItem('PICA_USER_INFO', JSON.stringify(user))
+    profile.value = user
+    localStorage.setItem(StorageKey.PROFILE, JSON.stringify(user))
     return user
   }
 
@@ -136,7 +141,7 @@ export const useUserStore = defineStore('user', () => {
   }
 
   return {
-    data,
+    profile,
     isLoggedIn,
     login,
     logout,

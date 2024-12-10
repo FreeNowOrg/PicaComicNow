@@ -37,54 +37,32 @@ mixin pagenator
 </template>
 
 <script setup lang="ts">
-import axios from 'axios'
-import { defineComponent, onMounted, ref, watch } from 'vue'
+import { onMounted, ref } from 'vue'
 import BooksList from '../components/BooksList.vue'
 import { ArrowLeft, ArrowRight } from '@vicons/fa'
-import { API_BASE } from '../config'
 import { setTitle } from '../utils/setTitle'
 import { getErrMsg } from '../utils/getErrMsg'
-import type { ApiResponseBookList, PicaBookListItem } from '../types'
-import { useRoute, useRouter } from 'vue-router'
+import { type PicaBookListItem, PicaListSort } from '../types'
+import { onBeforeRouteUpdate, useRoute, useRouter } from 'vue-router'
+import { useCategoryStore } from '@/stores/category'
+
 const route = useRoute()
 const router = useRouter()
+const catStore = useCategoryStore()
 
-// const components = defineComponent({ BooksList })
-
-type SortTypes = 'ua' | 'dd' | 'da' | 'ld' | 'vd'
 const category = ref('')
 const page = ref(1)
 const totalPages = ref(1)
-const sort = ref<SortTypes>('ua')
+const sort = ref<PicaListSort>(PicaListSort.DEFAULT)
 
 const comics = ref<PicaBookListItem[]>([])
 const loading = ref(false)
 const error = ref('')
 
-// Refresh when the category changes
-router.afterEach((to, from) => {
-  console.log('after route', { to })
-  if (to.name === from.name && to !== from) {
-    category.value = route.params.category as string
-  }
-})
-
-/**
- * @param arg1.category 分区名字，categories里面的title，如"嗶咔漢化"
- * @param arg1.page 分页，从1开始
- * @param arg1.sort 排序依据：
- * ```
- * ua: 默认
- * dd: 新到旧
- * da: 旧到新
- * ld: 最多爱心
- * vd: 最多指名
- * ```
- */
-function init() {
+async function loadData() {
   category.value = (route.params.category as string) || ''
   page.value = parseInt(route.query.page as string) || 1
-  sort.value = (route.query.sort as SortTypes) || 'ua'
+  sort.value = (route.query.sort as PicaListSort) || PicaListSort.DEFAULT
 
   if (category.value) {
     setTitle(`${category.value} (page ${page.value})`, 'Comics')
@@ -95,19 +73,12 @@ function init() {
   loading.value = true
   error.value = ''
 
-  axios
-    .get<ApiResponseBookList>(`${API_BASE}/comics`, {
-      params: {
-        c: category.value,
-        // t: '',
-        page: page.value,
-        s: sort.value,
-      },
-    })
+  catStore
+    .fetchBooksInCategory(category.value, page.value, sort.value)
     .then(
-      ({ data }) => {
-        comics.value = data.body?.comics.docs
-        totalPages.value = data.body?.comics.pages
+      (data) => {
+        comics.value = data.docs
+        totalPages.value = data.pages
       },
       (err) => {
         console.warn('Failed to get comics data', err)
@@ -136,11 +107,23 @@ router.afterEach((to) => {
   if (to.name !== 'comics') return
   category.value = to.params.category as string
   page.value = parseInt(to.query.page as string) || 1
-  init()
+  loadData()
+})
+
+// Refresh when the category changes
+onBeforeRouteUpdate((to, from) => {
+  if (to.name !== 'comics') return
+  const newCategory = to.params.category as string
+  const oldCategory = from.params.category as string
+  category.value = newCategory
+  if (newCategory !== oldCategory) {
+    page.value = parseInt(to.query.page as string) || 1
+  }
+  loadData()
 })
 
 onMounted(() => {
-  init()
+  loadData()
   setTitle('Comics')
 })
 </script>

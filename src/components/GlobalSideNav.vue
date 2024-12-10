@@ -1,6 +1,9 @@
 <template lang="pug">
-aside.global-site-nav(:class='{ "is-hide": !sideNavShow }')
-  .backdrop(@click='sideNavShow = false')
+aside.global-site-nav(
+  :class='{ "is-hide": !sidenav.isShow }',
+  :data-is-show='sidenav.isShow'
+)
+  .backdrop(@click='sidenav.toggle(false)')
   .inner
     .list
       .group
@@ -20,12 +23,12 @@ aside.global-site-nav(:class='{ "is-hide": !sideNavShow }')
       .group
         .title User
         ul
-          li(v-if='user.data')
+          li(v-if='user.profile')
             router-link(to='/profile')
               icon
-                user
-              | {{ user.data.name }} (you)
-          li(v-if='user.data')
+                icon-user
+              | {{ user.profile.name }} (you)
+          li(v-if='user.profile')
             router-link(to='/favourite')
               icon
                 Bookmark
@@ -47,33 +50,46 @@ aside.global-site-nav(:class='{ "is-hide": !sideNavShow }')
 </template>
 
 <script setup lang="ts">
-import { onMounted, watch } from 'vue'
+import { computed, onMounted, watch } from 'vue'
 import { PROJECT_NAME } from '../config'
-import { sideNavShow } from './states'
-import { Home, Heart, User, Fingerprint, Bookmark, Folder } from '@vicons/fa'
+import {
+  Home,
+  Heart,
+  User as IconUser,
+  Fingerprint,
+  Bookmark,
+  Folder,
+} from '@vicons/fa'
 import { useRouter } from 'vue-router'
 import { useUserStore } from '@/stores/user'
+import { useSidenavStore } from '@/stores/sidenav'
 
 const router = useRouter()
 const user = useUserStore()
+const sidenav = useSidenavStore()
 
 router.afterEach(() => {
-  sideNavShow.value = false
+  sidenav.toggle(false)
 })
 
 onMounted(() => {
   document.addEventListener('keydown', ({ key }) => {
-    if (key === 'Escape') sideNavShow.value = false
+    if (key === 'Escape') {
+      sidenav.toggle(false)
+    }
   })
 })
 
-watch(sideNavShow, (val) => {
-  if (val) {
-    document.body.classList.add('global-sidenav-is-show', 'lock-scroll')
-  } else {
-    document.body.classList.remove('global-sidenav-is-show', 'lock-scroll')
+watch(
+  computed(() => sidenav.isShow),
+  (val) => {
+    if (val) {
+      document.body.classList.add('global-sidenav-is-show', 'lock-scroll')
+    } else {
+      document.body.classList.remove('global-sidenav-is-show', 'lock-scroll')
+    }
   }
-})
+)
 </script>
 
 <style scoped lang="sass">

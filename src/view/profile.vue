@@ -1,22 +1,22 @@
 <template lang="pug">
 #profile-container
-  section.user-profile(v-if='user.data')
+  section.user-profile(v-if='user.profile')
     //- h1 My Profile
     .card.metadata.align-center
       .avatar
         img(src='https://i.loli.net/2021/03/26/QPOtzh1XbF2eujd.png')
-      h1.name {{ user.data.name }}
+      h1.name {{ user.profile.name }}
       .extra
-        span.title {{ user.data.title }}
+        span.title {{ user.profile.title }}
         | &nbsp;
-        span.uid @{{ user.data.email }}
+        span.uid @{{ user.profile.email }}
     .card.slogan
       h2 Slogan
       .slogan-view.flex(
         v-if='!sloganEdit',
         :class='{ "loading-cover": sloganLoading }'
       )
-        p.pre.flex-1 {{ user.data.slogan || '-' }}
+        p.pre.flex-1 {{ user.profile.slogan || '-' }}
         .edit-btn
           a.pointer(@click='sloganEdit = true') edit
       .slogan-edit(v-else)
@@ -32,7 +32,7 @@
             button(:disabled='sloganLoading', @click='handleSloganEdit') Submit
     .card
       details
-        pre {{ user.data }}
+        pre {{ user.profile }}
 
   section.user-profile.no-profile(v-else)
     h1.name Please login
@@ -71,7 +71,7 @@ function handleSloganEdit() {
 }
 
 watch(
-  computed(() => user.data),
+  computed(() => user.profile),
   (val) => {
     if (val) {
       sloganInput.value = val.slogan

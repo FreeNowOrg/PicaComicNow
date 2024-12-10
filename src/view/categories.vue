@@ -34,7 +34,9 @@ import { getErrMsg } from '../utils/getErrMsg'
 import { setTitle } from '../utils/setTitle'
 import { ExternalLinkAlt } from '@vicons/fa'
 import type { ApiResponseCategories, PicaCategory } from '@/types'
+import { useCategoryStore } from '@/stores/category'
 
+const catStore = useCategoryStore()
 const list = ref<PicaCategory[]>([])
 const error = ref('')
 const loading = ref(false)
@@ -44,14 +46,12 @@ const loading = ref(false)
 function init() {
   loading.value = true
   error.value = ''
-  // list.value = data.body
-  // return
 
-  axios
-    .get<ApiResponseCategories>(`${API_BASE}/categories`)
+  catStore
+    .fetchCategoriesIndex()
     .then(
-      ({ data }) => {
-        list.value = data.body.categories
+      (data) => {
+        list.value = data
       },
       (err) => {
         console.warn('Failed to get categories data', err)

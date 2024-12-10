@@ -1,18 +1,19 @@
 <template lang="pug">
 #app-container
-  n-progress
-  global-header
-
   main.flex-1
     article.responsive
       router-view
 
+  n-progress
+  global-header
+  global-side-nav
   global-footer
 </template>
 
 <script setup lang="ts">
 import { onMounted } from 'vue'
 import GlobalHeader from './components/GlobalHeader.vue'
+import GlobalSideNav from './components/GlobalSideNav.vue'
 import GlobalFooter from './components/GlobalFooter.vue'
 import NProgress from './components/NProgress.vue'
 import { useRoute, useRouter } from 'vue-router'
@@ -24,7 +25,7 @@ const router = useRouter()
 const user = useUserStore()
 
 onMounted(async () => {
-  if (!user.data) {
+  if (!user.profile) {
     user.fetchProfile().catch((err) => {
       console.warn('[App]', 'Verification information has expired', err)
       if (route.name !== 'auth') {

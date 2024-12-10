@@ -10,6 +10,7 @@ import type {
   PicaBookEp,
 } from '@/types'
 import { API_BASE } from '@/config'
+import { LRUMap } from '@/utils/LRUMap'
 
 const CACHE_TIMEOUT = 1000 * 60 * 60 * 24 // 24 hours
 const DB_NAME = 'PicaComicNow'
@@ -44,8 +45,8 @@ export interface BookPagesStoreState {
 }
 
 export const useBookStore = defineStore('book', () => {
-  const bookMetaDb = createDatabase('book/meta')
-  const bookMetaMemoryCache = new Map<string, PicaBookMeta>()
+  const bookMetaDB = createDatabase('book/meta')
+  const bookMetaLRU = new LRUMap<string, PicaBookMeta>()
   async function fetchBookMeta(bookid: string) {
     return axios
       .get<ApiResponseBookMeta>(`${API_BASE}/comics/${bookid}`)
@@ -54,20 +55,20 @@ export const useBookStore = defineStore('book', () => {
       })
   }
   async function getBookMetaFromCache(bookid: string) {
-    const cached = bookMetaMemoryCache.get(bookid)
+    const cached = bookMetaLRU.get(bookid)
     if (cached) {
       return cached
     }
-    const data = await loadFromDbWithExpiry<PicaBookMeta>(bookMetaDb, bookid)
+    const data = await loadFromDbWithExpiry<PicaBookMeta>(bookMetaDB, bookid)
     if (!data) {
       return null
     }
-    bookMetaMemoryCache.set(bookid, data)
+    bookMetaLRU.set(bookid, data)
     return data
   }
   async function setBookMetaToCache(bookid: string, value: PicaBookMeta) {
-    bookMetaMemoryCache.set(bookid, value)
-    return bookMetaDb.setItem(bookid, {
+    bookMetaLRU.set(bookid, value)
+    return bookMetaDB.setItem(bookid, {
       time: Date.now(),
       value,
     })
@@ -87,8 +88,8 @@ export const useBookStore = defineStore('book', () => {
     return data
   }
 
-  const bookEpsMemoryCache = new Map<string, PicaBookEp[]>()
-  const bookEpsDb = createDatabase('book/eps')
+  const bookEpsDB = createDatabase('book/eps')
+  const bookEpsLRU = new LRUMap<string, PicaBookEp[]>()
   async function fetchBookEps(bookid: string) {
     const list: PicaBookEp[] = []
     const fetchOnePage = async (page: number): Promise<void> => {
@@ -111,23 +112,23 @@ export const useBookStore = defineStore('book', () => {
     return list
   }
   async function getBookEpsFromCache(bookid: string) {
-    const cached = bookEpsMemoryCache.get(bookid)
+    const cached = bookEpsLRU.get(bookid)
     if (cached) {
       return cached
     }
-    const data = await loadFromDbWithExpiry<PicaBookEp[]>(bookEpsDb, bookid)
+    const data = await loadFromDbWithExpiry<PicaBookEp[]>(bookEpsDB, bookid)
     if (!data) {
       return null
     }
-    bookEpsMemoryCache.set(bookid, data)
+    bookEpsLRU.set(bookid, data)
     return data
   }
   async function setBookEpsToCache(bookid: string, value: PicaBookEp[]) {
     if (value.length === 0) {
       return
     }
-    bookEpsMemoryCache.set(bookid, value)
-    return bookEpsDb.setItem(bookid, {
+    bookEpsLRU.set(bookid, value)
+    return bookEpsDB.setItem(bookid, {
       time: Date.now(),
       value,
     })
@@ -161,8 +162,8 @@ export const useBookStore = defineStore('book', () => {
       })
   }
 
-  const bookPagesMemoryCache = new Map<string, BookPagesStoreState>()
-  const bookPagesDb = createDatabase('book/pages')
+  const bookPagesDB = createDatabase('book/pages')
+  const bookPagesLRU = new LRUMap<string, BookPagesStoreState>()
   async function fetchBookPages(
     bookid: string,
     epsid: string,
@@ -194,18 +195,18 @@ export const useBookStore = defineStore('book', () => {
     pagination: number
   ) {
     const key = `${bookid}/${epsid}/${pagination}`
-    const cached = bookPagesMemoryCache.get(key)
+    const cached = bookPagesLRU.get(key)
     if (cached) {
       return cached
     }
     const data = await loadFromDbWithExpiry<BookPagesStoreState>(
-      bookPagesDb,
+      bookPagesDB,
       key
     )
     if (!data) {
       return null
     }
-    bookPagesMemoryCache.set(key, data)
+    bookPagesLRU.set(key, data)
     return data
   }
   async function setBookPagesToCache(
@@ -215,8 +216,8 @@ export const useBookStore = defineStore('book', () => {
     value: BookPagesStoreState
   ) {
     const key = `${bookid}/${epsid}/${pagination}`
-    bookPagesMemoryCache.set(key, value)
-    return bookPagesDb.setItem(key, {
+    bookPagesLRU.set(key, value)
+    return bookPagesDB.setItem(key, {
       time: Date.now(),
       value,
     })

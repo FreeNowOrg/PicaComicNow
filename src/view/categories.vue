@@ -33,9 +33,9 @@ import { API_BASE } from '../config'
 import { getErrMsg } from '../utils/getErrMsg'
 import { setTitle } from '../utils/setTitle'
 import { ExternalLinkAlt } from '@vicons/fa'
-import type { ApiResponseCategories, Category } from '@/types'
+import type { ApiResponseCategories, PicaCategory } from '@/types'
 
-const list = ref<Category[]>([])
+const list = ref<PicaCategory[]>([])
 const error = ref('')
 const loading = ref(false)
 

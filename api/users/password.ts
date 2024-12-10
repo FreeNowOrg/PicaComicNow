@@ -34,7 +34,7 @@ export default async (req: VercelRequest, res: VercelResponse) => {
     )
     res.setHeader('refresh', '0;URL=/auth')
     return http.send(200, message)
-  } catch (e) {
-    return http.axiosError(e)
+  } catch (err: any) {
+    return http.send(err?.response?.statusCode || 500, err.message, err)
   }
 }

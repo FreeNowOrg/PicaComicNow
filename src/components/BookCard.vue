@@ -36,9 +36,9 @@ li.book-card.card
 <script setup lang="ts">
 import {} from 'vue'
 import { Heart, Eye } from '@vicons/fa'
-import type { ComicListItem } from '@/types'
+import type { PicaBookListItem } from '@/types'
 
-defineProps<{ data: ComicListItem; backTo: string }>()
+defineProps<{ data: PicaBookListItem; backTo: string }>()
 </script>
 
 <style lang="sass">

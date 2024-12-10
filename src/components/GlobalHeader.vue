@@ -48,7 +48,7 @@ header.global-header.flex-center(
         .dropdown-content(v-show='userDropdownShow')
           ul
             //- notLogIn
-            li(v-if='!userData')
+            li(v-if='!user.data')
               .nav-user-card
                 .top
                   .banner-bg
@@ -60,7 +60,7 @@ header.global-header.flex-center(
                   .uid Please login
 
             //- isLogedIn
-            li(v-if='userData')
+            li(v-if='user.data')
               .nav-user-card
                 .top
                   .banner-bg
@@ -69,27 +69,26 @@ header.global-header.flex-center(
                       src='https://i.loli.net/2021/03/26/QPOtzh1XbF2eujd.png'
                     )
                 .details
-                  router-link.plain.user-name(to='/profile') {{ userData.name }}
-                  .uid {{ userData.email }}
-            li(v-if='userData')
+                  router-link.plain.user-name(to='/profile') {{ user.data.name }}
+                  .uid {{ user.data.email }}
+            li(v-if='user.data')
               router-link.plain(to='/favourite') My Favourites
 
             li(v-if='$route.path !== "/auth"')
-              router-link.plain(to='/auth') {{ userData ? 'Logout' : 'Login' }}
+              router-link.plain(to='/auth') {{ user.data ? 'Logout' : 'Login' }}
 
 global-side-nav
 </template>
 
 <script setup lang="ts">
 import { defineComponent, onMounted, ref, watch } from 'vue'
-import { GITHUB_URL } from '../config'
 import { sideNavShow } from './states'
-import { userData } from './userData'
 import { Github, Bars, UserCircle, AngleDown } from '@vicons/fa'
 import GlobalSideNav from './GlobalSideNav.vue'
 import { useRouter } from 'vue-router'
+import { useUserStore } from '@/stores/user'
 
-const components = defineComponent({ Github, Bars, GlobalSideNav })
+const user = useUserStore()
 // const props = defineProps()
 const notAtTop = ref(document.documentElement.scrollTop > 50)
 const isHide = ref(false)

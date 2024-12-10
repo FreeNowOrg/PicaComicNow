@@ -44,7 +44,7 @@ import { ArrowLeft, ArrowRight } from '@vicons/fa'
 import { API_BASE } from '../config'
 import { setTitle } from '../utils/setTitle'
 import { getErrMsg } from '../utils/getErrMsg'
-import type { ApiResponseComics, ComicListItem } from '../types'
+import type { ApiResponseBookList, PicaBookListItem } from '../types'
 import { useRoute, useRouter } from 'vue-router'
 const route = useRoute()
 const router = useRouter()
@@ -57,7 +57,7 @@ const page = ref(1)
 const totalPages = ref(1)
 const sort = ref<SortTypes>('ua')
 
-const comics = ref<ComicListItem[]>([])
+const comics = ref<PicaBookListItem[]>([])
 const loading = ref(false)
 const error = ref('')
 
@@ -96,7 +96,7 @@ function init() {
   error.value = ''
 
   axios
-    .get<ApiResponseComics>(`${API_BASE}/comics`, {
+    .get<ApiResponseBookList>(`${API_BASE}/comics`, {
       params: {
         c: category.value,
         // t: '',

@@ -36,24 +36,25 @@ mixin pagenator
 </template>
 
 <script setup lang="ts">
-import axios from 'axios'
-import { onMounted, ref, watch } from 'vue'
+import { onMounted, ref } from 'vue'
 import { ArrowLeft, ArrowRight } from '@vicons/fa'
 import BooksList from '../components/BooksList.vue'
-import { API_BASE } from '../config'
 import { setTitle } from '../utils/setTitle'
 import { getErrMsg } from '../utils/getErrMsg'
 import { useRoute, useRouter } from 'vue-router'
-import type { ComicListItem } from '@/types'
+import type { PicaBookListItem } from '@/types'
+import { useUserStore } from '@/stores/user'
+
 const route = useRoute()
 const router = useRouter()
+const user = useUserStore()
 
 type SortTypes = 'ua' | 'dd' | 'da' | 'ld' | 'vd'
 const page = ref(1)
 const totalPages = ref(1)
 const sort = ref<SortTypes>('dd')
 
-const comics = ref<ComicListItem[]>([])
+const comics = ref<PicaBookListItem[]>([])
 const loading = ref(false)
 const error = ref('')
 
@@ -64,17 +65,15 @@ function init() {
   loading.value = true
   error.value = ''
 
-  axios
-    .get(`${API_BASE}/users/favourite`, {
-      params: {
-        s: sort.value,
-        page: page.value,
-      },
+  user
+    .fetchFavoriteBooks({
+      sort: sort.value,
+      page: page.value,
     })
     .then(
-      ({ data }: any) => {
-        comics.value = data.body?.comics.docs
-        totalPages.value = data.body?.comics.pages
+      (data) => {
+        comics.value = data.comics.docs
+        totalPages.value = data.comics.pages
       },
       (err) => {
         console.warn('Failed to get comics data', err)

@@ -2,194 +2,163 @@
 #book-container
   section.book-info
     .bread-crumb(v-if='$route.query.backTo')
-      router-link.button(:to='$route.query.backTo') ← Back to {{ $route.query.backTo }}
-    .loading.card.align-center(v-if='bookLoading || !book')
+      router-link.button(:to='"" + $route.query.backTo') ← Back to {{ $route.query.backTo }}
+    .loading.card.align-center(v-if='isLoadingMeta || !bookMeta')
       placeholder
-    .card(v-if='book')
+    .card(v-if='bookMeta')
       .details.flex.gap-1
         .left
-          e-link.no-icon.thumb(:href='book.thumb.fileUrl')
+          e-link.no-icon.thumb(:href='bookMeta.thumb.fileUrl')
             lazyload.img(
-              :src='book.thumb.fileUrl',
+              :src='bookMeta.thumb.fileUrl',
               :width='200',
               :height='266'
             )
         .right.flex(style='position: relative')
           .flex.title-area.flex-center
-            h1.title.flex-1 {{ book.title }}
+            h1.title.flex-1 {{ bookMeta.title }}
             a.bookmark.pointer(
-              :class='book.isFavourite ? "is-favourite" : "not-favourite"',
-              :title='book.isFavourite ? "Click to remove bookmark" : "Click to add bookmark"',
+              :class='bookMeta.isFavourite ? "is-favourite" : "not-favourite"',
+              :title='bookMeta.isFavourite ? "Click to remove bookmark" : "Click to add bookmark"',
               @click='handleBookmark'
             )
               icon
-                bookmark(v-if='book.isFavourite')
+                bookmark(v-if='bookMeta.isFavourite')
                 bookmark-regular(v-else)
           .flex-column.flex-1.gap-1
             .finished
               icon
-                CheckCircle(v-if='book.finished')
+                CheckCircle(v-if='bookMeta.finished')
                 PenNib(v-else)
               |
-              | {{ book.finished ? 'Finished' : 'Writing' }}
+              | {{ bookMeta.finished ? 'Finished' : 'Writing' }}
             .pages
               strong Pages:
-              | {{ book.pagesCount }} Pages, {{ book.epsCount }} Episodes
+              | {{ bookMeta.pagesCount }} Pages, {{ bookMeta.epsCount }} Episodes
             .author
               strong Author:
-              router-link(:to='"/search/" + book.author') @{{ book.author }}
+              router-link(:to='"/search/" + bookMeta.author') @{{ bookMeta.author }}
             .chinese-team
               strong Chinese translator:
-              router-link(:to='"/search/" + book.chineseTeam') {{ book.chineseTeam }}
+              router-link(:to='"/search/" + bookMeta.chineseTeam') {{ bookMeta.chineseTeam }}
             .tags-list
               strong Categories:
               router-link.tag(
-                v-for='item in book.categories',
+                v-for='item in bookMeta.categories',
                 :to='"/comics/" + item'
               ) {{ item }}
             .stats.flex
               .likes.flex-1
                 strong Likes
-                span {{ book.likesCount }}
+                span {{ bookMeta.likesCount }}
               .views.flex-1
                 strong views
-                span {{ book.viewsCount }}
+                span {{ bookMeta.viewsCount }}
 
       .tags-list
         strong Tags:
-        router-link.tag(v-for='item in book.tags', :to='"/search/" + item') {{ item }}
+        router-link.tag(v-for='item in bookMeta.tags', :to='"/search/" + item') {{ item }}
 
-      .description {{ book.description }}
-
-      details
-        pre {{ book }}
+      .description {{ bookMeta.description }}
 
   section.book-eps
     .card
       h2#eps Episodes
-      p.loading.align-center(v-if='epsLoading || !eps.length')
+      p.loading.align-center(v-if='isLoadingEps || !bookEps.length')
         placeholder
-      .eps-list(v-if='eps.length')
+      .eps-list(v-if='bookEps.length')
         router-link.ep-link.plain(
-          v-for='item in eps',
+          v-for='item in bookEps',
           :to='{ name: "read", params: { bookid: bookid, epsid: item.order }, query: { backTo: $route.query.backTo } }'
         ) {{ item.title }}
+
+  section.extra-actions
+    .card
+      h2 Extra Actions
       details
-        pre {{ eps }}
+        summary Book Meta
+        pre {{ bookMeta }}
+      details
+        summary Book Episodes
+        pre {{ bookEps }}
+      p(v-if='bookMeta')
+        a.button.danger(@click='init(true)') Force Reload Book Info
 </template>
 
 <script setup lang="ts">
-import axios from 'axios'
 import { onMounted, ref, watch } from 'vue'
 import { useRoute } from 'vue-router'
-import { API_BASE } from '../config'
 import { getErrMsg } from '../utils/getErrMsg'
 import { setTitle } from '../utils/setTitle'
 import { CheckCircle, PenNib, Bookmark, BookmarkRegular } from '@vicons/fa'
-import type {
-  ApiResponseComicEps,
-  ApiResponseComicInfo,
-  EpsItem,
-} from '@/types'
-import { useBookEpsStore, useBookMetaStore } from '@/utils/caches'
+import type { PicaBookMeta, PicaBookEp } from '@/types'
+import { useBookStore } from '@/stores/book'
 
 const route = useRoute()
 
 const bookid = ref(route.params.bookid as string)
-const book = ref<any>(null)
-const eps = ref<any[]>([])
-const bookLoading = ref(false)
-const epsLoading = ref(false)
+const bookStore = useBookStore()
+const bookMeta = ref<PicaBookMeta>()
+const bookEps = ref<PicaBookEp[]>([])
+const isLoadingMeta = ref(false)
+const isLoadingEps = ref(false)
 const errorTitle = ref('')
 const errorMsg = ref('')
 
-async function init() {
-  book.value = null
-  eps.value = []
+async function init(noCache = false) {
+  bookMeta.value = undefined
+  bookEps.value = []
   errorMsg.value = ''
 
-  loadDetails()
-  loadEps()
+  loadBookMeta(noCache)
+  loadBookEps(noCache)
 }
 
-async function loadDetails() {
-  const store = useBookMetaStore(bookid.value)
-  const cachedData = store.getItem()
-  if (cachedData) {
-    book.value = cachedData
-    bookLoading.value = false
-    return
-  }
-
-  bookLoading.value = true
-  return axios
-    .get<ApiResponseComicInfo>(`${API_BASE}/comics/${bookid.value}`)
-    .then(({ data }) => {
-      book.value = data.body.comic
-      setTitle(data.body.comic.title, 'Book')
-      store.setItem(data.body.comic)
-      return book.value
+async function loadBookMeta(noCache = false) {
+  isLoadingMeta.value = true
+  return bookStore
+    .getBookMeta(bookid.value, noCache)
+    .then((meta) => {
+      bookMeta.value = meta
+      setTitle(meta.title, 'Book')
+      return bookMeta.value
     })
     .catch((err: any) => {
       errorTitle.value = 'Failed to get book info'
       errorMsg.value = getErrMsg(err)
     })
     .finally(() => {
-      bookLoading.value = false
+      isLoadingMeta.value = false
     })
 }
 
-async function loadEps(): Promise<EpsItem[]> {
-  const store = useBookEpsStore(bookid.value)
-  const cachedData = store.getItem()
-  if (cachedData && cachedData.length) {
-    eps.value = cachedData
-    epsLoading.value = false
-    return cachedData
-  }
-
-  async function mainLoop(page = 1): Promise<void> {
-    return axios
-      .get<ApiResponseComicEps>(`${API_BASE}/comics/${bookid.value}/eps`, {
-        params: {
-          page,
-        },
-      })
-      .then(({ data }) => {
-        const epsData = data.body.eps
-        eps.value = [...eps.value, ...epsData.docs]
-        if (epsData.page < epsData.pages) {
-          return mainLoop(data.body.eps.page + 1)
-        }
-      })
-  }
-
-  epsLoading.value = true
-  return await mainLoop(1)
-    .then(() => {
-      if (eps.value.length) {
-        store.setItem(eps.value)
-      }
-      return eps.value
+async function loadBookEps(noCache = false): Promise<PicaBookEp[]> {
+  isLoadingEps.value = true
+  return bookStore
+    .getBookEps(bookid.value, noCache)
+    .then((list) => {
+      bookEps.value = list
+      return list
+    })
+    .catch((err: any) => {
+      errorTitle.value = 'Failed to get book episodes'
+      errorMsg.value = getErrMsg(err)
+      return Promise.reject(err)
     })
     .finally(() => {
-      epsLoading.value = false
+      isLoadingEps.value = false
     })
 }
 
 let bookmarkLoading = false
 function handleBookmark() {
-  if (bookmarkLoading) return
+  if (bookmarkLoading || !bookMeta.value) return
   bookmarkLoading = true
-  axios
-    .post(`${API_BASE}/comics/${bookid.value}/favourite`)
+  bookStore
+    .toggleBookmark(bookid.value)
     .then(
-      ({ data }: any) => {
-        if (data.body.action === 'favourite') {
-          book.value.isFavourite = true
-        } else if (data.body.action === 'un_favourite') {
-          book.value.isFavourite = false
-        }
+      (added) => {
+        bookMeta.value!.isFavourite = added
       },
       (err) => {
         console.warn('Faild to set favourite status')
@@ -211,6 +180,11 @@ onMounted(() => {
 </script>
 
 <style lang="sass">
+#book-container
+  display: flex
+  flex-direction: column
+  gap: 1rem
+
 .book-info
   .details
     margin-bottom: 1.5rem
@@ -240,7 +214,6 @@ onMounted(() => {
         --color: #aaa
 
 .book-eps
-  margin-top: 1.5rem
   .eps-list
     display: flex
     flex-wrap: wrap

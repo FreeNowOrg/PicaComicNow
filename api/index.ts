@@ -31,7 +31,7 @@ export default async (req: VercelRequest, res: VercelResponse) => {
       'ok',
       replaceFileUrl({ ...data, debug: { body: req.body, params: req.query } })
     )
-  } catch (e) {
-    return http.axiosError(e)
+  } catch (err: any) {
+    return http.send(err?.response?.statusCode || 500, err.message, err)
   }
 }

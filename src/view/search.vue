@@ -38,18 +38,16 @@ mixin pagenator
 
 <script setup lang="ts">
 import axios from 'axios'
-import { onMounted, ref, watch } from 'vue'
+import { onMounted, ref } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
 import { getErrMsg } from '../utils/getErrMsg'
 import { setTitle } from '../utils/setTitle'
 import { ArrowLeft, ArrowRight } from '@vicons/fa'
 import BooksList from '../components/BooksList.vue'
 import { API_BASE } from '../config'
-import type { ApiResponseComics, ComicListItem } from '../types'
+import type { ApiResponseBookList, PicaBookListItem } from '../types'
 const route = useRoute()
 const router = useRouter()
-
-// const components = defineComponent({ BooksList })
 
 type SortTypes = 'ua' | 'dd' | 'da' | 'ld' | 'vd'
 const keyword = ref('')
@@ -58,7 +56,7 @@ const page = ref(1)
 const totalPages = ref(1)
 const sort = ref<SortTypes>('ua')
 
-const comics = ref<ComicListItem[]>([])
+const comics = ref<PicaBookListItem[]>([])
 const loading = ref(false)
 const error = ref('')
 
@@ -90,7 +88,7 @@ function init() {
   error.value = ''
 
   axios
-    .post<ApiResponseComics>(
+    .post<ApiResponseBookList>(
       `${API_BASE}/comics/advanced-search`,
       {
         keyword: keyword.value,

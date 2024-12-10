@@ -17,15 +17,15 @@ export default async (req: VercelRequest, res: VercelResponse) => {
 
   try {
     const token = await client.signIn({ email, password })
-    const time = new Date()
-    time.setTime(time.getTime() + 180 * 24 * 60 * 60 * 1000)
+    // const time = new Date()
+    // time.setTime(time.getTime() + 180 * 24 * 60 * 60 * 1000)
+    // res.setHeader(
+    //   'set-cookie',
+    //   `PICA_TOKEN=${token}; expires=${time.toUTCString()}; path=/; secure`
+    // )
     res.setHeader('cache-control', 'no-cache')
-    res.setHeader(
-      'set-cookie',
-      `PICA_TOKEN=${token}; expires=${time.toUTCString()}; path=/; secure`
-    )
-    http.send(200, 'ok', { token })
-  } catch (err) {
-    http.axiosError(err)
+    return http.send(200, 'ok', { token })
+  } catch (err: any) {
+    return http.send(err?.response?.statusCode || 500, err.message, err)
   }
 }

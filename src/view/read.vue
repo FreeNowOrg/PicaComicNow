@@ -15,7 +15,7 @@
       icon: chevron-left
       | {{ prevEp?.title || 'Previous' }}
     .ep-title.flex-1
-      h1 {{ title || 'Loading...' }}
+      h1 {{ curEp?.title || 'Loading...' }}
     router-link.button.flex-center(
       v-if='nextEp',
       :to='{ name: "read", params: { bookid, epsid: nextEp.order } }'
@@ -24,17 +24,17 @@
       icon: chevron-right
 
   .pages-list
-    .align-center(v-if='!docs.length')
+    .align-center(v-if='!pages.length')
       placeholder
-    .page(v-else, v-for='(item, index) in docs', :id='"page-" + (index + 1)')
+    .page(v-else, v-for='(item, index) in pages', :id='"page-" + (index + 1)')
       .page-tag-container(:href='"#page-" + index')
         .page-tag {{ index + 1 }}
-      lazyload.img(:src='item.media.fileUrl', :key='item.id')
+      Lazyload.page-img(:src='item.media.fileUrl', :key='item.id')
 
-  p.align-center(v-if='hasNext > 0')
-    a.pointer.button(@click='loadPages()') {{ nextLoading ? 'Loading...' : 'See more' }} ({{ hasNext }} pages left)
+  p.align-center(v-if='pagesLeft > 0 && pages.length')
+    a.pointer.button(@click='loadPages()') {{ isLoadingPages ? 'Loading...' : 'See more' }} ({{ pagesLeft }} pages left)
 
-  .book-eps(v-if='bookEps.length && docs.length')
+  .book-eps(v-if='bookEps.length && pages.length')
     .next-ep(v-if='nextEp', style='text-align: center')
       router-link.button(
         :to='{ name: "read", params: { bookid, epsid: nextEp.order } }'
@@ -51,112 +51,62 @@
 </template>
 
 <script setup lang="ts">
-import axios from 'axios'
-import { computed, onMounted, ref } from 'vue'
+import { computed, onMounted, ref, watch } from 'vue'
 import { useRoute, onBeforeRouteUpdate } from 'vue-router'
-import { API_BASE } from '../config'
 import { setTitle } from '../utils/setTitle'
-import type {
-  ApiResponseComicPages,
-  ComicDetails,
-  ComicPagesItem,
-  EpsItem,
-} from '@/types'
-import {
-  useBookEpsStore,
-  useBookMetaStore,
-  useBookPagesStore,
-} from '@/utils/caches'
+import type { PicaBookMeta, PicaBookPage, PicaBookEp } from '@/types'
 import { ChevronLeft, ChevronRight, ArrowLeft } from '@vicons/fa'
+import { useBookStore } from '@/stores/book'
 
 const route = useRoute()
+const bookStore = useBookStore()
 
 const bookid = ref(route.params.bookid as string)
 const epsid = ref(route.params.epsid as string)
 
-const title = ref('')
-const docs = ref<ComicPagesItem[]>([])
+const pages = ref<PicaBookPage[]>([])
+const pagesLeft = ref(0)
+const nextPagination = ref(1)
+const isLoadingPages = ref(false)
 
-const hasNext = ref(0)
-const nextPage = ref(1)
-const nextLoading = ref(false)
-
-function setupCachedPages() {
-  const store = useBookPagesStore(bookid.value, epsid.value)
-  const data = store.getItem()
-  const pageLength = data?.docs?.length || 0
-  if (data && pageLength) {
-    docs.value = data.docs
-    nextPage.value = data.loadedPagination + 1
-    hasNext.value = data.totalPagination - data.loadedPagination
-    setTitle(data.ep.title, bookMeta.value?.title || 'Read')
-    title.value = data.ep.title
-  }
-}
-function loadPages() {
-  if (nextLoading.value) {
+async function loadPages() {
+  if (isLoadingPages.value) {
     return
   }
-  if (docs.value.length && !hasNext.value) {
+  if (pages.value.length && pagesLeft.value <= 0) {
     return
   }
-  if (nextPage.value > 1) {
-    nextLoading.value = true
-  }
+  isLoadingPages.value = true
 
   const scrollTop = document.documentElement.scrollTop
   console.log('before', scrollTop)
 
-  axios
-    .get<ApiResponseComicPages>(
-      `${API_BASE}/comics/${bookid.value}/order/${epsid.value}/pages`,
-      {
-        params: {
-          page: nextPage.value,
-        },
-      }
-    )
-    .then(({ data }) => {
+  bookStore
+    .getBookPages(bookid.value, epsid.value, nextPagination.value)
+    .then((data) => {
       console.log(data)
-      const { body } = data
 
-      setTitle(body.ep.title, bookMeta.value?.title || 'Read')
-      docs.value = [...docs.value, ...body.pages.docs]
-      title.value = body.ep.title
-
-      hasNext.value = body.pages.total - body.pages.page * body.pages.limit
-      nextPage.value = body.pages.page + 1
+      pages.value = [...pages.value, ...data.docs]
+      pagesLeft.value = data.totalDocs - pages.value.length
+      nextPagination.value = data.pagination + 1
 
       console.log('after', {
         from: document.documentElement.scrollTop,
         to: scrollTop,
       })
       document.documentElement.scrollTop = scrollTop
-
-      const store = useBookPagesStore(bookid.value, epsid.value)
-      store.setItem({
-        ep: body.ep,
-        docs: docs.value,
-        loadedPagination: body.pages.page,
-        totalPagination: body.pages.pages,
-        total: body.pages.total,
-      })
     })
     .finally(() => {
-      nextLoading.value = false
+      isLoadingPages.value = false
     })
 }
 
-const bookMeta = ref<ComicDetails | null>(null)
-function setupBookMeta() {
-  const bookStore = useBookMetaStore(bookid.value)
-  const bookData = bookStore.getItem()
-  if (bookData) {
-    bookMeta.value = bookData
-  }
+const bookMeta = ref<PicaBookMeta | null>(null)
+async function setupBookMeta() {
+  bookMeta.value = await bookStore.getBookMeta(bookid.value)
 }
 
-const bookEps = ref<EpsItem[]>([])
+const bookEps = ref<PicaBookEp[]>([])
 const orderedEps = computed(() => {
   return bookEps.value.sort((a, b) => a.order - b.order)
 })
@@ -166,26 +116,30 @@ const prevEp = computed(() => {
 const nextEp = computed(() => {
   return bookEps.value?.find((item) => item.order === +epsid.value + 1)
 })
-function setupBookEps() {
-  const epsStore = useBookEpsStore(bookid.value)
-  const epsData = epsStore.getItem()
-  if (epsData && epsData.length) {
-    bookEps.value = epsData
-  }
+const curEp = computed(() => {
+  return bookEps.value?.find((item) => item.order === +epsid.value)
+})
+async function setupBookEps() {
+  bookEps.value = await bookStore.getBookEps(bookid.value)
 }
 
-function resetAll() {
-  setTitle('Read')
+watch([bookMeta, curEp], ([meta, ep]) => {
+  if (meta && ep) {
+    setTitle(ep.title, meta.title)
+  }
+})
 
-  docs.value = []
-  hasNext.value = 0
-  nextPage.value = 1
-  nextLoading.value = false
+function resetAll() {
+  setTitle('Loading pages...')
+
+  pages.value = []
+  pagesLeft.value = 0
+  nextPagination.value = 1
+  isLoadingPages.value = false
 
   setupBookMeta()
   setupBookEps()
 
-  setupCachedPages()
   loadPages()
 }
 
@@ -220,7 +174,7 @@ onBeforeRouteUpdate((to, from, next) => {
   margin: 0 auto
   .page
     position: relative
-    .lazyload
+    .page-img
       width: 100%
       &[data-lazy-state="loading"]
         min-height: 45vh

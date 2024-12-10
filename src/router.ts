@@ -1,5 +1,5 @@
-import { createRouter, createWebHistory } from 'vue-router'
-import { getProfile, userData } from './components/userData'
+import { createRouter, createWebHistory, NavigationGuard } from 'vue-router'
+import { useUserStore } from './stores/user'
 
 export const router = createRouter({
   history: createWebHistory(),
@@ -96,17 +96,20 @@ router.addRoute({
   component: () => import('./view/404.vue'),
 })
 
-router.beforeEach(async ({ name, path }) => {
-  if (!userData.value && name !== 'auth') {
-    await getProfile().catch(() => {
+const userAuthGuard: NavigationGuard = async ({ name, fullPath }) => {
+  const user = useUserStore()
+  if (!user.isLoggedIn && name !== 'auth') {
+    await user.fetchProfile().catch(() => {
       console.warn('[App]', 'Verification information has expired')
       router.push({
         name: 'auth',
-        query: { from: path, tips: 1 },
+        query: { from: fullPath, tips: 1 },
       })
     })
   }
-})
+}
+router.beforeEach(userAuthGuard)
+router.afterEach(userAuthGuard as any)
 
 router.afterEach(({ name }) => {
   document.body.setAttribute('data-route', name as string)

@@ -6,9 +6,9 @@ ul.books-list
 <script setup lang="ts">
 import {} from 'vue'
 import BookCard from './BookCard.vue'
-import type { ComicListItem } from '@/types'
+import type { PicaBookListItem } from '@/types'
 
-defineProps<{ data: ComicListItem[]; backTo: string }>()
+defineProps<{ data: PicaBookListItem[]; backTo: string }>()
 </script>
 
 <style lang="sass">

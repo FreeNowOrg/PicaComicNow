@@ -20,12 +20,12 @@ aside.global-site-nav(:class='{ "is-hide": !sideNavShow }')
       .group
         .title User
         ul
-          li(v-if='userData')
+          li(v-if='user.data')
             router-link(to='/profile')
               icon
                 user
-              | {{ userData.name }} (you)
-          li(v-if='userData')
+              | {{ user.data.name }} (you)
+          li(v-if='user.data')
             router-link(to='/favourite')
               icon
                 Bookmark
@@ -50,10 +50,12 @@ aside.global-site-nav(:class='{ "is-hide": !sideNavShow }')
 import { onMounted, watch } from 'vue'
 import { PROJECT_NAME } from '../config'
 import { sideNavShow } from './states'
-import { userData } from './userData'
-import { Home, Heart, User, Fingerprint, Bookmark,Folder } from '@vicons/fa'
+import { Home, Heart, User, Fingerprint, Bookmark, Folder } from '@vicons/fa'
 import { useRouter } from 'vue-router'
+import { useUserStore } from '@/stores/user'
+
 const router = useRouter()
+const user = useUserStore()
 
 router.afterEach(() => {
   sideNavShow.value = false

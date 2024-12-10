@@ -1,22 +1,22 @@
 <template lang="pug">
 #profile-container
-  section.user-profile(v-if='userData')
+  section.user-profile(v-if='user.data')
     //- h1 My Profile
     .card.metadata.align-center
       .avatar
         img(src='https://i.loli.net/2021/03/26/QPOtzh1XbF2eujd.png')
-      h1.name {{ userData.name }}
+      h1.name {{ user.data.name }}
       .extra
-        span.title {{ userData.title }}
+        span.title {{ user.data.title }}
         | &nbsp;
-        span.uid @{{ userData.email }}
+        span.uid @{{ user.data.email }}
     .card.slogan
       h2 Slogan
       .slogan-view.flex(
         v-if='!sloganEdit',
         :class='{ "loading-cover": sloganLoading }'
       )
-        p.pre.flex-1 {{ userData.slogan || "-" }}
+        p.pre.flex-1 {{ user.data.slogan || '-' }}
         .edit-btn
           a.pointer(@click='sloganEdit = true') edit
       .slogan-edit(v-else)
@@ -32,7 +32,7 @@
             button(:disabled='sloganLoading', @click='handleSloganEdit') Submit
     .card
       details
-        pre {{ userData }}
+        pre {{ user.data }}
 
   section.user-profile.no-profile(v-else)
     h1.name Please login
@@ -40,11 +40,12 @@
 
 <script setup lang="ts">
 import axios from 'axios'
-import { onMounted, ref, watch } from 'vue'
-
-import { getProfile, userData } from '../components/userData'
+import { computed, onMounted, ref, watch } from 'vue'
 import { API_BASE } from '../config'
 import { setTitle } from '../utils/setTitle'
+import { useUserStore } from '@/stores/user'
+
+const user = useUserStore()
 
 const sloganEdit = ref(false)
 const sloganInput = ref('')
@@ -58,7 +59,7 @@ function handleSloganEdit() {
       slogan: sloganInput.value,
     })
     .then(() => {
-      return getProfile()
+      return user.fetchProfile()
     })
     .then(() => {
       sloganLoading.value = false
@@ -69,9 +70,14 @@ function handleSloganEdit() {
     })
 }
 
-watch(userData, (val) => {
-  sloganInput.value = val?.slogan as string
-})
+watch(
+  computed(() => user.data),
+  (val) => {
+    if (val) {
+      sloganInput.value = val.slogan
+    }
+  }
+)
 
 onMounted(() => {
   setTitle('User Profile')

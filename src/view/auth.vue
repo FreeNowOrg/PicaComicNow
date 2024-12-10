@@ -6,7 +6,7 @@
     .title Tips
     p You must log in to use this website
 
-  section(v-if='userData')
+  section(v-if='user.data')
     .card
       h2 Sign out
       .align-center
@@ -23,10 +23,6 @@
         input(v-model='password', type='password')
       div
         button(@click.prevent='handleLogin') Login
-      //- OK
-      .info.tips(v-if='token')
-        .title Login succeeded
-        p Your App token: <code>{{ token }}</code>
       //- Error
       .info.error(v-if='errorMsg')
         .title {{ errorTitle }}
@@ -36,12 +32,13 @@
 <script setup lang="ts">
 import { onMounted, ref } from 'vue'
 import { setTitle } from '../utils/setTitle'
-import { userData, getProfile, getToken } from '../components/userData'
 import { getErrMsg } from '../utils/getErrMsg'
 import { useRoute, useRouter } from 'vue-router'
+import { useUserStore } from '@/stores/user'
 
 const route = useRoute()
 const router = useRouter()
+const user = useUserStore()
 
 const onAuthenticating = ref(false)
 const email = ref('')
@@ -57,12 +54,12 @@ function handleLogin() {
   errorTitle.value = ''
   errorMsg.value = ''
 
-  getToken(email.value, password.value)
+  user
+    .login(email.value, password.value)
     .then(
       (data) => {
         console.log('auth ok', data)
-        token.value = data
-        return getProfile()
+        return user.fetchProfile()
       },
       (err) => {
         console.warn('auth faild', err)

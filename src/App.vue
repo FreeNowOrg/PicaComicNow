@@ -15,16 +15,17 @@ import { onMounted } from 'vue'
 import GlobalHeader from './components/GlobalHeader.vue'
 import GlobalFooter from './components/GlobalFooter.vue'
 import NProgress from './components/NProgress.vue'
-import { getProfile, userData } from './components/userData'
 import { useRoute, useRouter } from 'vue-router'
 import Cookies from 'js-cookie'
+import { useUserStore } from './stores/user'
 
 const route = useRoute()
 const router = useRouter()
+const user = useUserStore()
 
 onMounted(async () => {
-  if (!userData.value) {
-    getProfile().catch((err) => {
+  if (!user.data) {
+    user.fetchProfile().catch((err) => {
       console.warn('[App]', 'Verification information has expired', err)
       if (route.name !== 'auth') {
         router.push({

@@ -7,7 +7,7 @@ export type ApiResponse<T = unknown> = {
   debug?: any
 }
 
-export interface Category {
+export interface PicaCategory {
   title: string
   thumb: FileMedia
   isWeb: boolean
@@ -15,10 +15,10 @@ export interface Category {
   link: string
 }
 export type ApiResponseCategories = ApiResponse<{
-  categories: Category[]
+  categories: PicaCategory[]
 }>
 
-export interface ComicListItem {
+export interface PicaBookListItem {
   _id: string
   title: string
   author: string
@@ -32,17 +32,21 @@ export interface ComicListItem {
   id: string
   likesCount: number
 }
-export type ApiResponseComics = ApiResponse<{
+export type ApiResponseBookList = ApiResponse<{
   comics: {
-    docs: ComicListItem[]
+    docs: PicaBookListItem[]
     total: number
     limit: 20
     page: number
     pages: number
   }
+  limit: number
+  page: number
+  pages: number
+  total: number
 }>
 
-export interface UserProfile {
+export interface PicaUserProfile {
   _id: string
   birthday: string
   email: string
@@ -58,11 +62,11 @@ export interface UserProfile {
   avatar: FileMedia
   isPunched: boolean
 }
-export type ApiResponseUserProfile = ApiResponse<{ user: UserProfile }>
+export type ApiResponseUserProfile = ApiResponse<{ user: PicaUserProfile }>
 
-export interface ComicDetails {
+export interface PicaBookMeta {
   _id: string
-  _creator: UserProfile
+  _creator: PicaUserProfile
   title: string
   description: string
   thumb: FileMedia
@@ -82,20 +86,20 @@ export interface ComicDetails {
   isLiked: boolean
   commentsCount: number
 }
-export type ApiResponseComicInfo = ApiResponse<{
-  comic: ComicDetails
+export type ApiResponseBookMeta = ApiResponse<{
+  comic: PicaBookMeta
 }>
 
-export interface EpsItem {
+export interface PicaBookEp {
   _id: string
   id: string
   order: number
   title: string
   updated_at: string
 }
-export type ApiResponseComicEps = ApiResponse<{
+export type ApiResponseBookEps = ApiResponse<{
   eps: {
-    docs: EpsItem[]
+    docs: PicaBookEp[]
     total: number
     limit: number
     page: number
@@ -103,21 +107,40 @@ export type ApiResponseComicEps = ApiResponse<{
   }
 }>
 
-export interface ComicPagesItem {
+export interface PicaBookPage {
   _id: string
   id: string
   media: FileMedia
 }
-export type ApiResponseComicPages = ApiResponse<{
+export type ApiResponseBookPages = ApiResponse<{
   ep: {
     _id: string
     title: string
   }
   pages: {
-    docs: ComicPagesItem[]
+    docs: PicaBookPage[]
     limit: number
     page: number
     pages: number
     total: number
   }
 }>
+
+/**
+ * 排序方式
+ * ```
+ * ua = user asing = 默认(用户指定)
+ * dd = date desc = 新到旧
+ * da = date asc = 旧到新
+ * ld = like desc = 最多爱心(收藏)
+ * vd = view desc = 最多指名(浏览)
+ * ```
+ */
+export type PicaListSortType = 'ua' | 'dd' | 'da' | 'ld' | 'vd'
+export enum PicaListSort {
+  DEFAULT = 'ua',
+  DATE_DESC = 'dd',
+  DATE_ASC = 'da',
+  LIKE_DESC = 'ld',
+  VIEW_DESC = 'vd',
+}

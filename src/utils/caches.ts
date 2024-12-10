@@ -1,4 +1,4 @@
-import type { ComicDetails, ComicPagesItem, EpsItem } from '@/types'
+import type { PicaBookMeta, PicaBookPage, PicaBookEp } from '@/types'
 import { FishStore } from 'fish-store'
 
 const DEFAULT_CACHE_TIME = 2 * 60 * 60 * 1000 // 2 hours
@@ -10,10 +10,10 @@ const getDefaultMaxAge = () => {
 }
 
 export const useBookMetaStore = (bookId: string, maxAge = getDefaultMaxAge()) =>
-  new FishStore<ComicDetails>(`pica:book/${bookId}/info`, maxAge)
+  new FishStore<PicaBookMeta>(`pica:book/${bookId}/info`, maxAge)
 
 export const useBookEpsStore = (bookId: string, maxAge = getDefaultMaxAge()) =>
-  new FishStore<EpsItem[]>(`pica:book/${bookId}/eps`, maxAge)
+  new FishStore<PicaBookEp[]>(`pica:book/${bookId}/eps`, maxAge)
 
 export const useBookPagesStore = (
   bookId: string,
@@ -21,7 +21,7 @@ export const useBookPagesStore = (
   maxAge = getDefaultMaxAge()
 ) =>
   new FishStore<{
-    docs: ComicPagesItem[]
+    docs: PicaBookPage[]
     ep: {
       _id: string
       title: string

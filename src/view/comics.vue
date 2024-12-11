@@ -23,7 +23,7 @@ mixin pagenator
   h1(v-if='category') Comics in {{ category }}
   h1(v-else) Comics list
 
-  .info.error(v-if='error')
+  .mbox.error(v-if='error')
     .title Failed to get comics data
     p {{ error }}
 

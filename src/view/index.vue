@@ -2,7 +2,7 @@
 #index-container
   h1 PicACG
 
-  .info.tips(style='margin-bottom: 1.5rem')
+  .mbox.info(style='margin-bottom: 1.5rem')
     .title Tips
     p This site is under construction
 

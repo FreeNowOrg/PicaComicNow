@@ -38,7 +38,7 @@
             .author
               strong Author:
               router-link(:to='"/search/" + bookMeta.author') @{{ bookMeta.author }}
-            .chinese-team
+            .chinese-team(v-if='bookMeta.chineseTeam')
               strong Chinese translator:
               router-link(:to='"/search/" + bookMeta.chineseTeam') {{ bookMeta.chineseTeam }}
             .tags-list
@@ -48,12 +48,15 @@
                 :to='"/comics/" + item'
               ) {{ item }}
             .stats.flex
-              .likes.flex-1
-                strong Likes
-                span {{ bookMeta.likesCount }}
               .views.flex-1
-                strong views
+                strong views:
                 span {{ bookMeta.viewsCount }}
+              .likes.flex-1
+                strong Likes:
+                span {{ bookMeta.likesCount }}
+              .comments.flex-1
+                strong Comments:
+                span {{ bookMeta.commentsCount }}
 
       .tags-list
         strong Tags:

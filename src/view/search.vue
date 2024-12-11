@@ -23,7 +23,7 @@ mixin pagenator
   h1(v-if='keyword') Search『{{ keyword }}』comics (page {{ page }})
   h1(v-else) Advanced Search
 
-  .info.error(v-if='error')
+  .mbox.error(v-if='error')
     .title Failed to get comics data
     p {{ error }}
 

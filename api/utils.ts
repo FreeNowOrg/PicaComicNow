@@ -9,7 +9,7 @@ export default async (req: VercelRequest, res: VercelResponse) => {
 export function getTokenFromReq(req: VercelRequest): string | null {
   return (
     (req.query.token as string) ||
-    req.headers.authorization ||
+    req.headers.authorization?.replace(/^Bearer\s+/, '') ||
     req.cookies?.['PICA_TOKEN'] ||
     null
   )

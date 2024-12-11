@@ -13,7 +13,7 @@ mixin thumb(item)
   .loading.align-center(v-if='loading')
     placeholder
 
-  .info.error(v-if='error')
+  .mbox.error(v-if='error')
     .title Failed to get categories data
     p {{ error }}
 

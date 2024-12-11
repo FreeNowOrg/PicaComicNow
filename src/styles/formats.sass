@@ -63,13 +63,14 @@
   margin-bottom: 1.5rem
 
 // Info
-.info
+.mbox
   --border-color: rgba(0, 0, 0, 0.1)
   --bg-color: rgba(0, 0, 0, 0.04)
   background-color: #fff
-  box-shadow: 0 0 6px rgba(0, 0, 0, 0.1)
-  border-left: 6px solid var(--border-color)
-  border-radius: 4px
+  border: 1px solid var(--bg-color)
+  border-left: 0.5rem solid var(--border-color)
+  border-radius: 0.5rem
+  overflow: hidden
   & > *
     padding: 1rem
     margin: 0
@@ -78,10 +79,13 @@
     font-size: 1.2rem
     padding: 0.4rem 1rem
     background-color: var(--bg-color)
-  &.tips
+  &.info
     --border-color: #30a0ff
     --bg-color: rgba(0, 140, 255, 0.1)
-  &.warn
+  &.success
+    --border-color: #00a000
+    --bg-color: rgba(0, 160, 0, 0.1)
+  &.warning
     --border-color: #ffa500
     --bg-color: rgba(231, 139, 0, 0.1)
   &.error

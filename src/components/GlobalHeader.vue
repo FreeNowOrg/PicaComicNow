@@ -38,7 +38,7 @@ header.global-header.flex-center(
         @click='userDropdownShow = !userDropdownShow'
       )
         .avatar
-          img(src='https://i.loli.net/2021/03/26/QPOtzh1XbF2eujd.png')
+          img(src='https://r2.epb.wiki/avatar.jpg')
       transition(
         name='fade',
         mode='out-in',
@@ -52,9 +52,7 @@ header.global-header.flex-center(
               .nav-user-card
                 .top
                   .banner-bg
-                  img.avatar(
-                    src='https://i.loli.net/2021/03/26/QPOtzh1XbF2eujd.png'
-                  )
+                  img.avatar(src='https://r2.epb.wiki/avatar.jpg')
                 .details
                   a.user-name Anonymous
                   .uid Please login
@@ -66,7 +64,9 @@ header.global-header.flex-center(
                   .banner-bg
                   router-link.plain.name(to='/profile')
                     img.avatar(
-                      src='https://i.loli.net/2021/03/26/QPOtzh1XbF2eujd.png'
+                      :src='user.profile.avatar.fileUrl',
+                      alt='',
+                      style='background-color: #ddd'
                     )
                 .details
                   router-link.plain.user-name(to='/profile') {{ user.profile.name }}

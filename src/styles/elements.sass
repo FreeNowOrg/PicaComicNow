@@ -1,19 +1,28 @@
 // Header
 @mixin header-shared($font-size, $shadow-color)
+  display: inline-block
+  position: relative
   font-size: $font-size
-  text-shadow: 2px 2px 0 var(--theme-text-shadow-color), -2px -2px 0 var(--theme-text-shadow-color), 2px -2px 0 var(--theme-text-shadow-color), -2px 2px 0 var(--theme-text-shadow-color)
-  box-shadow: 0 -0.5em 0 $shadow-color inset
+  text-shadow: 1px 1px 0 var(--theme-text-shadow-color), -1px -1px 0 var(--theme-text-shadow-color), 1px -1px 0 var(--theme-text-shadow-color), -1px 1px 0 var(--theme-text-shadow-color)
+  &::after
+    content: ''
+    display: block
+    width: 100%
+    height: 50%
+    background-color: $shadow-color
+    position: absolute
+    left: 0
+    bottom: -0.1em
+    border-radius: 9999px
+    z-index: -1
 
 h1
   font-size: 2.2rem
 
 h2
   @include header-shared(1.4rem, #ef76a3)
-  display: inline-block
-  position: relative
   left: 50%
   transform: translateX(-50%)
-  /* margin: 0.4rem auto */
   padding: 0 1rem
 
 .align-center

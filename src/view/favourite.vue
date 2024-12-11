@@ -22,7 +22,7 @@ mixin pagenator
 
   h1 My Favourites
 
-  .info.error(v-if='error')
+  .mbox.error(v-if='error')
     .title Failed to get list
     p {{ error }}
 

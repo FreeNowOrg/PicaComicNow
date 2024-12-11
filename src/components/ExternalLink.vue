@@ -6,15 +6,11 @@ a.external-link(:href='href', target='_blank', rel='nofollow')
 </template>
 
 <script setup lang="ts">
-import { defineProps } from 'vue'
 import { ExternalLinkAlt } from '@vicons/fa'
 
-// const components = defineComponent()
-
-const props =
-  defineProps<{
-    href: string
-  }>()
+const props = defineProps<{
+  href: string
+}>()
 </script>
 
 <style scoped lang="sass">

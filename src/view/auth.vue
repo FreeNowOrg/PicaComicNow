@@ -2,13 +2,13 @@
 #auth-container
   h1 Authorization
 
-  .info.tips(v-if='$route.query.tips')
+  .mbox.info(v-if='$route.query.tips', style='margin-bottom: 1rem')
     .title Tips
     p You must log in to use this website
 
   section(v-if='user.profile')
     .card
-      h2 Sign out
+      h2 Hello, {{ user.profile.name }}
       .align-center
         button(@click.prevent='handleSignOut') Sign out
 
@@ -24,7 +24,7 @@
       div
         button(@click.prevent='handleLogin') Login
       //- Error
-      .info.error(v-if='errorMsg')
+      .mbox.error(v-if='errorMsg')
         .title {{ errorTitle }}
         p {{ errorMsg }}
 </template>
@@ -86,7 +86,6 @@ function handleLogin() {
 
 function handleSignOut() {
   user.logout()
-  location.reload()
 }
 
 onMounted(() => {
@@ -123,7 +122,7 @@ onMounted(() => {
       &:focus
         box-shadow: 0 0 0 2px var(--theme-accent-color)
 
-  .info
+  .mbox
     text-align: left
     margin-top: 1rem
 

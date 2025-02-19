@@ -94,6 +94,7 @@ onMounted(() => {
       width: 100%
       height: 0
       padding-top: 100%
+      border-radius: 0.5rem
       .lazyload
         position: absolute
         top: 0

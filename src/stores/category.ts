@@ -32,7 +32,7 @@ export const useCategoryStore = defineStore('category', () => {
     pagination: number,
     sort = PicaListSort.DATE_DESC
   ): Promise<ApiResponseBookList['body']['comics']> {
-    if (!(sort in PicaListSort)) {
+    if (!Object.values(PicaListSort).includes(sort)) {
       sort = PicaListSort.DEFAULT
     }
     const key = `${category}-${sort}-${pagination}`

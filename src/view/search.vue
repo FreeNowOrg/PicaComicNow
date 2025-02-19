@@ -1,16 +1,10 @@
 <template lang="pug">
 mixin pagenator
-  .pagenator
-    button(@click='handlePageChange(page - 1)', :disabled='page <= 1')
-      icon
-        arrow-left
-    .page(@click='handlePagePrompt')
-      .cur-page {{ page }}
-      | /
-      .total-page {{ totalPages }}
-    button(@click='handlePageChange(page + 1)', :disabled='page >= totalPages')
-      icon
-        arrow-right
+  book-list-paginator(
+    v-model:page='page',
+    v-model:sort='sort',
+    :total-pages='totalPages'
+  )
 
 #search-container
   .bread-crumb
@@ -38,45 +32,43 @@ mixin pagenator
 
 <script setup lang="ts">
 import axios from 'axios'
-import { onMounted, ref } from 'vue'
+import { computed, onMounted, ref, watch } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
 import { getErrMsg } from '../utils/getErrMsg'
 import { setTitle } from '../utils/setTitle'
 import { ArrowLeft, ArrowRight } from '@vicons/fa'
 import BooksList from '../components/BooksList.vue'
 import { API_BASE } from '../config'
-import type { ApiResponseBookList, PicaBookListItem } from '../types'
+import {
+  PicaListSort,
+  type ApiResponseBookList,
+  type PicaBookListItem,
+} from '../types'
+import BookListPaginator from '@/components/BookListPaginator.vue'
 const route = useRoute()
 const router = useRouter()
 
-type SortTypes = 'ua' | 'dd' | 'da' | 'ld' | 'vd'
-const keyword = ref('')
-const category = ref('')
-const page = ref(1)
+const keyword = computed(() => route.params.keyword as string)
+const category = computed(() => route.query.category as string)
+const page = ref(+(route.query.page || 1))
 const totalPages = ref(1)
-const sort = ref<SortTypes>('ua')
+const sort = ref<PicaListSort>(
+  (route.query.sort as PicaListSort) || PicaListSort.DEFAULT
+)
 
 const comics = ref<PicaBookListItem[]>([])
 const loading = ref(false)
 const error = ref('')
 
-/**
- * @param arg1.category 分区名字，categories里面的title，如"嗶咔漢化"
- * @param arg1.page 分页，从1开始
- * @param arg1.sort 排序依据：
- * ```
- * ua: 默认
- * dd: 新到旧
- * da: 旧到新
- * ld: 最多爱心
- * vd: 最多指名
- * ```
- */
-function init() {
-  keyword.value = (route.params.keyword as string) || ''
-  category.value = (route.query.category as string) || ''
+onMounted(() => {
   page.value = parseInt(route.query.page as string) || 1
-  sort.value = (route.query.sort as SortTypes) || 'ua'
+  sort.value = (route.query.sort as PicaListSort) || PicaListSort.DEFAULT
+
+  loadData()
+})
+
+function loadData() {
+  if (loading.value) return
 
   if (keyword.value) {
     setTitle(`${keyword.value} (page ${page.value})`, 'Search')
@@ -84,8 +76,17 @@ function init() {
     setTitle('Search')
   }
 
+  router.push({
+    params: { keyword: keyword.value },
+    query: { page: page.value, sort: sort.value, category: category.value },
+  })
+
   loading.value = true
   error.value = ''
+
+  if (!keyword.value) {
+    return
+  }
 
   axios
     .post<ApiResponseBookList>(
@@ -116,33 +117,15 @@ function init() {
     })
 }
 
-function handlePageChange(toPage: number) {
-  router.push({
-    query: { page: Math.min(totalPages.value, Math.max(1, toPage)) },
-  })
-}
-
-function handlePagePrompt() {
-  const p = prompt('Page jump to', '' + page.value) || ''
-  if (!isNaN(parseInt(p))) {
-    handlePageChange(parseInt(p))
+watch(
+  [keyword, category, page, sort],
+  ([keyword, category], [oldKeyword, oldCategory]) => {
+    if (keyword !== oldKeyword || category !== oldCategory) {
+      page.value = 1
+    }
+    loadData()
   }
-}
-
-// Refresh when the keyword changes
-router.afterEach((to, from) => {
-  console.log('after route', { to })
-  if (to.name === from.name && to !== from) {
-    keyword.value = route.params.keyword as string
-    page.value = parseInt(to.query.page as string) || 1
-    init()
-  }
-})
-
-onMounted(() => {
-  init()
-  setTitle('Search')
-})
+)
 </script>
 
 <style scoped lang="sass">

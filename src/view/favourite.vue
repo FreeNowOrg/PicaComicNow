@@ -1,16 +1,10 @@
 <template lang="pug">
 mixin pagenator
-  .pagenator
-    button(@click='handlePageChange(page - 1)', :disabled='page <= 1')
-      icon
-        arrow-left
-    .page(@click='handlePagePrompt')
-      .cur-page {{ page }}
-      | /
-      .total-page {{ totalPages }}
-    button(@click='handlePageChange(page + 1)', :disabled='page >= totalPages')
-      icon
-        arrow-right
+  book-list-paginator(
+    v-model:page='page',
+    v-model:sort='sort',
+    :total-pages='totalPages'
+  )
 
 #favourite-container
   .bread-crumb
@@ -36,31 +30,48 @@ mixin pagenator
 </template>
 
 <script setup lang="ts">
-import { onMounted, ref } from 'vue'
+import { onMounted, ref, watch } from 'vue'
 import { ArrowLeft, ArrowRight } from '@vicons/fa'
 import BooksList from '../components/BooksList.vue'
+import BookListPaginator from '../components/BookListPaginator.vue'
 import { setTitle } from '../utils/setTitle'
 import { getErrMsg } from '../utils/getErrMsg'
 import { useRoute, useRouter } from 'vue-router'
-import type { PicaBookListItem } from '@/types'
+import { type PicaBookListItem, PicaListSort } from '@/types'
 import { useUserStore } from '@/stores/user'
 
 const route = useRoute()
 const router = useRouter()
 const user = useUserStore()
 
-type SortTypes = 'ua' | 'dd' | 'da' | 'ld' | 'vd'
 const page = ref(1)
+const sort = ref<PicaListSort>(PicaListSort.DATE_DESC)
 const totalPages = ref(1)
-const sort = ref<SortTypes>('dd')
 
 const comics = ref<PicaBookListItem[]>([])
+
+onMounted(() => {
+  setTitle('Favourites')
+
+  page.value = parseInt(route.query.page as string) || 1
+  sort.value = (route.query.sort as PicaListSort) || PicaListSort.DATE_DESC
+
+  loadData()
+})
+
+watch([page, sort], loadData)
+
 const loading = ref(false)
 const error = ref('')
+function loadData() {
+  if (loading.value) return
 
-function init() {
-  page.value = parseInt(route.query.page as string) || 1
-  sort.value = (route.query.sort as SortTypes) || 'dd'
+  router.push({
+    query: {
+      page: page.value,
+      sort: sort.value,
+    },
+  })
 
   loading.value = true
   error.value = ''
@@ -84,32 +95,6 @@ function init() {
       loading.value = false
     })
 }
-
-function handlePageChange(toPage: number) {
-  router.push({
-    query: {
-      page: Math.min(totalPages.value, Math.max(1, toPage)),
-    },
-  })
-}
-
-function handlePagePrompt() {
-  const p = prompt('Page jump to', '' + page.value) || ''
-  if (!isNaN(parseInt(p))) {
-    handlePageChange(parseInt(p))
-  }
-}
-
-router.afterEach((to) => {
-  if (to.name !== 'favourite') return
-  page.value = parseInt(to.query.page as string) || 1
-  init()
-})
-
-onMounted(() => {
-  init()
-  setTitle('Favourites')
-})
 </script>
 
 <style scoped lang="sass">

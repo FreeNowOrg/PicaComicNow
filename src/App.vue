@@ -1,5 +1,5 @@
 <template lang="pug">
-#app-container
+naiveui-provider#app-container
   main.flex-1
     article.responsive
       router-view
@@ -19,6 +19,7 @@ import NProgress from './components/NProgress.vue'
 import { useRoute, useRouter } from 'vue-router'
 import Cookies from 'js-cookie'
 import { useUserStore } from './stores/user'
+import NaiveuiProvider from './components/NaiveuiProvider.vue'
 
 const route = useRoute()
 const router = useRouter()

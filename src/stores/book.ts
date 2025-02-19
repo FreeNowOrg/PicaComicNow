@@ -1,5 +1,4 @@
 import { defineStore } from 'pinia'
-import localforage from 'localforage'
 import axios from 'axios'
 import type {
   ApiResponseBookEps,
@@ -10,32 +9,7 @@ import type {
   PicaBookEp,
 } from '@/types'
 import { API_BASE } from '@/config'
-import { LRUMap } from '@/utils/LRUMap'
-
-const CACHE_TIMEOUT = 1000 * 60 * 60 * 24 // 24 hours
-const DB_NAME = 'PicaComicNow'
-const createDatabase = (storeName: string) => {
-  return localforage.createInstance({
-    name: DB_NAME,
-    storeName,
-  })
-}
-const loadFromDbWithExpiry = async <T>(
-  db: LocalForage,
-  key: string,
-  maxAge: number = CACHE_TIMEOUT
-) => {
-  const data = await db.getItem<{ time: number; value: T }>(key)
-  if (!data) {
-    return null
-  }
-  if (Date.now() - data.time > maxAge) {
-    return null
-  }
-  return data.value
-}
-const checkRequestNoCache = () =>
-  new URL(window.location.href).searchParams.has('noCache')
+import { PicaCache } from '@/utils/PicaCache'
 
 export interface BookPagesStoreState {
   docs: PicaBookPage[]
@@ -45,8 +19,11 @@ export interface BookPagesStoreState {
 }
 
 export const useBookStore = defineStore('book', () => {
-  const bookMetaDB = createDatabase('book/meta')
-  const bookMetaLRU = new LRUMap<string, PicaBookMeta>()
+  const noCacheMode =
+    window?.location &&
+    (location.search.includes('noCache') || location.hash.includes('noCache'))
+
+  const bookMetaCache = new PicaCache<PicaBookMeta>('book/meta')
   async function fetchBookMeta(bookid: string) {
     return axios
       .get<ApiResponseBookMeta>(`${API_BASE}/comics/${bookid}`)
@@ -54,42 +31,19 @@ export const useBookStore = defineStore('book', () => {
         return data.body.comic
       })
   }
-  async function getBookMetaFromCache(bookid: string) {
-    const cached = bookMetaLRU.get(bookid)
-    if (cached) {
-      return cached
-    }
-    const data = await loadFromDbWithExpiry<PicaBookMeta>(bookMetaDB, bookid)
-    if (!data) {
-      return null
-    }
-    bookMetaLRU.set(bookid, data)
-    return data
-  }
-  async function setBookMetaToCache(bookid: string, value: PicaBookMeta) {
-    bookMetaLRU.set(bookid, value)
-    return bookMetaDB.setItem(bookid, {
-      time: Date.now(),
-      value,
-    })
-  }
-  async function getBookMeta(
-    bookid: string,
-    noCache: boolean = checkRequestNoCache()
-  ) {
+  async function getBookMeta(bookid: string, noCache: boolean = noCacheMode) {
     if (!noCache) {
-      const cached = await getBookMetaFromCache(bookid)
+      const cached = await bookMetaCache.get(bookid)
       if (cached) {
         return cached
       }
     }
     const data = await fetchBookMeta(bookid)
-    await setBookMetaToCache(bookid, data)
+    await bookMetaCache.set(bookid, data)
     return data
   }
 
-  const bookEpsDB = createDatabase('book/eps')
-  const bookEpsLRU = new LRUMap<string, PicaBookEp[]>()
+  const bookEpsCache = new PicaCache<PicaBookEp[]>('book/eps')
   async function fetchBookEps(bookid: string) {
     const list: PicaBookEp[] = []
     const fetchOnePage = async (page: number): Promise<void> => {
@@ -111,40 +65,15 @@ export const useBookStore = defineStore('book', () => {
     await fetchOnePage(1)
     return list
   }
-  async function getBookEpsFromCache(bookid: string) {
-    const cached = bookEpsLRU.get(bookid)
-    if (cached) {
-      return cached
-    }
-    const data = await loadFromDbWithExpiry<PicaBookEp[]>(bookEpsDB, bookid)
-    if (!data) {
-      return null
-    }
-    bookEpsLRU.set(bookid, data)
-    return data
-  }
-  async function setBookEpsToCache(bookid: string, value: PicaBookEp[]) {
-    if (value.length === 0) {
-      return
-    }
-    bookEpsLRU.set(bookid, value)
-    return bookEpsDB.setItem(bookid, {
-      time: Date.now(),
-      value,
-    })
-  }
-  async function getBookEps(
-    bookid: string,
-    noCache: boolean = checkRequestNoCache()
-  ) {
+  async function getBookEps(bookid: string, noCache: boolean = noCacheMode) {
     if (!noCache) {
-      const cached = await getBookEpsFromCache(bookid)
+      const cached = await bookEpsCache.get(bookid)
       if (cached) {
         return cached
       }
     }
     const data = await fetchBookEps(bookid)
-    await setBookEpsToCache(bookid, data)
+    await bookEpsCache.set(bookid, data)
     return data
   }
 
@@ -162,8 +91,7 @@ export const useBookStore = defineStore('book', () => {
       })
   }
 
-  const bookPagesDB = createDatabase('book/pages')
-  const bookPagesLRU = new LRUMap<string, BookPagesStoreState>()
+  const bookPagesCache = new PicaCache<BookPagesStoreState>('book/pages')
   async function fetchBookPages(
     bookid: string,
     epsid: string,
@@ -189,53 +117,21 @@ export const useBookStore = defineStore('book', () => {
         } as BookPagesStoreState
       })
   }
-  async function getBookPagesFromCache(
-    bookid: string,
-    epsid: string,
-    pagination: number
-  ) {
-    const key = `${bookid}/${epsid}/${pagination}`
-    const cached = bookPagesLRU.get(key)
-    if (cached) {
-      return cached
-    }
-    const data = await loadFromDbWithExpiry<BookPagesStoreState>(
-      bookPagesDB,
-      key
-    )
-    if (!data) {
-      return null
-    }
-    bookPagesLRU.set(key, data)
-    return data
-  }
-  async function setBookPagesToCache(
-    bookid: string,
-    epsid: string,
-    pagination: number,
-    value: BookPagesStoreState
-  ) {
-    const key = `${bookid}/${epsid}/${pagination}`
-    bookPagesLRU.set(key, value)
-    return bookPagesDB.setItem(key, {
-      time: Date.now(),
-      value,
-    })
-  }
   async function getBookPages(
     bookid: string,
     epsid: string,
     pagination: number,
-    noCache: boolean = checkRequestNoCache()
+    noCache: boolean = noCacheMode
   ) {
+    const cacheKey = `${bookid}/${epsid}/${pagination}`
     if (!noCache) {
-      const cached = await getBookPagesFromCache(bookid, epsid, pagination)
+      const cached = await bookPagesCache.get(cacheKey)
       if (cached) {
         return cached
       }
     }
     const data = await fetchBookPages(bookid, epsid, pagination)
-    await setBookPagesToCache(bookid, epsid, pagination, data)
+    await bookPagesCache.set(cacheKey, data)
     return data
   }
 

@@ -1,13 +1,13 @@
-export class LRUMap<MKey = string, MValue = any> {
-  private dataMap: Map<MKey, MValue>
-  private lruKeysQueue: MKey[]
+export class LRUMap<K = string, V = any> {
+  private dataMap: Map<K, V>
+  private lruKeysQueue: K[]
   private limit: number
   constructor(limit = 100) {
     this.dataMap = new Map()
     this.lruKeysQueue = []
     this.limit = limit
   }
-  get(key: MKey) {
+  get(key: K) {
     if (this.dataMap.has(key)) {
       this.lruKeysQueue = this.lruKeysQueue.filter((v) => v !== key)
       this.lruKeysQueue.unshift(key)
@@ -15,7 +15,7 @@ export class LRUMap<MKey = string, MValue = any> {
     }
     return undefined
   }
-  set(key: MKey, value: MValue) {
+  set(key: K, value: V) {
     if (this.dataMap.has(key)) {
       this.lruKeysQueue = this.lruKeysQueue.filter((v) => v !== key)
     } else if (this.lruKeysQueue.length >= this.limit) {
@@ -25,10 +25,10 @@ export class LRUMap<MKey = string, MValue = any> {
     this.lruKeysQueue.unshift(key)
     this.dataMap.set(key, value)
   }
-  has(key: MKey) {
+  has(key: K) {
     return this.dataMap.has(key)
   }
-  delete(key: MKey) {
+  delete(key: K) {
     if (this.dataMap.has(key)) {
       this.lruKeysQueue = this.lruKeysQueue.filter((v) => v !== key)
       this.dataMap.delete(key)

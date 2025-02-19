@@ -125,7 +125,7 @@ export type ApiResponseBookPages = ApiResponse<{
 /**
  * 排序方式
  * ```
- * ua = user asing = 默认(用户指定)
+ * ua = user asing = 默认排序(用户指定)
  * dd = date desc = 新到旧
  * da = date asc = 旧到新
  * ld = like desc = 最多爱心(收藏)
@@ -140,3 +140,10 @@ export enum PicaListSort {
   LIKE_DESC = 'ld',
   VIEW_DESC = 'vd',
 }
+export const PICA_LIST_SORT_OPTIONS = [
+  { label: '默认排序', value: PicaListSort.DEFAULT },
+  { label: '新到旧', value: PicaListSort.DATE_DESC },
+  { label: '旧到新', value: PicaListSort.DATE_ASC },
+  { label: '最多收藏', value: PicaListSort.LIKE_DESC },
+  { label: '最多浏览', value: PicaListSort.VIEW_DESC },
+]

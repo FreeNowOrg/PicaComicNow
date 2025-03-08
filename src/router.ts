@@ -1,10 +1,14 @@
-import { createRouter, createWebHistory, NavigationGuard } from 'vue-router'
+import {
+  createRouter,
+  createWebHistory,
+  type NavigationGuard,
+} from 'vue-router'
 import { useUserStore } from './stores/user'
 
 export const router = createRouter({
   history: createWebHistory(),
   routes: [],
-  scrollBehavior(to, from, savedPosition) {
+  scrollBehavior(_to, _from, savedPosition) {
     if (savedPosition) {
       return savedPosition
     } else {

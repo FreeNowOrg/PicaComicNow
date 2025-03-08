@@ -4,7 +4,8 @@
     "vite.config.*",
     "vitest.config.*",
     "cypress.config.*",
-    "playwright.config.*"
+    "playwright.config.*",
+    "node_modules/@prettier/plugin-pug/**/*.d.ts"
   ],
   "compilerOptions": {
     "composite": true,

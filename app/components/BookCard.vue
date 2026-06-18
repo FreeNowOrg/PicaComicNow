@@ -13,7 +13,7 @@ li.book-card.card
         .pages(v-if='data.pagesCount') [{{ data.epsCount > 1 ? data.epsCount + 'EP/' : '' }}{{ data.pagesCount }}P]
         .name {{ data.title }}
     .author
-      NuxtLink(:to='"/search/" + data.author') @{{ data.author }}
+      NuxtLink(:to='{ path: "/search", query: { keyword: data.author } }') @{{ data.author }}
     .tags-list
       NuxtLink.tag(
         v-for='item in data.categories',

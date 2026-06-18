@@ -17,7 +17,7 @@ export default {
 
   vueIndentScriptAndStyle: false,
 
-  pugSingleQuote: false,
+  pugSingleQuote: true,
   pugAttributeSeparator: 'as-needed',
   pugSortAttributes: 'asc',
 }

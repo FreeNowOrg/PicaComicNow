@@ -1,0 +1,10 @@
+{
+  "compatibility_date": "2026-06-18",
+  "name": "pica-comic",
+  "main": ".output/server/index.mjs",
+  "compatibility_flags": ["nodejs_compat", "no_nodejs_compat_v2"],
+  "assets": {
+    "binding": "ASSETS",
+    "directory": ".output/public",
+  },
+}

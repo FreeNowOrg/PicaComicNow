@@ -64,7 +64,7 @@ onBeforeUnmount(() => {
 
 @keyframes img-loading
   from
-    background-color: lighten(#ddd, 5%)
+    background-color: #e6e6e6
   to
     background-color: #ddd
 </style>

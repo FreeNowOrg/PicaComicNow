@@ -97,7 +97,7 @@ import {
     font-weight: 900;
     color: #000;
     border: none;
-    background: linear-gradient(transparent 60%, var(--color-brand-yellow) 60%);
+    background: linear-gradient(transparent 60%, #FF5C8A 60%);
   }
 
   ul {
@@ -124,7 +124,8 @@ a {
   transition: background-color 0.15s;
 
   &:hover {
-    background-color: var(--color-brand-yellow);
+    background-color: #FF5C8A;
+    color: #fff;
   }
 }
 

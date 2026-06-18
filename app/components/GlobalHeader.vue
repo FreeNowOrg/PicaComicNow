@@ -132,7 +132,7 @@ onMounted(() => {
 
 <style scoped lang="scss">
 .global-header {
-  height: 60px;
+  height: 63px;
   width: 100%;
   padding: 0 1rem;
   position: fixed;
@@ -141,7 +141,6 @@ onMounted(() => {
   z-index: 100;
   background-color: #fff;
   border-bottom: 3px solid #000;
-  box-sizing: content-box;
   transition: transform 0.3s ease;
 
   a {

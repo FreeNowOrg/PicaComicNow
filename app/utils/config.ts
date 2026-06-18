@@ -4,6 +4,8 @@ export const ENV = process.env.NODE_ENV === 'development' ? 'dev' : 'prod'
 export const PROJECT_NAME = 'Pica Comic Now'
 export const VERSION = version
 
+export const DEFAULT_AVATAR = 'https://r2.epb.wiki/avatar/default.png'
+
 export const GITHUB_OWNER = 'FreeNowOrg'
 export const GITHUB_REPO = 'PicaComicNow'
 export const GITHUB_URL = `https://github.com/${GITHUB_OWNER}/${GITHUB_REPO}`

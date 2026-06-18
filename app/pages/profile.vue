@@ -4,7 +4,7 @@
     //- h1 My Profile
     PicaCard.metadata.align-center
       .avatar
-        img.pica-border(src='https://i.loli.net/2021/03/26/QPOtzh1XbF2eujd.png')
+        img.pica-border(:src='user.profile?.avatar?.fileUrl || DEFAULT_AVATAR')
       h1.name {{ user.profile.name }}
       .extra
         span.title {{ user.profile.title }}
@@ -43,6 +43,8 @@ import { computed, onMounted, ref, watch } from 'vue'
 import { setTitle } from '~/utils/setTitle'
 import { useUserStore } from '~/stores/user'
 import { picaClient } from '~/utils/pica-client'
+
+import { DEFAULT_AVATAR } from '~/utils/config'
 
 const user = useUserStore()
 

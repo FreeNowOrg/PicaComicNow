@@ -37,7 +37,7 @@ header.global-header.flex-center(
         @click='userDropdownShow = !userDropdownShow'
       )
         .avatar
-          img(src='https://r2.epb.wiki/avatar.jpg')
+          img(:src='user.profile?.avatar?.fileUrl || DEFAULT_AVATAR')
       transition(
         name='fade',
         mode='out-in',
@@ -51,7 +51,7 @@ header.global-header.flex-center(
               .nav-user-card
                 .top
                   .banner-bg
-                  img.avatar(src='https://r2.epb.wiki/avatar.jpg')
+                  img.avatar(:src='DEFAULT_AVATAR')
                 .details
                   a.user-name Anonymous
                   .uid Please login
@@ -81,6 +81,7 @@ header.global-header.flex-center(
 import { onMounted, ref, watch } from 'vue'
 import { useUserStore } from '~/stores/user'
 import { useSidenavStore } from '~/stores/sidenav'
+import { DEFAULT_AVATAR } from '~/utils/config'
 
 const user = useUserStore()
 const sidenav = useSidenavStore()

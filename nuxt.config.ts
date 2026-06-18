@@ -3,6 +3,11 @@ export default defineNuxtConfig({
 
   modules: ['@unocss/nuxt', '@pinia/nuxt'],
 
+  components: [
+    { path: '~/components/ui', pathPrefix: false },
+    '~/components',
+  ],
+
   css: ['~/assets/styles/index.scss'],
 
   runtimeConfig: {

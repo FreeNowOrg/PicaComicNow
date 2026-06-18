@@ -1,9 +1,0 @@
-{
-  "headers": [],
-  "rewrites": [
-    {
-      "source": "/api/:__PATH*",
-      "destination": "/api/index"
-    }
-  ]
-}

@@ -21,7 +21,7 @@ PicaProvider#app-container
 }
 
 main {
-  background-color: #FFF8DC;
+  background-color: #FFF0F3;
 }
 
 article {

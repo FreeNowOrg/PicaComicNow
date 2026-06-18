@@ -42,7 +42,7 @@ const sizeClass = computed(() => `size-${props.size}`)
   cursor: pointer;
   transition: all 150ms;
   box-shadow: 4px 4px 0 0 #000;
-  background-color: #FFF8DC;
+  background-color: #FFF0F3;
   color: #000;
   text-decoration: none;
 

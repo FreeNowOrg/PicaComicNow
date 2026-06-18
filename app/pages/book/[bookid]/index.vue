@@ -310,7 +310,7 @@ onMounted(() => {
       &:hover {
         translate: 1.5px 1.5px;
         box-shadow: 0 0 0 0 #000;
-        background-color: #FFF8DC;
+        background-color: #FFF0F3;
       }
 
       &.router-link-active {

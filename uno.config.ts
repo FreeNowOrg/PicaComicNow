@@ -20,7 +20,7 @@ export default defineConfig({
   extractors: [extractorPug()],
   theme: {
     colors: {
-      cream: '#FFF8DC',
+      cream: '#FFF0F3',
       brand: {
         pink: '#FF5C8A',
         pinkHot: '#FF6B9D',

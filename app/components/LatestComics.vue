@@ -14,7 +14,7 @@
         .latest-title {{ comic.title }}
         .latest-author @{{ comic.author }}
   .latest-footer
-    NuxtLink(to='/comics') 更多新作 →
+    NuxtLink(to='/latest') 更多新作 →
 </template>
 
 <script setup lang="ts">

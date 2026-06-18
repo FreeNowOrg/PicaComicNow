@@ -33,7 +33,7 @@
     button.arrow.next(@click='next')
       i.i-fa6-solid-chevron-right
   .ranking-link
-    NuxtLink(to='/comics') 查看完整排行榜 →
+    NuxtLink(to='/leaderboard') 查看完整排行榜 →
 </template>
 
 <script setup lang="ts">

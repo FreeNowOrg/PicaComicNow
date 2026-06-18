@@ -8,17 +8,14 @@ mixin pagenator
 
 #search-container
   .bread-crumb
-    NuxtLink.button(to='/categories')
-      icon
-        arrow-left
-      |
-      | Categories Index
+    NuxtLink(to='/') 首页
+    NuxtLink(to='/comics') 全部漫画
+    span(v-if='keyword') 搜索「{{ keyword }}」
 
-  h1(v-if='keyword') Search『{{ keyword }}』comics (page {{ page }})
-  h1(v-else) Advanced Search
+  h1(v-if='keyword') 搜索「{{ keyword }}」(第 {{ page }} 页)
+  h1(v-else) 高级搜索
 
-  .mbox.error(v-if='error')
-    .title Failed to get comics data
+  PicaMbox(v-if='error', type='error', header='加载漫画失败')
     p {{ error }}
 
   .loading.align-center(v-if='loading && !comics.length')
@@ -34,7 +31,6 @@ mixin pagenator
 import { computed, onMounted, ref, watch } from 'vue'
 import { getErrMsg } from '~/utils/getErrMsg'
 import { setTitle } from '~/utils/setTitle'
-import { ArrowLeft, ArrowRight } from '@vicons/fa'
 import { picaClient } from '~/utils/pica-client'
 import {
   PicaListSort,
@@ -61,10 +57,10 @@ onMounted(() => {
   page.value = parseInt(route.query.page as string) || 1
   sort.value = (route.query.sort as PicaListSort) || PicaListSort.DEFAULT
 
-  loadData()
+  loadData(true)
 })
 
-function loadData() {
+function loadData(init = false) {
   if (loading.value) return
 
   if (keyword.value) {
@@ -73,7 +69,8 @@ function loadData() {
     setTitle('Search')
   }
 
-  router.push({
+  const nav = init ? router.replace : router.push
+  nav({
     path: '/search',
     query: {
       keyword: keyword.value,
@@ -112,12 +109,18 @@ function loadData() {
     })
 }
 
-watch(
-  () => route.query.keyword,
-  (val) => {
-    keyword.value = (val as string) || ''
+watch(() => route.query, (q) => {
+  const newKw = (q.keyword as string) || ''
+  const newPage = parseInt(q.page as string) || 1
+  const newSort = (q.sort as PicaListSort) || PicaListSort.DEFAULT
+  const changed = newKw !== keyword.value || newPage !== page.value || newSort !== sort.value
+  if (changed) {
+    keyword.value = newKw
+    page.value = newPage
+    sort.value = newSort
+    loadData()
   }
-)
+})
 
 watch(
   [keyword, category, page, sort],
@@ -130,19 +133,6 @@ watch(
 )
 </script>
 
-<style scoped lang="sass">
-.pagenator
-  text-align: center
-  > *
-    display: inline-block
-  .page
-    margin-left: 1rem
-    margin-right: 1rem
-    background-color: var(--theme-accent-color)
-    color: #fff
-    padding: 0.25rem 0.6rem
-    border-radius: 1em
-    display: inline-flex
-    gap: 0.4rem
-    cursor: pointer
+<style scoped lang="scss">
+// Breadcrumb spacing
 </style>

@@ -1,0 +1,119 @@
+// TODO: Replace these utility classes with UnoCSS equivalents in templates,
+// then remove them. Kept for now because many templates still reference them.
+
+.align-center {
+  text-align: center;
+}
+
+.align-left {
+  text-align: left;
+}
+
+.align-right {
+  text-align: right;
+}
+
+.position-center {
+  text-align: left;
+  position: relative;
+  left: 50%;
+  transform: translateX(-50%);
+}
+
+.flex-center {
+  display: flex;
+  align-items: center;
+}
+
+.pre,
+.poem {
+  white-space: pre-wrap;
+}
+
+.flex {
+  display: flex;
+}
+
+.flex-1 {
+  flex: 1;
+}
+
+.gap-1 {
+  gap: 1rem;
+}
+
+.flex-list {
+  .list-item {
+    display: flex;
+    gap: 0.5rem;
+
+    &:not(:first-of-type) {
+      margin-top: 4px;
+    }
+
+    &.header {
+      position: sticky;
+      top: 50px;
+      background-color: #f8f8f8;
+      font-weight: 600;
+      font-size: 1.24rem;
+      z-index: 10;
+
+      > div:not(:last-of-type) {
+        box-shadow: 2px 0 #dedede;
+      }
+    }
+
+    > div {
+      flex: 1;
+    }
+
+    .key {
+      font-weight: 600;
+      box-shadow: 2px 0 #dedede;
+    }
+  }
+}
+
+.pointer {
+  cursor: pointer;
+}
+
+.bread-crumb {
+  display: flex;
+  align-items: center;
+  gap: 0;
+  margin-bottom: 1.5rem;
+  font-weight: 800;
+  font-size: 0.9rem;
+
+  a, span {
+    display: inline-flex;
+    align-items: center;
+    padding: 0.3rem 0.75rem;
+    border: 2px solid #000;
+    background: #fff;
+    color: #000;
+    text-decoration: none;
+    transition: background 0.15s;
+    margin-right: -2px;
+
+    &:first-child {
+      border-right: 2px solid #000;
+    }
+
+    &:last-child {
+      background: #FFE066;
+    }
+  }
+
+  a:hover {
+    background: #FF5C8A;
+    color: #fff;
+    z-index: 1;
+  }
+
+  span {
+    cursor: default;
+  }
+}

@@ -8,16 +8,13 @@ mixin pagenator
 
 #favourite-container
   .bread-crumb
-    NuxtLink.button(to='/profile')
-      icon
-        arrow-left
-      |
-      | Profile
+    NuxtLink(to='/') 首页
+    NuxtLink(to='/profile') 个人资料
+    span 收藏夹
 
-  h1 My Favourites
+  h1 我的收藏
 
-  .mbox.error(v-if='error')
-    .title Failed to get list
+  PicaMbox(v-if='error', type='error', header='Failed to get list')
     p {{ error }}
 
   .loading.align-center(v-if='loading && !comics.length')
@@ -31,7 +28,6 @@ mixin pagenator
 
 <script setup lang="ts">
 import { onMounted, ref, watch } from 'vue'
-import { ArrowLeft, ArrowRight } from '@vicons/fa'
 import { setTitle } from '~/utils/setTitle'
 import { getErrMsg } from '~/utils/getErrMsg'
 import { type PicaBookListItem, PicaListSort } from '~/types'
@@ -57,17 +53,28 @@ onMounted(() => {
   page.value = parseInt(route.query.page as string) || 1
   sort.value = (route.query.sort as PicaListSort) || PicaListSort.DATE_DESC
 
-  loadData()
+  loadData(true)
 })
 
-watch([page, sort], loadData)
+watch(() => route.query, (q) => {
+  const newPage = parseInt(q.page as string) || 1
+  const newSort = (q.sort as PicaListSort) || PicaListSort.DATE_DESC
+  if (newPage !== page.value || newSort !== sort.value) {
+    page.value = newPage
+    sort.value = newSort
+    loadData()
+  }
+})
+
+watch([page, sort], () => loadData())
 
 const loading = ref(false)
 const error = ref('')
-function loadData() {
+function loadData(init = false) {
   if (loading.value) return
 
-  router.push({
+  const nav = init ? router.replace : router.push
+  nav({
     query: {
       page: page.value,
       sort: sort.value,
@@ -98,19 +105,6 @@ function loadData() {
 }
 </script>
 
-<style scoped lang="sass">
-.pagenator
-  text-align: center
-  > *
-    display: inline-block
-  .page
-    margin-left: 1rem
-    margin-right: 1rem
-    background-color: var(--theme-accent-color)
-    color: #fff
-    padding: 0.25rem 0.6rem
-    border-radius: 1em
-    display: inline-flex
-    gap: 0.4rem
-    cursor: pointer
+<style scoped lang="scss">
+// Breadcrumb spacing
 </style>

@@ -1,0 +1,266 @@
+// Header — Neubrutalism styling
+h1 {
+  font-family: 'Archivo Black', 'Noto Sans SC', system-ui, sans-serif;
+  font-size: 2.2rem;
+  font-weight: 900;
+}
+
+h2 {
+  display: inline-block;
+  position: relative;
+  font-size: 1.4rem;
+  font-weight: 900;
+  left: 50%;
+  transform: translateX(-50%);
+  padding: 0.1em 0.5em;
+  // Neubrutalism highlight: solid brand-yellow background behind text
+  background-color: #FFE066;
+  border-bottom: 3px solid #000;
+}
+
+.align-center {
+  h2 {
+    left: unset;
+    transform: unset;
+  }
+}
+
+// Links
+a {
+  --color: var(--theme-link-color);
+  color: var(--color);
+  text-decoration: none;
+
+  &.plain {
+    color: inherit;
+  }
+
+  &:hover {
+    text-decoration: underline;
+    text-decoration-thickness: 2px;
+    text-underline-offset: 3px;
+  }
+
+  // Neubrutalism button link
+  &.button {
+    padding: 0.4rem 0.8rem;
+    background-color: #FFF0F3;
+    border: 3px solid #000;
+    border-radius: 0;
+    box-shadow: 4px 4px 0 0 #000;
+    font-weight: 900;
+    cursor: pointer;
+    transition: all 150ms;
+    color: #000;
+    text-decoration: none;
+
+    &:hover {
+      translate: 1.5px 1.5px;
+      box-shadow: 0 0 0 0 #000;
+      text-decoration: none;
+    }
+
+    &:active {
+      translate: 3px 3px;
+      box-shadow: 0 0 0 0 #000;
+    }
+
+    &.danger {
+      background-color: #FF5555;
+      color: #fff;
+    }
+  }
+}
+
+// Button — Neubrutalism default
+button {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.5rem 1.25rem;
+  font-size: 1rem;
+  font-weight: 900;
+  border: 3px solid #000;
+  border-radius: 0;
+  background-color: #FFF0F3;
+  color: #000;
+  cursor: pointer;
+  box-shadow: 4px 4px 0 0 #000;
+  transition: all 150ms;
+
+  &:hover {
+    translate: 1.5px 1.5px;
+    box-shadow: 0 0 0 0 #000;
+  }
+
+  &:active {
+    translate: 3px 3px;
+    box-shadow: 0 0 0 0 #000;
+  }
+
+  &:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+
+    &:hover,
+    &:active {
+      translate: 0;
+      box-shadow: 4px 4px 0 0 #000;
+    }
+  }
+}
+
+// Card — Neubrutalism styling (catches remaining .card usage)
+.card {
+  background-color: #fff;
+  border-radius: 0;
+  padding: 1rem;
+  border: 3px solid #000;
+  box-shadow: 6px 6px 0 0 #000;
+  transition: all 150ms;
+
+  &.gap {
+    margin-top: 1rem;
+    margin-bottom: 1.4rem;
+  }
+}
+
+// Tags — Neubrutalism styling
+.tags-list {
+  line-height: 1.6;
+
+  .tag {
+    line-height: 1.4;
+    display: inline-flex;
+    align-items: center;
+    padding: 0.125rem 0.5rem;
+    margin-right: 0.4rem;
+    background-color: #fff;
+    border: 2px solid #000;
+    border-radius: 0;
+    box-shadow: 2px 2px 0 0 #000;
+    font-weight: 700;
+    font-size: 0.875rem;
+    transition: all 150ms;
+
+    &:hover {
+      background-color: #FFE066;
+    }
+
+    &[data-tag="生肉"] {
+      color: #fff;
+      background-color: #dd8221;
+    }
+
+    &.router-link-active {
+      color: #fff;
+      background-color: #FF5C8A;
+    }
+  }
+}
+
+// Input/Textarea — Neubrutalism styling
+input,
+textarea {
+  padding: 0.5rem 0.75rem;
+  font-size: 1rem;
+  line-height: 1.4;
+  border: 2px solid #000;
+  border-radius: 0;
+  background-color: #fff;
+  color: #000;
+  outline: none;
+  transition: all 150ms;
+
+  &:hover {
+    box-shadow: 3px 3px 0 0 #000;
+  }
+
+  &:focus {
+    border-color: #FF5C8A;
+    box-shadow: 4px 4px 0 0 #FF5C8A;
+  }
+}
+
+// Responsive
+.responsive {
+  max-width: 1200px;
+  margin-left: auto;
+  margin-right: auto;
+  padding-left: 2rem;
+  padding-right: 2rem;
+}
+
+@media (max-width: 800px) {
+  .responsive {
+    padding-left: 1rem;
+    padding-right: 1rem;
+  }
+}
+
+// Loading
+.loading-cover {
+  position: relative;
+
+  &::before,
+  &::after {
+    content: "";
+    width: 100%;
+    height: 100%;
+    display: block;
+    position: absolute;
+  }
+
+  &::before {
+    background-image: url(/images/spinner.svg);
+    background-size: 75px;
+    background-repeat: no-repeat;
+    background-position: center;
+    top: 50%;
+    left: 50%;
+    transform: translateX(-50%) translateY(-50%);
+    z-index: 6;
+  }
+
+  &::after {
+    top: 0;
+    left: 0;
+    background-color: rgba(255, 248, 220, 0.5);
+    z-index: 5;
+  }
+}
+
+// Code — Neubrutalism styling
+pre {
+  overflow: auto;
+  background-color: #FFF0F3;
+  padding: 0.75rem;
+  border: 2px solid #000;
+  border-radius: 0;
+  box-shadow: 3px 3px 0 0 #000;
+  font-family: 'Space Grotesk', ui-monospace, monospace;
+}
+
+code {
+  background-color: #FFE066;
+  display: inline;
+  border-radius: 0;
+  padding: 0.1rem 0.3rem;
+  border: 1px solid #000;
+  color: #000;
+  font-weight: 600;
+  word-break: break-word;
+}
+
+// Tabber
+.tabber {
+  .tabber-tabs {
+    margin-bottom: 1rem;
+    display: flex;
+    gap: 1rem;
+
+    a {
+      cursor: pointer;
+    }
+  }
+}

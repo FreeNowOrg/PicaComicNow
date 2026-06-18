@@ -51,20 +51,24 @@ onBeforeUnmount(() => {
 })
 </script>
 
-<style scoped lang="sass">
-.lazyload
-  &[data-lazy-state="pending"]
-    background-color: #e8e8e8
+<style scoped lang="scss">
+.lazyload {
+  &[data-lazy-state="pending"] {
+    background-color: #e8e8e8;
+  }
   &[data-lazy-state="loading"],
-  &[data-lazy-state="retry"]
-    animation: img-loading 0.6s ease infinite alternate
-    border: 0
-  &[data-lazy-state="failed"]
-    background: #fff url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAAAAAA6mKC9AAAAGElEQVQYV2N4DwX/oYBhgARgDJjEAAkAAEC99wFuu0VFAAAAAElFTkSuQmCC) repeat
+  &[data-lazy-state="retry"] {
+    animation: img-loading 0.6s ease infinite alternate;
+    border: 0;
+  }
+  &[data-lazy-state="failed"] {
+    background: #fff url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAAAAAA6mKC9AAAAGElEQVQYV2N4DwX/oYBhgARgDJjEAAkAAEC99wFuu0VFAAAAAElFTkSuQmCC) repeat;
+  }
+}
 
-@keyframes img-loading
-  from
-    background-color: #e6e6e6
-  to
-    background-color: #ddd
+// Loading animation cycles between brand pink and brand yellow
+@keyframes img-loading {
+  from { background-color: #FFD6E0; }
+  to { background-color: #FFF3C7; }
+}
 </style>

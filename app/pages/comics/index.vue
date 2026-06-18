@@ -4,17 +4,12 @@ mixin pagenator
 
 #comics-container
   .bread-crumb
-    NuxtLink.button(to='/categories')
-      icon
-        arrow-left
-      |
-      | Categories Index
+    NuxtLink(to='/') 首页
+    span 全部漫画
 
-  h1(v-if='category') Comics in {{ category }}
-  h1(v-else) Comics list
+  h1 全部漫画
 
-  .mbox.error(v-if='error')
-    .title Failed to get comics data
+  PicaMbox(v-if='error', type='error', header='Failed to get comics data')
     p {{ error }}
 
   .loading.align-center(v-if='loading && !comics.length')
@@ -22,25 +17,22 @@ mixin pagenator
 
   section(v-if='comics.length', :class='{ "loading-cover": loading }')
     +pagenator
-    books-list(:data='comics', :backTo='"/comics/" + category')
+    books-list(:data='comics', backTo='/comics')
     +pagenator
 </template>
 
 <script setup lang="ts">
 import { computed, effect, onMounted, ref, watch } from 'vue'
-import { ArrowLeft, ArrowRight } from '@vicons/fa'
 import { setTitle } from '~/utils/setTitle'
 import { getErrMsg } from '~/utils/getErrMsg'
 import { type PicaBookListItem, PicaListSort } from '~/types'
-import { useCategoryStore } from '~/stores/category'
+import { picaClient } from '~/utils/pica-client'
 
 definePageMeta({ name: 'comics-index' })
 
 const route = useRoute()
 const router = useRouter()
-const catStore = useCategoryStore()
 
-const category = computed(() => route.params.category as string)
 const page = ref(1)
 const totalPages = ref(1)
 const sort = ref<PicaListSort>(PicaListSort.DEFAULT)
@@ -50,35 +42,26 @@ const loading = ref(false)
 const error = ref('')
 
 onMounted(() => {
-  setTitle('Comics')
+  setTitle('全部漫画')
 
   page.value = parseInt(route.query.page as string) || 1
-  sort.value = (route.query.sort as PicaListSort) || PicaListSort.DEFAULT
+  sort.value = (route.query.s as PicaListSort) || (route.query.sort as PicaListSort) || PicaListSort.DEFAULT
 
-  loadData()
+  loadData(true)
 })
 
-async function loadData() {
+async function loadData(init = false) {
   if (loading.value) return
 
-  if (!category.value) {
-    error.value = 'Category not specified'
-    return
-  }
-
-  setTitle(`${category.value} (page ${page.value})`, 'Comics')
-  router.push({
-    params: {
-      category: category.value,
-    },
-    query: { page: page.value, sort: sort.value },
-  })
+  setTitle(`全部漫画 (第 ${page.value} 页)`)
+  const nav = init ? router.replace : router.push
+  nav({ query: { page: page.value, s: sort.value } })
 
   loading.value = true
   error.value = ''
 
-  return catStore
-    .fetchBooksInCategory(category.value, page.value, sort.value)
+  return picaClient
+    .fetchAllComics(page.value, sort.value)
     .then(
       (data) => {
         comics.value = data.docs
@@ -94,27 +77,20 @@ async function loadData() {
     })
 }
 
-watch([category, page, sort], ([nCat, nPage, nSort], [cat, pg, srt]) => {
-  if (nCat !== cat) {
-    page.value = 1
+watch(() => route.query, (q) => {
+  const newPage = parseInt(q.page as string) || 1
+  const newSort = (q.s as PicaListSort) || PicaListSort.DEFAULT
+  if (newPage !== page.value || newSort !== sort.value) {
+    page.value = newPage
+    sort.value = newSort
+    loadData()
   }
+})
+
+watch([page, sort], () => {
   loadData()
 })
 </script>
 
-<style scoped lang="sass">
-.pagenator
-  text-align: center
-  > *
-    display: inline-block
-  .page
-    margin-left: 1rem
-    margin-right: 1rem
-    background-color: var(--theme-accent-color)
-    color: #fff
-    padding: 0.25rem 0.6rem
-    border-radius: 1em
-    display: inline-flex
-    gap: 0.4rem
-    cursor: pointer
+<style scoped lang="scss">
 </style>

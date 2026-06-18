@@ -1,46 +1,41 @@
 <template lang="pug">
 footer.global-footer
-  .top.flex.responsive
-    section.flex-1
-      h4 Discovery
-      ul
-        li
-          NuxtLink(to='/about') About us
-        li
-          NuxtLink(to='/categories') Categories
-          ul
-            li
-              NuxtLink(to='/comics/妹妹系') 妹妹系
-            li
-              NuxtLink(to='/search/獸耳') 兽耳娘，我现在就要看兽耳娘
+  .top.bg-footer
+    .footer-inner.footer-grid
+      section.site-intro
+        h4 {{ PROJECT_NAME }}
+        p This is a fan made website. We are NOT PicACG official.
+        p 这是一个粉丝向网站，我们与 PicACG 官方<u>没有任何关系</u>。
+        p <u>请勿</u>在任何地方传播本网站——珍惜眼前。
 
-    section.flex-1
-      h4 Follow us
-      ul
-        li Free Now Organization
-          ul
-            li
-              e-link(href='https://github.com/FreeNowOrg') @FreeNowOrg
+      section
+        h4 快速导航
+        ul
+          li
+            NuxtLink(to='/') 首页
+          li
+            NuxtLink(to='/categories') 分类
+          li
+            NuxtLink(to='/favourite') 收藏夹
+          li
+            NuxtLink(to='/about') 关于
 
-    section.flex-1
-      h4 Friend links
-      p Come to GitHub issues to exchange friend links~
+      section
+        h4 友情链接
+        ul
+          li
+            e-link(href='https://github.com/FreeNowOrg') @FreeNowOrg
 
-  .top.responsive
-    section.flex-1
-      h4 Attention please
-      p This is a fan made website. We are NOT PicACG official. Please DO NOT share this website anywhere.
-      p 这是一个粉丝向网站，我们与 PicACG 官方<u>没有任何关系</u>。<u>请勿</u>在任何地方传播本网站——珍惜眼前。
-
-  .bottom.align-center.responsive
-    .copyright
-      | Copyright &copy; {{ COPYRIGHT_STR }}
-      |
-      e-link(:href='GITHUB_URL') {{ PROJECT_NAME }}
-      |
-      em v{{ VERSION }}
-      | &nbsp;|&nbsp;
-      span For communication and learning only.
+  .bottom.bg-footer-dark
+    .footer-inner.align-center
+      .copyright
+        | Copyright &copy; {{ COPYRIGHT_STR }}
+        |
+        e-link(:href='GITHUB_URL') {{ PROJECT_NAME }}
+        |
+        em v{{ VERSION }}
+        | &nbsp;|&nbsp;
+        span For communication and learning only.
 </template>
 
 <script setup lang="ts">
@@ -52,41 +47,93 @@ import {
 } from '~/utils/config'
 </script>
 
-<style scoped lang="sass">
-.global-footer
-  > div
-    color: var(--theme-accent-link-color)
+<style scoped lang="scss">
+.global-footer {
+  border-top: 3px solid #000;
 
-  .top
-    background-color: var(--theme-accent-color)
-    padding-top: 2rem
-    padding-bottom: 2rem
-    gap: 1.5rem
+  > div {
+    color: #333;
+  }
 
-  .bottom
-    padding: 1rem
-    background-color: var(--theme-accent-color-darken)
+  .footer-inner {
+    max-width: 1200px;
+    margin-left: auto;
+    margin-right: auto;
+    padding-left: 2rem;
+    padding-right: 2rem;
+  }
 
-  h4
-    position: relative
-    margin: 1rem 0 0.5rem 0
-    padding-bottom: 0.2rem
-    border-bottom: 2px solid
-    font-size: 1.1rem
+  .footer-grid {
+    display: grid;
+    grid-template-columns: 2fr 1fr 1fr;
+    gap: 2rem;
+  }
 
-  ul
-    padding-left: 1rem
-    margin: 0.2rem 0
+  .top {
+    padding-top: 2rem;
+    padding-bottom: 2rem;
+  }
 
-    a
-      display: inline
-      font-weight: 400
+  .bottom {
+    padding-top: 1rem;
+    padding-bottom: 1rem;
+    color: #555;
+    border-top: 2px solid #000;
+  }
 
-a
-  --color: #eee
-  font-weight: 600
+  .site-intro {
+    p {
+      font-size: 0.85rem;
+      line-height: 1.6;
+      margin: 0.25rem 0;
+    }
+  }
 
-@media  (max-width: 800px)
-  .top
-    flex-direction: column
+  h4 {
+    display: inline-block;
+    margin: 0 0 0.75rem 0;
+    padding: 0.1em 0.5em;
+    font-size: 1.1rem;
+    font-family: "Archivo Black", "Noto Sans SC", system-ui, sans-serif;
+    font-weight: 900;
+    color: #000;
+    background-color: #FFE066;
+    border-bottom: 3px solid #000;
+  }
+
+  ul {
+    padding-left: 0;
+    list-style: none;
+    margin: 0.75rem 0 0;
+
+    li {
+      margin-bottom: 0.25rem;
+    }
+
+    a {
+      display: inline;
+      font-weight: 600;
+    }
+  }
+}
+
+a {
+  --color: #000;
+  font-weight: 600;
+  text-decoration: underline;
+  text-underline-offset: 3px;
+  transition: background-color 0.15s, color 0.15s;
+
+  &:hover {
+    background-color: #FF5C8A;
+    color: #fff;
+  }
+}
+
+@media (max-width: 800px) {
+  .global-footer .footer-grid {
+    grid-template-columns: 1fr;
+    gap: 1rem;
+  }
+}
 </style>

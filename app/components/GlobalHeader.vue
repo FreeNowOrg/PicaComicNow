@@ -7,8 +7,7 @@ header.global-header.flex-center(
       @click='sidenav.toggle()',
       :class='{ "is-active": sidenav.isShow }'
     )
-      icon
-        bars
+      i.i-fa6-solid-bars
 
   .item.global-site-logo-container
     NuxtLink.plain.global-site-logo(to='/', title='Home')
@@ -16,16 +15,18 @@ header.global-header.flex-center(
 
   .flex-1.flex.nav-links(style='gap: 1rem')
     .item
-      NuxtLink(to='/categories') Categories
+      NuxtLink(to='/comics') 全部漫画
     .item
-      NuxtLink(to='/favourite') Favourite
+      NuxtLink(to='/categories') 分类
     .item
-      NuxtLink(to='/about') About
+      NuxtLink(to='/favourite') 收藏
+    .item
+      NuxtLink(to='/about') 关于
 
   .item.search-area
     input.search-input(
       type='text',
-      placeholder='Search...',
+      placeholder='搜索...',
       v-model='searchInput',
       @keydown.enter='() => (router.push({ path: "/search", query: { keyword: searchInput } }), (searchInput = ""))',
       :style='{ height: "2rem" }'
@@ -38,7 +39,7 @@ header.global-header.flex-center(
         @click='userDropdownShow = !userDropdownShow'
       )
         .avatar
-          img(src='https://r2.epb.wiki/avatar.jpg')
+          img(:src='user.profile?.avatar?.fileUrl || DEFAULT_AVATAR')
       transition(
         name='fade',
         mode='out-in',
@@ -52,10 +53,10 @@ header.global-header.flex-center(
               .nav-user-card
                 .top
                   .banner-bg
-                  img.avatar(src='https://r2.epb.wiki/avatar.jpg')
+                  img.avatar(:src='DEFAULT_AVATAR')
                 .details
-                  a.user-name Anonymous
-                  .uid Please login
+                  a.user-name 匿名用户
+                  .uid 请登录
 
             //- isLogedIn
             li(v-if='user.profile')
@@ -72,17 +73,17 @@ header.global-header.flex-center(
                   NuxtLink.plain.user-name(to='/profile') {{ user.profile.name }}
                   .uid {{ user.profile.email }}
             li(v-if='user.profile')
-              NuxtLink.plain(to='/favourite') My Favourites
+              NuxtLink.plain(to='/favourite') 我的收藏
 
             li(v-if='$route.path !== "/auth"')
-              NuxtLink.plain(to='/auth') {{ user.profile ? 'Logout' : 'Login' }}
+              NuxtLink.plain(to='/auth') {{ user.profile ? '退出登录' : '登录' }}
 </template>
 
 <script setup lang="ts">
 import { onMounted, ref, watch } from 'vue'
-import { Github, Bars, UserCircle, AngleDown } from '@vicons/fa'
 import { useUserStore } from '~/stores/user'
 import { useSidenavStore } from '~/stores/sidenav'
+import { DEFAULT_AVATAR } from '~/utils/config'
 
 const user = useUserStore()
 const sidenav = useSidenavStore()
@@ -131,166 +132,240 @@ onMounted(() => {
 })
 </script>
 
-<style scoped lang="sass">
-.global-header
-  height: 50px
-  width: 100%
-  padding: 0 1rem
-  position: fixed
-  gap: 1rem
-  font-size: 1.25rem
-  z-index: 100
-  background-color: #fff
-  transition: box-shadow 0.4s ease
-  box-shadow: 0 1px 0 #eee
+<style scoped lang="scss">
+.global-header {
+  height: 63px;
+  width: 100%;
+  padding: 0 1rem;
+  position: fixed;
+  gap: 1rem;
+  font-size: 1.25rem;
+  z-index: 100;
+  background-color: #fff;
+  border-bottom: 3px solid #000;
+  transition: transform 0.3s ease;
 
-  a
-    --color: #222
+  a {
+    --color: #222;
+  }
 
-  // &.not-at-top
-  //   box-shadow: 0 0 12px #eee
+  // Navigation links: bold weight for Neubrutalism feel
+  .nav-links {
+    .item a {
+      font-weight: 700;
+      letter-spacing: 0.01em;
+    }
+  }
 
-  .side-nav-toggler
-    --color: #888
-    display: inline-block
-    width: 40px
-    height: 40px
-    line-height: 45px
-    text-align: center
-    border-radius: 50%
+  .side-nav-toggler {
+    --color: #222;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 40px;
+    height: 40px;
+    border-radius: 0;
 
     &:hover,
-    &.is-active
-      background-color: rgba(0, 0, 0, 0.05)
+    &.is-active {
+      background-color: #FFE066;
+    }
+  }
 
-  .global-site-logo
-    .desc
-      font-size: 0.6rem
-      font-weight: 600
-      color: #222
-      text-align: right
+  .global-site-logo {
+    font-family: "Archivo Black", "Noto Sans SC", system-ui, sans-serif;
+    font-weight: 900;
+    font-size: 1.3rem;
+    letter-spacing: -0.02em;
 
-    img
-      display: block
-      height: 1.8rem
-      width: auto
+    .desc {
+      font-size: 0.6rem;
+      font-weight: 600;
+      color: #222;
+      text-align: right;
+    }
 
-  .user-area
-    .avatar
-      font-size: 1.6rem
+    img {
+      display: block;
+      height: 1.8rem;
+      width: auto;
+    }
+  }
+
+  // Search input: pica-input style inline
+  .search-input {
+    border: 2px solid #000;
+    border-radius: 0;
+    padding: 0 0.75rem;
+    background-color: #fff;
+    font-weight: 500;
+    transition: box-shadow 0.15s ease, border-color 0.15s ease;
+
+    &:focus {
+      outline: none;
+      border-color: #FF5C8A;
+      box-shadow: 4px 4px 0 0 #FF5C8A;
+    }
+  }
+
+  .user-area {
+    display: flex;
+    align-items: center;
+
     .avatar img,
-    img.avatar
-      border-radius: 50%
+    img.avatar {
+      border-radius: 0;
+      display: block;
+    }
 
-    .user-dropdown
-      font-size: 1rem
-      position: relative
-      .dropdown-btn
-        position: relative
-        display: inline-flex
-        align-items: center
-        .avatar
-          margin-right: 0.2rem
-          img
-            width: 2rem
-            height: 2rem
-            box-shadow: 0 0 0 2px #fff
-            vertical-align: middle
-        .angle svg
-          transition: all 0.12s ease
-        &:hover
-          .avatar
-            img
-              box-shadow: 0 0 0 2px rgba(0, 0, 0, 0.25)
-        &.is-show
-          .avatar
-            img
-              box-shadow: 0 0 0 2px var(--theme-accent-color)
-          .angle svg
-            transform: rotateZ(180deg)
+    .user-dropdown {
+      font-size: 1rem;
+      position: relative;
+      display: flex;
+      align-items: center;
 
-      .dropdown-content
-        position: absolute
-        top: 1.8rem
-        right: 0
-        padding: 0
-        padding-top: 0.4rem
-        width: 200px
+      .dropdown-btn {
+        position: relative;
+        display: inline-flex;
+        align-items: center;
 
-        ul
-          list-style: none
-          padding: 4px
-          background-color: #fff
-          box-shadow: 0 0 4px #aaa
-          border-radius: 4px
+        .avatar {
+          margin-right: 0.2rem;
 
-          li > *
-            padding: 0.5rem
+          img {
+            width: 2rem;
+            height: 2rem;
+            border: 2px solid #000;
+            display: block;
+          }
+        }
 
-          li a
-            display: block
-            cursor: pointer
-            --color: var(--theme-link-color)
+        &:hover {
+          .avatar img {
+            border-color: #FF5C8A;
+          }
+        }
 
-            &:hover
-              background-color: var(--theme-tag-color)
+        &.is-show {
+          .avatar img {
+            border-color: #FF5C8A;
+          }
+        }
+      }
 
-  .nav-user-card
-    border-bottom: 1px solid
-    position: relative
+      // Dropdown panel: pica-card style
+      .dropdown-content {
+        position: absolute;
+        top: 2rem;
+        right: 0;
+        padding: 0;
+        padding-top: 0.4rem;
+        width: 200px;
 
-    .banner-bg
-      position: absolute
-      top: -4px
-      left: -4px
-      height: 3rem
-      width: calc(100% + 8px)
-      background-color: rgba(var(--theme-accent-color--rgb), 0.1)
-      z-index: 0
+        ul {
+          list-style: none;
+          padding: 4px;
+          background-color: #fff;
+          border: 3px solid #000;
+          box-shadow: 6px 6px 0 0 #000;
+          border-radius: 0;
 
-    a
-      display: inline !important
+          li > * {
+            padding: 0.5rem;
+          }
 
-    .avatar
-      width: 68px
-      height: 68px
-      box-shadow: 0 0 0 4px #fff
-      z-index: 1
+          li a {
+            display: block;
+            cursor: pointer;
+            font-weight: 600;
+            --color: #222;
 
-    .details
-      .user-name
-        font-size: 1rem
+            &:hover {
+              background-color: #FFE066; // brand-yellow hover
+            }
+          }
+        }
+      }
+    }
+  }
 
-      .uid
-        font-size: 0.8rem
-        color: #aaa
+  .nav-user-card {
+    border-bottom: 2px solid #000;
+    position: relative;
 
-@media  (max-width: 800px)
-  .global-header
-    .nav-links > .item
-      display: none
+    .banner-bg {
+      position: absolute;
+      top: -4px;
+      left: -4px;
+      height: 3rem;
+      width: calc(100% + 8px);
+      background-color: rgba(255, 92, 138, 0.1); // brand-pink tint
+      z-index: 0;
+    }
 
-// Animate
-.fadeInUp
-  animation: fadeInUp 0.24s ease
+    a {
+      display: inline !important;
+    }
 
-.fadeOutDown
-  animation: fadeOutDown 0.4s ease
+    .avatar {
+      width: 68px;
+      height: 68px;
+      box-shadow: 3px 3px 0 0 #000;
+      z-index: 1;
+    }
 
-@keyframes fadeInUp
-  0%
-    opacity: 0
-    transform: translate3d(0, 1rem, 0)
+    .details {
+      .user-name {
+        font-size: 1rem;
+        font-weight: 700;
+      }
 
-  to
-    opacity: 1
-    transform: translateZ(0)
+      .uid {
+        font-size: 0.8rem;
+        color: #666;
+      }
+    }
+  }
+}
 
-@keyframes fadeOutDown
-  0%
-    opacity: 1
+// Hide nav links on narrow screens
+@media (max-width: 800px) {
+  .global-header {
+    .nav-links > .item {
+      display: none;
+    }
+  }
+}
 
-  to
-    opacity: 0
-    transform: translate3d(0, 1rem, 0)
+// Animate — dropdown entry/exit
+.fadeInUp {
+  animation: fadeInUp 0.24s ease;
+}
+
+.fadeOutDown {
+  animation: fadeOutDown 0.4s ease;
+}
+
+@keyframes fadeInUp {
+  0% {
+    opacity: 0;
+    transform: translate3d(0, 1rem, 0);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateZ(0);
+  }
+}
+
+@keyframes fadeOutDown {
+  0% {
+    opacity: 1;
+  }
+
+  to {
+    opacity: 0;
+    transform: translate3d(0, 1rem, 0);
+  }
+}
 </style>

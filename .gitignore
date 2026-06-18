@@ -109,3 +109,6 @@ dist
 dev
 *.dev.*
 .vercel
+
+.claude/launch.json
+.playwright-mcp

@@ -6,6 +6,8 @@ import type {
   ApiResponseBookMeta,
   ApiResponseBookPages,
   ApiResponseCategories,
+  ApiResponseLeaderboard,
+  ApiResponseRandomComics,
   ApiResponseUserProfile,
   PicaListSortType,
 } from '~/types'
@@ -137,6 +139,26 @@ class PicaComicClient {
       params: { c: category, page, s: sort },
     })
     return data.body
+  }
+
+  async fetchLeaderboard(tt: 'H24' | 'D7' | 'D30' = 'H24') {
+    const { data } = await this.http.get<ApiResponseLeaderboard>(
+      '/comics/leaderboard',
+      { params: { tt, ct: 'VC' } }
+    )
+    return data.body.comics
+  }
+
+  async fetchAllComics(page: number = 1, sort: PicaListSortType = 'dd') {
+    const { data } = await this.http.get<ApiResponseBookList>('/comics', {
+      params: { page, s: sort },
+    })
+    return data.body.comics
+  }
+
+  async fetchRandomComics() {
+    const { data } = await this.http.get<ApiResponseRandomComics>('/comics/random')
+    return data.body.comics
   }
 }
 

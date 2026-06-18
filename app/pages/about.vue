@@ -1,9 +1,9 @@
 <template lang="pug">
 #about-container
-  h1 About us
+  h1 关于我们
 
-  h2 Lorem ipsum
-  .card
+  h2 关于本站
+  PicaCard
     p Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
     p Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.
     p Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.
@@ -19,4 +19,4 @@ onMounted(() => {
 })
 </script>
 
-<style scoped lang="sass"></style>
+<style scoped lang="scss"></style>

@@ -1,31 +1,30 @@
 <template lang="pug">
 #auth-container
-  h1 Authorization
+  h1 登录
 
-  .mbox.info(v-if='$route.query.tips', style='margin-bottom: 1rem')
-    .title Tips
-    p You must log in to use this website
+  PicaMbox(v-if='$route.query.tips', type='info', header='提示', style='margin-bottom: 1rem')
+    p 请先登录后使用
 
   section(v-if='user.profile')
-    .card
-      h2 Hello, {{ user.profile.name }}
+    PicaCard
+      h2 你好，{{ user.profile.name }}
       .align-center
-        button(@click.prevent='handleSignOut') Sign out
+        PicaButton(variant='primary', @click.prevent='handleSignOut') 退出登录
 
   section(v-else)
-    form.form.card.align-center(:class='{ "loading-cover": onAuthenticating }')
-      h2(style='left: 0; transform: none') Login
+    PicaCard.form.align-center(:class='{ "loading-cover": onAuthenticating }')
+      h2(style='left: 0; transform: none') 登录
       label
-        strong Username/email
-        input(v-model='email')
+        strong 用户名/邮箱
+        input.pica-input(v-model='email')
       label
-        strong Password
-        input(v-model='password', type='password')
+        strong 密码
+        input.pica-input(v-model='password', type='password')
       div
-        button(@click.prevent='handleLogin') Login
+        PicaButton(variant='primary', @click.prevent='handleLogin') 登录
       //- Error
-      .mbox.error(v-if='errorMsg')
-        .title {{ errorTitle }}
+      PicaMbox(v-if='errorMsg', type='error')
+        template(#header) {{ errorTitle }}
         p {{ errorMsg }}
 </template>
 
@@ -61,7 +60,7 @@ function handleLogin() {
       },
       (err) => {
         console.warn('auth faild', err)
-        errorTitle.value = 'Auth failed'
+        errorTitle.value = '认证失败'
         errorMsg.value = getErrMsg(err)
       }
     )
@@ -74,7 +73,7 @@ function handleLogin() {
       },
       (err) => {
         console.warn('profile faild')
-        errorTitle.value = 'Faild to get profile'
+        errorTitle.value = '获取资料失败'
         errorMsg.value = getErrMsg(err)
       }
     )
@@ -92,42 +91,36 @@ onMounted(() => {
 })
 </script>
 
-<style scoped lang="sass">
-.form
-  width: 60%
-  margin: 0 auto
-  padding: 2rem
+<style scoped lang="scss">
+.form {
+  width: 60%;
+  margin: 0 auto;
+  padding: 2rem;
 
-  label
-    display: flex
-    margin: 1rem auto
-    align-items: center
+  label {
+    display: flex;
+    margin: 1rem auto;
+    align-items: center;
 
-    strong
-      margin-right: 1rem
+    strong {
+      margin-right: 1rem;
+      white-space: nowrap;
+    }
+  }
+}
 
-    input
-      flex: 1
-      width: 100%
-      padding: 4px 0.75rem
-      font-size: 1rem
-      line-height: 1.6
-      border: none
-      border-radius: 1em
-      background-color: rgba(0, 0, 0, 0.05)
-      outline: none
-      &:hover
-        box-shadow: 0 0 0 2px rgba(0, 0, 0, 0.25)
-      &:focus
-        box-shadow: 0 0 0 2px var(--theme-accent-color)
+@media (max-width: 600px) {
+  .form {
+    width: 90%;
 
-  .mbox
-    text-align: left
-    margin-top: 1rem
+    label {
+      flex-direction: column;
+      align-items: flex-start;
 
-@media (max-width: 600px)
-  .form
-    width: 90%
-    label
-      flex-direction: column
+      strong {
+        margin-bottom: 0.5rem;
+      }
+    }
+  }
+}
 </style>

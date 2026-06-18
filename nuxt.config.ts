@@ -1,9 +1,14 @@
 export default defineNuxtConfig({
   ssr: false,
 
-  modules: ['@pinia/nuxt'],
+  modules: ['@unocss/nuxt', '@pinia/nuxt'],
 
-  css: ['~/assets/styles/index.sass'],
+  components: [
+    { path: '~/components/ui', pathPrefix: false },
+    '~/components',
+  ],
+
+  css: ['~/assets/styles/index.scss'],
 
   runtimeConfig: {
     picaS3Base: '',
@@ -15,12 +20,9 @@ export default defineNuxtConfig({
     },
     optimizeDeps: {
       include: [
-        '@vicons/fa',
-        '@vicons/utils',
         'axios',
-        'localforage', // CJS
-        'naive-ui',
-        'nprogress', // CJS
+        'localforage',
+        'nprogress',
       ],
     },
   },

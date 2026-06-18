@@ -5,10 +5,9 @@ mixin pagenator
 #comics-container
   .bread-crumb
     NuxtLink(to='/') 首页
-    |  /
-    NuxtLink(to='/comics')  全部漫画
-    |  /
-    span  {{ category }}
+    NuxtLink(to='/comics') 全部漫画
+    NuxtLink(to='/categories') 分类列表
+    span {{ category }}
 
   h1(v-if='category') {{ category }}
 

@@ -5,8 +5,7 @@ mixin pagenator
 #comics-container
   .bread-crumb
     NuxtLink(to='/') 首页
-    |  /
-    span  全部漫画
+    span 全部漫画
 
   h1 全部漫画
 

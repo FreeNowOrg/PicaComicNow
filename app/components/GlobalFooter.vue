@@ -90,14 +90,15 @@ import {
   }
 
   h4 {
-    display: inline;
+    display: inline-block;
     margin: 0 0 0.75rem 0;
+    padding: 0.1em 0.5em;
     font-size: 1.1rem;
     font-family: "Archivo Black", "Noto Sans SC", system-ui, sans-serif;
     font-weight: 900;
     color: #000;
-    border: none;
-    background: linear-gradient(transparent 60%, #FF5C8A 60%);
+    background-color: #FFE066;
+    border-bottom: 3px solid #000;
   }
 
   ul {
@@ -118,10 +119,10 @@ import {
 
 a {
   --color: #000;
-  font-weight: 700;
+  font-weight: 600;
   text-decoration: underline;
   text-underline-offset: 3px;
-  transition: background-color 0.15s;
+  transition: background-color 0.15s, color 0.15s;
 
   &:hover {
     background-color: #FF5C8A;

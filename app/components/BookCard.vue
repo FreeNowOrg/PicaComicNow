@@ -37,8 +37,7 @@ defineProps<{ data: PicaBookListItem; backTo: string }>()
 
 <style lang="scss">
 li.book-card {
-  max-width: 240px;
-  width: calc(50% - 2rem);
+  width: 100%;
   position: relative;
   padding: 0;
 

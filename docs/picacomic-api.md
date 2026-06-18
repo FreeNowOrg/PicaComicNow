@@ -68,6 +68,43 @@
 
 ## 用户相关
 
+### 注册
+
+```
+POST /auth/register
+```
+
+**请求体：**
+```json
+{
+  "name": "昵称",
+  "email": "用户名",
+  "password": "密码",
+  "birthday": "2000-01-01",
+  "gender": "m",
+  "question1": "安全问题1",
+  "question2": "安全问题2",
+  "question3": "安全问题3",
+  "answer1": "回答1",
+  "answer2": "回答2",
+  "answer3": "回答3"
+}
+```
+
+**字段说明：**
+
+| 字段 | 类型 | 说明 |
+|---|---|---|
+| `name` | string | 显示昵称 |
+| `email` | string | 登录用户名 |
+| `password` | string | 密码 |
+| `birthday` | string | 生日（`YYYY-MM-DD` 格式或时间戳） |
+| `gender` | string | 性别：`m` / `f` / `bot` |
+| `question1`~`question3` | string | 3 个安全问题（用于找回账号） |
+| `answer1`~`answer3` | string | 对应安全问题的回答 |
+
+**响应：**注册成功返回空 data，需再调用登录接口获取 token。
+
 ### 登录
 
 ```
@@ -140,6 +177,16 @@ PUT /users/password
   "new_password": "新密码"
 }
 ```
+
+**响应：**成功后 token 失效，需重新登录。
+
+### 每日签到（打卡）
+
+```
+POST /users/punch-in
+```
+
+**响应：**`res` 对象包含签到结果。签到状态也会反映在用户资料的 `isPunched` 字段中。
 
 ---
 

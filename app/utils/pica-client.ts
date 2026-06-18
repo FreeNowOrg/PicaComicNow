@@ -24,7 +24,7 @@ class PicaComicClient {
       nprogress.start()
       const token = localStorage.getItem(TOKEN_KEY)
       if (token) {
-        config.headers['authorization'] = token
+        config.headers['authorization'] = token.replace(/^Bearer\s+/i, '')
       }
       return config
     })
@@ -58,6 +58,25 @@ class PicaComicClient {
       headers: { 'cache-control': 'no-cache' },
     })
     return data.body.token as string
+  }
+
+  async register(payload: {
+    name: string
+    email: string
+    password: string
+    birthday: string
+    gender: 'm' | 'f' | 'bot'
+    question1: string
+    question2: string
+    question3: string
+    answer1: string
+    answer2: string
+    answer3: string
+  }) {
+    const { data } = await this.http.post('/auth/register', payload, {
+      headers: { 'cache-control': 'no-cache' },
+    })
+    return data
   }
 
   async fetchProfile() {

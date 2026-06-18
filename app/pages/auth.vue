@@ -1,6 +1,6 @@
 <template lang="pug">
 #auth-container
-  h1 登录
+  h1 {{ mode === 'login' ? '登录' : '注册' }}
 
   PicaMbox(v-if='$route.query.tips', type='info', header='提示', style='margin-bottom: 1rem')
     p 请先登录后使用
@@ -12,24 +12,72 @@
         PicaButton(variant='primary', @click.prevent='handleSignOut') 退出登录
 
   section(v-else)
-    PicaCard.form.align-center(:class='{ "loading-cover": onAuthenticating }')
-      h2(style='left: 0; transform: none') 登录
+    .mode-tabs
+      button.tab(:class='{ active: mode === "login" }', @click='mode = "login"') 登录
+      button.tab(:class='{ active: mode === "register" }', @click='mode = "register"') 注册
+
+    //- Login form
+    PicaCard.form.align-center(v-if='mode === "login"', :class='{ "loading-cover": loading }')
       label
         strong 用户名/邮箱
-        input.pica-input(v-model='email')
+        input.pica-input(v-model='loginForm.email')
       label
         strong 密码
-        input.pica-input(v-model='password', type='password')
+        input.pica-input(v-model='loginForm.password', type='password')
       div
         PicaButton(variant='primary', @click.prevent='handleLogin') 登录
-      //- Error
-      PicaMbox(v-if='errorMsg', type='error')
-        template(#header) {{ errorTitle }}
-        p {{ errorMsg }}
+
+    //- Register form
+    PicaCard.form(v-if='mode === "register"', :class='{ "loading-cover": loading }')
+      .form-section
+        h3 基本信息
+        label
+          strong 昵称
+          input.pica-input(v-model='regForm.name', placeholder='显示名称')
+        label
+          strong 用户名
+          input.pica-input(v-model='regForm.email', placeholder='用于登录的用户名')
+        label
+          strong 密码
+          input.pica-input(v-model='regForm.password', type='password')
+        label
+          strong 确认密码
+          input.pica-input(v-model='regForm.passwordConfirm', type='password')
+        label
+          strong 生日
+          input.pica-input(v-model='regForm.birthday', type='date')
+        label
+          strong 性别
+          PicaSelect(
+            :options='genderOptions',
+            :model-value='regForm.gender',
+            @update:model-value='setGender'
+          )
+
+      .form-section
+        h3 安全问题
+        p.hint 用于找回账户，请牢记答案
+        .qa-group(v-for='(_, i) in regForm.questions', :key='i')
+          label
+            strong 问题 {{ i + 1 }}
+            input.pica-input(v-model='regForm.questions[i]', :placeholder='`安全问题 ${i + 1}`')
+          label
+            strong 回答 {{ i + 1 }}
+            input.pica-input(v-model='regForm.answers[i]', :placeholder='`回答 ${i + 1}`')
+
+      .align-center
+        PicaButton(variant='primary', @click.prevent='handleRegister') 注册
+
+    //- Error / Success
+    PicaMbox(v-if='errorMsg', type='error', style='margin-top: 1rem')
+      template(#header) {{ errorTitle }}
+      p {{ errorMsg }}
+    PicaMbox(v-if='successMsg', type='info', header='成功', style='margin-top: 1rem')
+      p {{ successMsg }}
 </template>
 
 <script setup lang="ts">
-import { onMounted, ref } from 'vue'
+import { onMounted, reactive, ref } from 'vue'
 import { setTitle } from '~/utils/setTitle'
 import { getErrMsg } from '~/utils/getErrMsg'
 import { useUserStore } from '~/stores/user'
@@ -38,47 +86,105 @@ const route = useRoute()
 const router = useRouter()
 const user = useUserStore()
 
-const onAuthenticating = ref(false)
-const email = ref('')
-const password = ref('')
+const mode = ref<'login' | 'register'>('login')
+const loading = ref(false)
 const errorTitle = ref('')
 const errorMsg = ref('')
+const successMsg = ref('')
 
-function handleLogin() {
-  if (!email.value || !password.value) return
+const loginForm = reactive({ email: '', password: '' })
 
-  onAuthenticating.value = true
+const regForm = reactive({
+  name: '',
+  email: '',
+  password: '',
+  passwordConfirm: '',
+  birthday: '2000-01-01',
+  gender: 'm' as 'm' | 'f' | 'bot',
+  questions: ['', '', ''],
+  answers: ['', '', ''],
+})
+
+function setGender(v: string | number) {
+  regForm.gender = v as 'm' | 'f' | 'bot'
+}
+
+const genderOptions = [
+  { label: '男', value: 'm' },
+  { label: '女', value: 'f' },
+  { label: '机器人', value: 'bot' },
+]
+
+function clearMessages() {
   errorTitle.value = ''
   errorMsg.value = ''
+  successMsg.value = ''
+}
+
+function handleLogin() {
+  if (!loginForm.email || !loginForm.password) return
+
+  loading.value = true
+  clearMessages()
 
   user
-    .login(email.value, password.value)
-    .then(
-      (data) => {
-        console.log('auth ok', data)
-        return user.fetchProfile()
-      },
-      (err) => {
-        console.warn('auth faild', err)
-        errorTitle.value = '认证失败'
-        errorMsg.value = getErrMsg(err)
+    .login(loginForm.email, loginForm.password)
+    .then(() => {
+      if (route.query.from) {
+        router.push(route.query.from as string)
       }
-    )
-    .then(
-      (profile) => {
-        console.log('profile ok', profile)
-        if (route.query.from) {
-          router.push(route.query.from as string)
-        }
-      },
-      (err) => {
-        console.warn('profile faild')
-        errorTitle.value = '获取资料失败'
-        errorMsg.value = getErrMsg(err)
-      }
-    )
+    })
+    .catch((err) => {
+      errorTitle.value = '登录失败'
+      errorMsg.value = getErrMsg(err)
+    })
     .finally(() => {
-      onAuthenticating.value = false
+      loading.value = false
+    })
+}
+
+function handleRegister() {
+  if (!regForm.name || !regForm.email || !regForm.password) {
+    errorTitle.value = '表单不完整'
+    errorMsg.value = '请填写昵称、用户名和密码'
+    return
+  }
+  if (regForm.password !== regForm.passwordConfirm) {
+    errorTitle.value = '密码不一致'
+    errorMsg.value = '两次输入的密码不一致'
+    return
+  }
+
+  loading.value = true
+  clearMessages()
+
+  const payload = {
+    name: regForm.name,
+    email: regForm.email,
+    password: regForm.password,
+    birthday: regForm.birthday,
+    gender: regForm.gender,
+    question1: regForm.questions[0],
+    question2: regForm.questions[1],
+    question3: regForm.questions[2],
+    answer1: regForm.answers[0],
+    answer2: regForm.answers[1],
+    answer3: regForm.answers[2],
+  }
+  user
+    .register(payload)
+    .then(() => {
+      successMsg.value = '注册成功，请登录'
+      mode.value = 'login'
+      loginForm.email = regForm.email
+      loginForm.password = ''
+    })
+    .catch((err) => {
+      errorTitle.value = '注册失败'
+      errorMsg.value = getErrMsg(err)
+    })
+    .finally(() => {
+      loading.value = false
     })
 }
 
@@ -92,33 +198,95 @@ onMounted(() => {
 </script>
 
 <style scoped lang="scss">
-.form {
-  width: 60%;
-  margin: 0 auto;
-  padding: 2rem;
+.mode-tabs {
+  display: flex;
+  max-width: 500px;
+  margin: 0 auto 1rem;
 
-  label {
-    display: flex;
-    margin: 1rem auto;
-    align-items: center;
+  .tab {
+    flex: 1;
+    padding: 0.5rem 1rem;
+    font-weight: 700;
+    font-size: 1rem;
+    border: 2px solid #000;
+    background: #fff;
+    cursor: pointer;
+    transition: all 0.15s;
 
-    strong {
-      margin-right: 1rem;
-      white-space: nowrap;
+    &:first-child { border-right: none; }
+
+    &.active {
+      background: #FF5C8A;
+      color: #fff;
+    }
+
+    &:not(.active):hover {
+      background: #FFE066;
     }
   }
 }
 
+.form {
+  max-width: 500px;
+  margin: 0 auto;
+  padding: 1.5rem;
+
+  label {
+    display: flex;
+    margin: 0.75rem 0;
+    align-items: center;
+
+    strong {
+      min-width: 5.5rem;
+      margin-right: 0.75rem;
+      white-space: nowrap;
+      font-size: 0.9rem;
+    }
+
+    input, .pica-select {
+      flex: 1;
+    }
+  }
+}
+
+.form-section {
+  margin-bottom: 1.5rem;
+
+  h3 {
+    margin: 0 0 0.5rem;
+    font-size: 1rem;
+    padding: 0.2em 0.5em;
+    background: #FFE066;
+    border: 2px solid #000;
+    display: inline-block;
+  }
+
+  .hint {
+    font-size: 0.8rem;
+    color: #888;
+    margin: 0 0 0.5rem;
+  }
+}
+
+.qa-group {
+  padding: 0.5rem 0;
+  border-bottom: 1px dashed #ddd;
+
+  &:last-child { border-bottom: none; }
+}
+
 @media (max-width: 600px) {
   .form {
-    width: 90%;
-
     label {
       flex-direction: column;
       align-items: flex-start;
 
       strong {
-        margin-bottom: 0.5rem;
+        margin-bottom: 0.25rem;
+      }
+
+      input, .pica-select {
+        width: 100%;
       }
     }
   }

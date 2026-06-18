@@ -12,6 +12,15 @@ export const useUserStore = defineStore('user', () => {
   const profile = ref<PicaUserProfile | null>(null)
   const isLoggedIn = computed(() => !!profile.value)
 
+  // Hydrate from localStorage on init for instant UI
+  if (localStorage.getItem(StorageKey.TOKEN) && localStorage.getItem(StorageKey.PROFILE)) {
+    try {
+      profile.value = JSON.parse(localStorage.getItem(StorageKey.PROFILE)!)
+    } catch {
+      localStorage.removeItem(StorageKey.PROFILE)
+    }
+  }
+
   async function login(email: string, password: string) {
     const token = await picaClient.signIn(email, password)
     localStorage.setItem(StorageKey.TOKEN, token)
@@ -29,21 +38,20 @@ export const useUserStore = defineStore('user', () => {
     if (!localStorage.getItem(StorageKey.TOKEN)) {
       throw new Error('Not logged in')
     }
-    if (
-      localStorage.getItem(StorageKey.TOKEN) &&
-      localStorage.getItem(StorageKey.PROFILE)
-    ) {
-      try {
-        profile.value = JSON.parse(localStorage.getItem(StorageKey.PROFILE)!)
-        return profile.value!
-      } catch (e) {
-        console.error('Failed to parse user info from localStorage', e)
-      }
-    }
 
     if (!_fetchProfilePromise) {
       _fetchProfilePromise = picaClient
         .fetchProfile()
+        .then((user) => {
+          _fetchProfilePromise = null
+          if (!user) {
+            logout()
+            throw new Error('Failed to get user profile, please log in again')
+          }
+          profile.value = user
+          localStorage.setItem(StorageKey.PROFILE, JSON.stringify(user))
+          return user
+        })
         .catch((err) => {
           _fetchProfilePromise = null
           logout()
@@ -51,15 +59,11 @@ export const useUserStore = defineStore('user', () => {
         })
     }
 
-    const user = await _fetchProfilePromise
-    if (!user) {
-      _fetchProfilePromise = null
-      logout()
-      throw new Error('Failed to get user profile, please log in again')
-    }
-    profile.value = user
-    localStorage.setItem(StorageKey.PROFILE, JSON.stringify(user))
-    return user
+    return _fetchProfilePromise
+  }
+
+  async function register(payload: Parameters<typeof picaClient.register>[0]) {
+    return picaClient.register(payload)
   }
 
   async function fetchFavoriteBooks(payload: {
@@ -74,6 +78,7 @@ export const useUserStore = defineStore('user', () => {
     isLoggedIn,
     login,
     logout,
+    register,
     fetchProfile,
     fetchFavoriteBooks,
   }

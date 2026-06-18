@@ -69,7 +69,7 @@ function loadData() {
     setTitle('Search')
   }
 
-  router.replace({
+  router.push({
     path: '/search',
     query: {
       keyword: keyword.value,

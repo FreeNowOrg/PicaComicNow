@@ -49,6 +49,7 @@ async function handlePunch() {
   border: 2px solid #000;
   background: #fff;
   padding: 0.75rem 1rem;
+  margin-bottom: 1.25rem;
   display: flex;
   align-items: center;
   justify-content: space-between;

@@ -1,5 +1,7 @@
 <template lang="pug">
 #index-container
+  UserCard
+
   .top-grid
     HeroCarousel(v-if='leaderboard.length', :comics='leaderboard')
     .top-grid-placeholder(v-else)
@@ -10,7 +12,15 @@
 
   PicaMbox(v-if='topError', type='error', :header='topError')
 
-  UserCard
+  .search-bar
+    input.search-input(
+      type='text',
+      placeholder='搜索漫画...',
+      v-model='searchInput',
+      @keydown.enter='handleSearch'
+    )
+    PicaButton(variant='primary', size='sm', @click='handleSearch')
+      i.i-fa6-solid-magnifying-glass
 
   section.random-section
     .random-header
@@ -31,6 +41,15 @@ import { picaClient } from '~/utils/pica-client'
 import type { PicaBookListItem, PicaLeaderboardItem } from '~/types'
 
 setTitle()
+
+const router = useRouter()
+const searchInput = ref('')
+
+function handleSearch() {
+  if (searchInput.value.trim()) {
+    router.push({ path: '/search', query: { keyword: searchInput.value.trim() } })
+  }
+}
 
 const leaderboard = ref<PicaLeaderboardItem[]>([])
 const latestComics = ref<PicaBookListItem[]>([])
@@ -113,6 +132,29 @@ onBeforeUnmount(() => {
   min-height: 320px;
   border: 3px solid #000;
   background: #fff;
+}
+
+.search-bar {
+  display: flex;
+  gap: 0.75rem;
+  margin-bottom: 1.25rem;
+
+  .search-input {
+    flex: 1;
+    border: 3px solid #000;
+    padding: 0.5rem 1rem;
+    font-size: 1rem;
+    font-weight: 600;
+    background: #fff;
+    box-shadow: 4px 4px 0 0 #000;
+    transition: border-color 0.15s, box-shadow 0.15s;
+
+    &:focus {
+      outline: none;
+      border-color: #FF5C8A;
+      box-shadow: 4px 4px 0 0 #FF5C8A;
+    }
+  }
 }
 
 .random-section {

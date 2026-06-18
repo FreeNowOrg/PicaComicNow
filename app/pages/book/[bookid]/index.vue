@@ -2,32 +2,34 @@
 #book-container
   section.book-info
     .bread-crumb(v-if='$route.query.backTo')
-      NuxtLink.button(:to='"" + $route.query.backTo') ← Back to {{ $route.query.backTo }}
-    .loading.card.align-center(v-if='isLoadingMeta || !bookMeta')
+      NuxtLink.pica-btn.bg-cream(:to='"" + $route.query.backTo')
+        i.i-fa6-solid-arrow-left
+        | Back to {{ $route.query.backTo }}
+    .loading.align-center(v-if='isLoadingMeta || !bookMeta')
       placeholder
-    .card(v-if='bookMeta')
-      .details.flex.gap-1
+    PicaCard(v-if='bookMeta')
+      .details
         .left
           e-link.no-icon.thumb(:href='bookMeta.thumb.fileUrl')
-            lazyload.img(
+            lazyload.img.pica-border.rounded-lg(
               :src='bookMeta.thumb.fileUrl',
               :width='200',
               :height='266'
             )
-        .right.flex(style='position: relative')
-          .flex.title-area.flex-center
-            h1.title.flex-1 {{ bookMeta.title }}
-            a.bookmark.pointer(
+        .right
+          .title-area
+            h1.title {{ bookMeta.title }}
+            a.bookmark(
               :class='bookMeta.isFavourite ? "is-favourite" : "not-favourite"',
               :title='bookMeta.isFavourite ? "Click to remove bookmark" : "Click to add bookmark"',
               @click='handleBookmark'
             )
               i.i-fa6-solid-bookmark(v-if='bookMeta.isFavourite')
               i.i-fa6-regular-bookmark(v-else)
-          .flex-column.flex-1.gap-1
+          .meta-fields
             .finished
-              i.i-fa6-solid-circle-check(v-if='bookMeta.finished')
-              i.i-fa6-solid-pen-nib(v-else)
+              i.i-fa6-solid-circle-check.text-brand-green(v-if='bookMeta.finished')
+              i.i-fa6-solid-pen-nib.text-brand-pink(v-else)
               |
               | {{ bookMeta.finished ? 'Finished' : 'Writing' }}
             .pages
@@ -45,15 +47,15 @@
                 v-for='item in bookMeta.categories',
                 :to='"/comics/" + item'
               ) {{ item }}
-            .stats.flex
-              .views.flex-1
-                strong views:
+            .stats
+              .stat-item.views
+                i.i-fa6-solid-eye.text-brand-purple
                 span {{ bookMeta.viewsCount }}
-              .likes.flex-1
-                strong Likes:
+              .stat-item.likes
+                i.i-fa6-solid-heart.text-brand-pink
                 span {{ bookMeta.likesCount }}
-              .comments.flex-1
-                strong Comments:
+              .stat-item.comments
+                i.i-fa6-solid-comment.text-brand-yellow
                 span {{ bookMeta.commentsCount }}
 
       .tags-list
@@ -63,18 +65,18 @@
       .description {{ bookMeta.description }}
 
   section.book-eps
-    .card
+    PicaCard
       h2#eps Episodes
       p.loading.align-center(v-if='isLoadingEps || !bookEps.length')
         placeholder
       .eps-list(v-if='bookEps.length')
-        NuxtLink.ep-link.plain(
+        NuxtLink.ep-link(
           v-for='item in bookEps',
           :to='"/book/" + bookid + "/" + item.order + ($route.query.backTo ? "?backTo=" + $route.query.backTo : "")'
         ) {{ item.title }}
 
   section.extra-actions
-    .card
+    PicaCard
       h2 Extra Actions
       details
         summary Book Meta
@@ -83,7 +85,7 @@
         summary Book Episodes
         pre {{ bookEps }}
       p(v-if='bookMeta')
-        a.button.danger(@click='init(true)') Force Reload Book Info
+        PicaButton(variant='danger', @click='init(true)') Force Reload Book Info
 </template>
 
 <script setup lang="ts">
@@ -180,63 +182,190 @@ onMounted(() => {
 })
 </script>
 
-<style lang="sass">
-#book-container
-  display: flex
-  flex-direction: column
-  gap: 1rem
+<style lang="scss">
+#book-container {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
 
-.book-info
-  .details
-    margin-bottom: 1.5rem
-  .left
-    width: 200px
-    flex: 1
-    .thumb
-      .img
-        width: 100%
-        height: auto
-  .right
-    flex: 3
-    flex-direction: column
-    .flex-column
-      display: flex
-      flex-direction: column
-      > div
-        flex: 1
-    .title
-      margin: 0 0 1rem 0
-      font-size: 1.6rem
-    .bookmark
-      font-size: 1.4rem
-      &.is-favourite
-        --color: var(--theme-bookmark-color)
-      &.not-favourite
-        --color: #aaa
+.book-info {
+  .details {
+    display: flex;
+    gap: 1rem;
+    margin-bottom: 1.5rem;
+  }
 
-.book-eps
-  .eps-list
-    display: flex
-    flex-wrap: wrap
-    gap: 0.5rem
-    .ep-link
-      display: block
-      --color: var(--theme-accent-color)
-      padding: 0.5rem 1rem
-      border-radius: 4px
-      box-shadow: 0 0 0 1px var(--theme-accent-color)
+  .left {
+    width: 200px;
+    flex-shrink: 0;
 
-@media (max-width: 600px)
-  .book-info
-    .details
-      flex-direction: column
-      .left
-        width: 100%
-        text-align: center
-        // a
-        //   display: block
-        .lazyload
-          width: 320px
-          max-width: 100%
-          height: auto
+    .thumb {
+      .img {
+        width: 100%;
+        height: auto;
+      }
+    }
+  }
+
+  .right {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    position: relative;
+  }
+
+  .title-area {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+  }
+
+  .title {
+    margin: 0 0 1rem 0;
+    font-family: 'Archivo Black', 'Noto Sans SC', system-ui, sans-serif;
+    font-size: 1.6rem;
+    flex: 1;
+  }
+
+  .bookmark {
+    font-size: 1.6rem;
+    cursor: pointer;
+    transition: all 150ms;
+    display: inline-block;
+
+    &.is-favourite {
+      color: #FF69B4;
+    }
+
+    &.not-favourite {
+      color: #aaa;
+    }
+
+    &:hover {
+      transform: scale(1.2);
+    }
+
+    &:active {
+      transform: scale(0.9);
+    }
+  }
+
+  .meta-fields {
+    display: flex;
+    flex-direction: column;
+    flex: 1;
+    gap: 0.5rem;
+
+    > div {
+      flex: 1;
+    }
+  }
+
+  .stats {
+    display: flex;
+    gap: 1rem;
+    margin-top: 0.5rem;
+
+    .stat-item {
+      display: flex;
+      align-items: center;
+      gap: 0.4rem;
+      font-weight: 700;
+
+      i {
+        font-size: 1.1rem;
+      }
+    }
+  }
+
+  .description {
+    margin-top: 1rem;
+    white-space: pre-wrap;
+    line-height: 1.6;
+  }
+}
+
+// Episode list: Neubrutalism tag-like links
+.book-eps {
+  .eps-list {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+
+    .ep-link {
+      display: inline-flex;
+      align-items: center;
+      padding: 0.35rem 0.75rem;
+      border: 2px solid #000;
+      border-radius: 0.375rem;
+      box-shadow: 3px 3px 0 0 #000;
+      background-color: #fff;
+      font-weight: 700;
+      font-size: 0.875rem;
+      color: #000;
+      transition: all 150ms;
+      text-decoration: none;
+
+      &:hover {
+        translate: 1.5px 1.5px;
+        box-shadow: 0 0 0 0 #000;
+        background-color: #FFF8DC;
+      }
+
+      &.router-link-active {
+        background-color: #FF5C8A;
+        color: #fff;
+      }
+    }
+  }
+}
+
+// Tags: Neubrutalism styling
+.tags-list {
+  .tag {
+    border: 2px solid #000;
+    border-radius: 0.375rem;
+    box-shadow: 2px 2px 0 0 #000;
+    padding: 0.125rem 0.5rem;
+    font-weight: 700;
+    font-size: 0.875rem;
+    background-color: #fff;
+    color: #000;
+    transition: all 150ms;
+
+    &:hover {
+      background-color: #FFE066;
+    }
+
+    &.router-link-active {
+      background-color: #FF5C8A;
+      color: #fff;
+    }
+
+    &[data-tag="生肉"] {
+      background-color: #dd8221;
+      color: #fff;
+    }
+  }
+}
+
+@media (max-width: 600px) {
+  .book-info {
+    .details {
+      flex-direction: column;
+
+      .left {
+        width: 100%;
+        text-align: center;
+
+        .lazyload {
+          width: 320px;
+          max-width: 100%;
+          height: auto;
+        }
+      }
+    }
+  }
+}
 </style>

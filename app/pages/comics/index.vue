@@ -77,6 +77,16 @@ async function loadData(init = false) {
     })
 }
 
+watch(() => route.query, (q) => {
+  const newPage = parseInt(q.page as string) || 1
+  const newSort = (q.s as PicaListSort) || PicaListSort.DEFAULT
+  if (newPage !== page.value || newSort !== sort.value) {
+    page.value = newPage
+    sort.value = newSort
+    loadData()
+  }
+})
+
 watch([page, sort], () => {
   loadData()
 })

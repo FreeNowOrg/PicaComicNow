@@ -109,12 +109,18 @@ function loadData(init = false) {
     })
 }
 
-watch(
-  () => route.query.keyword,
-  (val) => {
-    keyword.value = (val as string) || ''
+watch(() => route.query, (q) => {
+  const newKw = (q.keyword as string) || ''
+  const newPage = parseInt(q.page as string) || 1
+  const newSort = (q.sort as PicaListSort) || PicaListSort.DEFAULT
+  const changed = newKw !== keyword.value || newPage !== page.value || newSort !== sort.value
+  if (changed) {
+    keyword.value = newKw
+    page.value = newPage
+    sort.value = newSort
+    loadData()
   }
-)
+})
 
 watch(
   [keyword, category, page, sort],

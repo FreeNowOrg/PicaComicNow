@@ -56,6 +56,16 @@ onMounted(() => {
   loadData(true)
 })
 
+watch(() => route.query, (q) => {
+  const newPage = parseInt(q.page as string) || 1
+  const newSort = (q.sort as PicaListSort) || PicaListSort.DATE_DESC
+  if (newPage !== page.value || newSort !== sort.value) {
+    page.value = newPage
+    sort.value = newSort
+    loadData()
+  }
+})
+
 watch([page, sort], () => loadData())
 
 const loading = ref(false)

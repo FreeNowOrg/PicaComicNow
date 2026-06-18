@@ -1,6 +1,6 @@
 <template lang="pug">
 footer.global-footer
-  .top
+  .top.bg-footer
     .footer-inner.footer-grid
       section.site-intro
         h4 {{ PROJECT_NAME }}
@@ -26,7 +26,7 @@ footer.global-footer
           li
             e-link(href='https://github.com/FreeNowOrg') @FreeNowOrg
 
-  .bottom
+  .bottom.bg-footer-dark
     .footer-inner.align-center
       .copyright
         | Copyright &copy; {{ COPYRIGHT_STR }}
@@ -70,7 +70,6 @@ import {
   }
 
   .top {
-    background-color: var(--color-footer);
     padding-top: 2rem;
     padding-bottom: 2rem;
   }
@@ -78,7 +77,6 @@ import {
   .bottom {
     padding-top: 1rem;
     padding-bottom: 1rem;
-    background-color: var(--color-footer-dark);
     color: #555;
     border-top: 2px solid #000;
   }

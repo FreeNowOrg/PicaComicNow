@@ -1,6 +1,6 @@
 <template lang="pug">
 footer.global-footer
-  .top.flex.responsive
+  .top.flex.footer-inner
     section.flex-1
       h4 Discovery
       ul
@@ -26,13 +26,13 @@ footer.global-footer
       h4 Friend links
       p Come to GitHub issues to exchange friend links~
 
-  .top.responsive
+  .top.footer-inner
     section.flex-1
       h4 Attention please
       p This is a fan made website. We are NOT PicACG official. Please DO NOT share this website anywhere.
       p 这是一个粉丝向网站，我们与 PicACG 官方<u>没有任何关系</u>。<u>请勿</u>在任何地方传播本网站——珍惜眼前。
 
-  .bottom.align-center.responsive
+  .bottom.align-center.footer-inner
     .copyright
       | Copyright &copy; {{ COPYRIGHT_STR }}
       |
@@ -61,6 +61,14 @@ import {
     color: #333;
   }
 
+  .footer-inner {
+    max-width: 1200px;
+    margin-left: auto;
+    margin-right: auto;
+    padding-left: 2rem;
+    padding-right: 2rem;
+  }
+
   .top {
     background-color: #f5e4e8;
     padding-top: 2rem;
@@ -70,7 +78,8 @@ import {
   }
 
   .bottom {
-    padding: 1rem;
+    padding-top: 1rem;
+    padding-bottom: 1rem;
     background-color: #e8ced4;
     color: #555;
   }

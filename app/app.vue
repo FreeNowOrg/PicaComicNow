@@ -8,6 +8,7 @@ PicaProvider#app-container
   GlobalHeader
   GlobalSideNav
   GlobalFooter
+  BackToTop
 </template>
 
 <script setup lang="ts">

@@ -232,29 +232,20 @@ onMounted(() => {
           img {
             width: 2rem;
             height: 2rem;
-            // Neubrutalism: solid offset ring instead of blurred shadow
-            box-shadow: 2px 2px 0 0 #000;
+            border: 2px solid #000;
             vertical-align: middle;
           }
         }
 
-        .angle svg {
-          transition: all 0.12s ease;
-        }
-
         &:hover {
           .avatar img {
-            box-shadow: 3px 3px 0 0 #FF5C8A;
+            border-color: #FF5C8A;
           }
         }
 
         &.is-show {
           .avatar img {
-            box-shadow: 3px 3px 0 0 #FF5C8A;
-          }
-
-          .angle svg {
-            transform: rotateZ(180deg);
+            border-color: #FF5C8A;
           }
         }
       }

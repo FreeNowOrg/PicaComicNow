@@ -9,7 +9,7 @@ nav.pica-pagination(v-if='pageCount > 1')
     button.page-btn(
       v-else,
       :class='{ active: item === modelPage }',
-      @click='goTo(item as number)'
+      @click='goTo(+item)'
     ) {{ item }}
   button.page-btn(
     :disabled='modelPage >= pageCount',

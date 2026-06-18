@@ -195,7 +195,7 @@ onBeforeRouteUpdate((to, from, next) => {
   margin: 0 auto;
   border: 3px solid #000;
   border-radius: 0;
-  overflow: hidden;
+  // overflow: hidden;
   background-color: #fff;
 
   .page {
@@ -218,10 +218,10 @@ onBeforeRouteUpdate((to, from, next) => {
 
       .page-tag {
         position: sticky;
-        top: calc(50px + 0.5rem);
+        top: calc(62px + 0.5rem);
         margin-bottom: 0.5rem;
         margin-left: -2rem;
-        line-height: 1.6;
+        line-height: 1.2s;
         text-align: center;
         width: 1.6em;
         height: 1.6em;
@@ -266,12 +266,43 @@ onBeforeRouteUpdate((to, from, next) => {
   }
 }
 
-// Episode list in reader page (reuses .book-eps from book index)
+// Episode list in reader page
 .book-eps {
   margin-top: 1.5rem;
 
   .next-ep {
     margin-bottom: 1rem;
+  }
+
+  .eps-list {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+
+    .ep-link {
+      display: inline-flex;
+      align-items: center;
+      padding: 0.35rem 0.75rem;
+      border: 2px solid #000;
+      box-shadow: 3px 3px 0 0 #000;
+      background-color: #fff;
+      font-weight: 700;
+      font-size: 0.875rem;
+      color: #000;
+      transition: all 150ms;
+      text-decoration: none;
+
+      &:hover {
+        translate: 1.5px 1.5px;
+        box-shadow: 0 0 0 0 #000;
+        background-color: #FFF0F3;
+      }
+
+      &.router-link-active {
+        background-color: #FF5C8A;
+        color: #fff;
+      }
+    }
   }
 }
 </style>

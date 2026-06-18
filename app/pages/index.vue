@@ -140,8 +140,11 @@ onBeforeUnmount(() => {
 
 .search-bar {
   display: flex;
+  align-items: stretch;
   gap: 0.75rem;
   margin-bottom: 1.25rem;
+
+  a { text-decoration: none; display: flex; }
 
   .search-input {
     flex: 1;

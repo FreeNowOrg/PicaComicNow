@@ -6,19 +6,19 @@ async function proxyAwareFetch(
   url: string,
   init?: RequestInit
 ): Promise<Response> {
-  const proxyUrl =
-    process.env.https_proxy ||
-    process.env.HTTPS_PROXY ||
-    process.env.http_proxy ||
-    process.env.HTTP_PROXY
-  if (proxyUrl) {
-    try {
+  if (import.meta.dev) {
+    const proxyUrl =
+      process.env.https_proxy ||
+      process.env.HTTPS_PROXY ||
+      process.env.http_proxy ||
+      process.env.HTTP_PROXY
+    if (proxyUrl) {
       const { fetch: undiciFetch, ProxyAgent } = await import('undici')
       return undiciFetch(url, {
         ...init,
         dispatcher: new ProxyAgent(proxyUrl),
       } as any) as unknown as Response
-    } catch {}
+    }
   }
   return globalThis.fetch(url, init)
 }

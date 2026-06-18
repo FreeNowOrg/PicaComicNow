@@ -18,7 +18,7 @@ mixin pagenator
 
   section(v-if='comics.length', :class='{ "loading-cover": loading }')
     +pagenator
-    books-list(:data='comics', :backTo='"/comics/" + category')
+    books-list(:data='comics', backTo='/comics')
     +pagenator
 </template>
 
@@ -79,10 +79,7 @@ async function loadData() {
     })
 }
 
-watch([category, page, sort], ([nCat, nPage, nSort], [cat, pg, srt]) => {
-  if (nCat !== cat) {
-    page.value = 1
-  }
+watch([page, sort], () => {
   loadData()
 })
 </script>

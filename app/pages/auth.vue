@@ -6,22 +6,22 @@
     p You must log in to use this website
 
   section(v-if='user.profile')
-    .card
+    PicaCard
       h2 Hello, {{ user.profile.name }}
       .align-center
-        button(@click.prevent='handleSignOut') Sign out
+        PicaButton(variant='primary', @click.prevent='handleSignOut') Sign out
 
   section(v-else)
-    form.form.card.align-center(:class='{ "loading-cover": onAuthenticating }')
+    PicaCard.form.align-center(:class='{ "loading-cover": onAuthenticating }')
       h2(style='left: 0; transform: none') Login
       label
         strong Username/email
-        input(v-model='email')
+        input.pica-input(v-model='email')
       label
         strong Password
-        input(v-model='password', type='password')
+        input.pica-input(v-model='password', type='password')
       div
-        button(@click.prevent='handleLogin') Login
+        PicaButton(variant='primary', @click.prevent='handleLogin') Login
       //- Error
       PicaMbox(v-if='errorMsg', type='error')
         template(#header) {{ errorTitle }}
@@ -91,42 +91,36 @@ onMounted(() => {
 })
 </script>
 
-<style scoped lang="sass">
-.form
-  width: 60%
-  margin: 0 auto
-  padding: 2rem
+<style scoped lang="scss">
+.form {
+  width: 60%;
+  margin: 0 auto;
+  padding: 2rem;
 
-  label
-    display: flex
-    margin: 1rem auto
-    align-items: center
+  label {
+    display: flex;
+    margin: 1rem auto;
+    align-items: center;
 
-    strong
-      margin-right: 1rem
+    strong {
+      margin-right: 1rem;
+      white-space: nowrap;
+    }
+  }
+}
 
-    input
-      flex: 1
-      width: 100%
-      padding: 4px 0.75rem
-      font-size: 1rem
-      line-height: 1.6
-      border: none
-      border-radius: 1em
-      background-color: rgba(0, 0, 0, 0.05)
-      outline: none
-      &:hover
-        box-shadow: 0 0 0 2px rgba(0, 0, 0, 0.25)
-      &:focus
-        box-shadow: 0 0 0 2px var(--theme-accent-color)
+@media (max-width: 600px) {
+  .form {
+    width: 90%;
 
-  .mbox
-    text-align: left
-    margin-top: 1rem
+    label {
+      flex-direction: column;
+      align-items: flex-start;
 
-@media (max-width: 600px)
-  .form
-    width: 90%
-    label
-      flex-direction: column
+      strong {
+        margin-bottom: 0.5rem;
+      }
+    }
+  }
+}
 </style>

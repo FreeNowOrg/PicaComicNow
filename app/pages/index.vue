@@ -6,16 +6,16 @@
     p This site is under construction
 
   .flex.gap-1
-    .card.flex-1
+    PicaCard.flex-1
       h2 Greeting
       p hello, world
       p {{ time }}
-    .card.flex-1
+    PicaCard.flex-1
       h2 Profile
       p
-        NuxtLink.button(to='/profile') profile
+        NuxtLink.pica-btn(to='/profile') profile
         | &nbsp;
-        NuxtLink.button(to='/favourite') favourite
+        NuxtLink.pica-btn(to='/favourite') favourite
 </template>
 
 <script setup lang="ts">
@@ -36,4 +36,4 @@ onBeforeUnmount(() => {
 })
 </script>
 
-<style scoped lang="sass"></style>
+<style scoped lang="scss"></style>

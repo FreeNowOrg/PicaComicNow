@@ -4,12 +4,11 @@ mixin pagenator
 
 #comics-container
   .bread-crumb
-    NuxtLink.pica-btn.bg-cream(to='/categories')
-      i.i-fa6-solid-arrow-left
-      | Categories Index
+    NuxtLink(to='/') 首页
+    |  /
+    span  全部漫画
 
-  h1(v-if='category') Comics in {{ category }}
-  h1(v-else) Comics list
+  h1 全部漫画
 
   PicaMbox(v-if='error', type='error', header='Failed to get comics data')
     p {{ error }}

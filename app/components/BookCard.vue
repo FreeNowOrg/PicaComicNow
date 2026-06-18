@@ -10,7 +10,7 @@ li.book-card.card
       :to='{ name: "book", params: { bookid: data._id }, query: { backTo } }'
     )
       .title
-        .pages [{{ data.epsCount > 1 ? data.epsCount + 'EP/' : '' }}{{ data.pagesCount }}P]
+        .pages(v-if='data.pagesCount') [{{ data.epsCount > 1 ? data.epsCount + 'EP/' : '' }}{{ data.pagesCount }}P]
         .name {{ data.title }}
     .author
       NuxtLink(:to='"/search/" + data.author') @{{ data.author }}

@@ -8,9 +8,8 @@ mixin pagenator
 
 #favourite-container
   .bread-crumb
-    NuxtLink.button(to='/profile')
+    NuxtLink.pica-btn.bg-cream(to='/profile')
       i.i-fa6-solid-arrow-left
-      |
       | Profile
 
   h1 My Favourites
@@ -95,19 +94,9 @@ function loadData() {
 }
 </script>
 
-<style scoped lang="sass">
-.pagenator
-  text-align: center
-  > *
-    display: inline-block
-  .page
-    margin-left: 1rem
-    margin-right: 1rem
-    background-color: var(--theme-accent-color)
-    color: #fff
-    padding: 0.25rem 0.6rem
-    border-radius: 1em
-    display: inline-flex
-    gap: 0.4rem
-    cursor: pointer
+<style scoped lang="scss">
+// Breadcrumb spacing
+.bread-crumb {
+  margin-bottom: 1.5rem;
+}
 </style>

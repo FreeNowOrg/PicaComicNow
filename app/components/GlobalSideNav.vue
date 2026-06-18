@@ -135,8 +135,8 @@ watch(
     list-style: none;
     padding-left: 0;
 
-    .xicon {
-      margin-right: 0.4rem;
+    li a > i {
+      margin-right: 0.5rem;
     }
 
     li {

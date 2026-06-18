@@ -32,6 +32,19 @@ export interface PicaBookListItem {
   id: string
   likesCount: number
 }
+export interface PicaLeaderboardItem extends PicaBookListItem {
+  leaderboardCount: number
+  viewsCount: number
+}
+
+export type ApiResponseLeaderboard = ApiResponse<{
+  comics: PicaLeaderboardItem[]
+}>
+
+export type ApiResponseRandomComics = ApiResponse<{
+  comics: PicaBookListItem[]
+}>
+
 export type ApiResponseBookList = ApiResponse<{
   comics: {
     docs: PicaBookListItem[]

@@ -28,6 +28,10 @@ export default defineConfig({
         green: '#7FD957',
         yellow: '#FFE066',
       },
+      footer: {
+        DEFAULT: '#ffffff',
+        dark: '#ffffff',
+      },
       danger: '#FF5555',
       link: '#3F51B5',
       bookmark: '#FF69B4',

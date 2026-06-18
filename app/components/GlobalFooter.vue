@@ -1,38 +1,30 @@
 <template lang="pug">
 footer.global-footer
   .top
-    .footer-inner.flex
-      section.flex-1
-        h4 Discovery
-        ul
-          li
-            NuxtLink(to='/about') About us
-          li
-            NuxtLink(to='/categories') Categories
-            ul
-              li
-                NuxtLink(to='/comics/妹妹系') 妹妹系
-              li
-                NuxtLink(to='/search/獸耳') 兽耳娘，我现在就要看兽耳娘
+    .footer-inner.footer-grid
+      section.site-intro
+        h4 {{ PROJECT_NAME }}
+        p This is a fan made website. We are NOT PicACG official.
+        p 这是一个粉丝向网站，我们与 PicACG 官方<u>没有任何关系</u>。
+        p <u>请勿</u>在任何地方传播本网站——珍惜眼前。
 
-      section.flex-1
-        h4 Follow us
-        ul
-          li Free Now Organization
-            ul
-              li
-                e-link(href='https://github.com/FreeNowOrg') @FreeNowOrg
-
-      section.flex-1
-        h4 Friend links
-        p Come to GitHub issues to exchange friend links~
-
-  .top
-    .footer-inner
       section
-        h4 Attention please
-        p This is a fan made website. We are NOT PicACG official. Please DO NOT share this website anywhere.
-        p 这是一个粉丝向网站，我们与 PicACG 官方<u>没有任何关系</u>。<u>请勿</u>在任何地方传播本网站——珍惜眼前。
+        h4 快速导航
+        ul
+          li
+            NuxtLink(to='/') 首页
+          li
+            NuxtLink(to='/categories') 分类
+          li
+            NuxtLink(to='/favourite') 收藏夹
+          li
+            NuxtLink(to='/about') 关于
+
+      section
+        h4 友情链接
+        ul
+          li
+            e-link(href='https://github.com/FreeNowOrg') @FreeNowOrg
 
   .bottom
     .footer-inner.align-center
@@ -71,38 +63,53 @@ import {
     padding-right: 2rem;
   }
 
+  .footer-grid {
+    display: grid;
+    grid-template-columns: 2fr 1fr 1fr;
+    gap: 2rem;
+  }
+
   .top {
-    background-color: #f5e4e8;
+    background-color: var(--color-footer);
     padding-top: 2rem;
     padding-bottom: 2rem;
-    border-bottom: 2px solid #000;
-
-    .flex {
-      gap: 1.5rem;
-    }
   }
 
   .bottom {
     padding-top: 1rem;
     padding-bottom: 1rem;
-    background-color: #e8ced4;
+    background-color: var(--color-footer-dark);
     color: #555;
+    border-top: 2px solid #000;
+  }
+
+  .site-intro {
+    p {
+      font-size: 0.85rem;
+      line-height: 1.6;
+      margin: 0.25rem 0;
+    }
   }
 
   h4 {
-    position: relative;
-    margin: 1rem 0 0.5rem 0;
-    padding-bottom: 0.4rem;
-    border-bottom: 2px solid #000;
+    display: inline;
+    margin: 0 0 0.75rem 0;
     font-size: 1.1rem;
     font-family: "Archivo Black", "Noto Sans SC", system-ui, sans-serif;
     font-weight: 900;
     color: #000;
+    border: none;
+    background: linear-gradient(transparent 60%, var(--color-brand-yellow) 60%);
   }
 
   ul {
-    padding-left: 1rem;
-    margin: 0.2rem 0;
+    padding-left: 0;
+    list-style: none;
+    margin: 0.75rem 0 0;
+
+    li {
+      margin-bottom: 0.25rem;
+    }
 
     a {
       display: inline;
@@ -112,13 +119,21 @@ import {
 }
 
 a {
-  --color: #3F51B5;
-  font-weight: 600;
+  --color: #000;
+  font-weight: 700;
+  text-decoration: underline;
+  text-underline-offset: 3px;
+  transition: background-color 0.15s;
+
+  &:hover {
+    background-color: var(--color-brand-yellow);
+  }
 }
 
 @media (max-width: 800px) {
-  .global-footer .top .flex {
-    flex-direction: column;
+  .global-footer .footer-grid {
+    grid-template-columns: 1fr;
+    gap: 1rem;
   }
 }
 </style>

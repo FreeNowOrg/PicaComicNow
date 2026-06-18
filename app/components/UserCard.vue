@@ -46,7 +46,8 @@ async function handlePunch() {
 
 <style scoped lang="scss">
 .user-card {
-  border: 2px solid #000;
+  border: 3px solid #000;
+  box-shadow: 6px 6px 0 0 #000;
   background: #fff;
   padding: 0.75rem 1rem;
   margin-bottom: 1.25rem;

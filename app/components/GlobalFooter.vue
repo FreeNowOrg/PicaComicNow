@@ -62,7 +62,7 @@ import {
   }
 
   .top {
-    background-color: #f5f0e0;
+    background-color: #f5e4e8;
     padding-top: 2rem;
     padding-bottom: 2rem;
     gap: 1.5rem;
@@ -71,7 +71,7 @@ import {
 
   .bottom {
     padding: 1rem;
-    background-color: #e8e0cc;
+    background-color: #e8ced4;
     color: #555;
   }
 

@@ -21,6 +21,10 @@
     )
     PicaButton(variant='primary', size='sm', @click='handleSearch')
       i.i-fa6-solid-magnifying-glass
+    NuxtLink(to='/categories')
+      PicaButton(size='sm')
+        i.i-fa6-solid-folder
+        | 分类列表
 
   section.random-section
     .random-header

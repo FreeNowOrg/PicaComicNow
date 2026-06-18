@@ -63,7 +63,7 @@ onBeforeUnmount(() => {
   width: 100%;
   border: 2px solid #000;
   border-radius: 0;
-  padding: 0.375rem 0.75rem;
+  padding: 0.25rem 0.75rem;
   background-color: #fff;
   cursor: pointer;
   display: flex;

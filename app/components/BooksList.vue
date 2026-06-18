@@ -15,8 +15,9 @@ ul.books-list {
   list-style: none;
   padding-left: 0;
   display: flex;
-  gap: 1.5rem;
+  gap: 1.25rem;
   flex-wrap: wrap;
+  align-items: flex-start;
   justify-content: center;
 }
 </style>

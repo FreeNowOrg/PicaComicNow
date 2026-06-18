@@ -27,8 +27,6 @@ li.book-card.card
       .views
         i.i-fa6-solid-eye
         | {{ data.totalViews }}
-  details
-    pre {{ data }}
 </template>
 
 <script setup lang="ts">

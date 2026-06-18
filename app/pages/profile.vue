@@ -37,6 +37,8 @@
           ) {{ user.profile.isPunched ? '已签到' : '签到' }}
           NuxtLink(to='/favourite')
             PicaButton(size='sm') 我的收藏
+          NuxtLink(to='/auth')
+            PicaButton(size='sm') 账户设置
 
     .profile-right
       PicaCard.slogan-card
@@ -51,31 +53,6 @@
             PicaButton(size='sm', @click='sloganEdit = false') 取消
             PicaButton(size='sm', variant='primary', :disabled='sloganLoading', @click='handleSloganEdit') 保存
 
-      PicaCard.password-card
-        h2 修改密码
-        .password-form(:class='{ "loading-cover": pwdLoading }')
-          label
-            strong 旧密码
-            input.pica-input(v-model='pwdForm.oldPassword', type='password')
-          label
-            strong 新密码
-            input.pica-input(v-model='pwdForm.newPassword', type='password')
-          label
-            strong 确认密码
-            input.pica-input(v-model='pwdForm.confirmPassword', type='password')
-          .edit-actions
-            PicaButton(
-              size='sm',
-              variant='primary',
-              :disabled='pwdLoading',
-              @click='handleChangePassword'
-            ) 修改密码
-        PicaMbox(v-if='pwdError', type='error', style='margin-top: 0.75rem')
-          template(#header) 修改失败
-          p {{ pwdError }}
-        PicaMbox(v-if='pwdSuccess', type='info', header='成功', style='margin-top: 0.75rem')
-          p {{ pwdSuccess }}
-
   section.no-profile(v-else)
     PicaCard
       .no-profile-inner
@@ -87,9 +64,8 @@
 </template>
 
 <script setup lang="ts">
-import { computed, onMounted, reactive, ref, watch } from 'vue'
+import { computed, onMounted, ref, watch } from 'vue'
 import { setTitle } from '~/utils/setTitle'
-import { getErrMsg } from '~/utils/getErrMsg'
 import { useUserStore } from '~/stores/user'
 import { picaClient } from '~/utils/pica-client'
 import { DEFAULT_AVATAR } from '~/utils/config'
@@ -100,11 +76,6 @@ const sloganEdit = ref(false)
 const sloganInput = ref('')
 const sloganLoading = ref(false)
 const punchLoading = ref(false)
-
-const pwdForm = reactive({ oldPassword: '', newPassword: '', confirmPassword: '' })
-const pwdLoading = ref(false)
-const pwdError = ref('')
-const pwdSuccess = ref('')
 
 const genderLabel = computed(() => {
   const m: Record<string, string> = { m: '男', f: '女', bot: '机器人' }
@@ -139,34 +110,6 @@ async function handlePunch() {
     console.warn('Punch-in failed', e)
   } finally {
     punchLoading.value = false
-  }
-}
-
-async function handleChangePassword() {
-  pwdError.value = ''
-  pwdSuccess.value = ''
-
-  if (!pwdForm.oldPassword || !pwdForm.newPassword) {
-    pwdError.value = '请填写旧密码和新密码'
-    return
-  }
-  if (pwdForm.newPassword !== pwdForm.confirmPassword) {
-    pwdError.value = '两次输入的新密码不一致'
-    return
-  }
-
-  pwdLoading.value = true
-  try {
-    await picaClient.changePassword(pwdForm.oldPassword, pwdForm.newPassword)
-    pwdSuccess.value = '密码修改成功，请重新登录'
-    pwdForm.oldPassword = ''
-    pwdForm.newPassword = ''
-    pwdForm.confirmPassword = ''
-    setTimeout(() => user.logout(), 2000)
-  } catch (e) {
-    pwdError.value = getErrMsg(e)
-  } finally {
-    pwdLoading.value = false
   }
 }
 
@@ -297,40 +240,6 @@ h1.name {
     width: 100%;
     min-height: 5rem;
     resize: vertical;
-  }
-
-  .edit-actions {
-    display: flex;
-    gap: 0.5rem;
-    justify-content: flex-end;
-    margin-top: 0.75rem;
-  }
-}
-
-.password-card {
-  margin-top: 1.25rem;
-
-  h2 {
-    margin: 0 0 0.75rem;
-    display: inline-block;
-    left: unset;
-    transform: none;
-    padding: 0.1em 0.5em;
-  }
-
-  label {
-    display: flex;
-    align-items: center;
-    margin: 0.75rem 0;
-
-    strong {
-      min-width: 5rem;
-      margin-right: 0.75rem;
-      white-space: nowrap;
-      font-size: 0.9rem;
-    }
-
-    input { flex: 1; }
   }
 
   .edit-actions {

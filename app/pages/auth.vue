@@ -1,15 +1,41 @@
 <template lang="pug">
 #auth-container
-  h1 {{ mode === 'login' ? '登录' : '注册' }}
+  h1 {{ user.profile ? '账户设置' : mode === 'login' ? '登录' : '注册' }}
 
   PicaMbox(v-if='$route.query.tips', type='info', header='提示', style='margin-bottom: 1rem')
     p 请先登录后使用
 
-  section(v-if='user.profile')
+  section.account-section(v-if='user.profile')
     PicaCard
       h2 你好，{{ user.profile.name }}
-      .align-center
-        PicaButton(variant='primary', @click.prevent='handleSignOut') 退出登录
+      .account-actions
+        NuxtLink(to='/profile')
+          PicaButton(size='sm') 个人资料
+        PicaButton(size='sm', variant='primary', @click.prevent='handleSignOut') 退出登录
+
+    PicaCard.pwd-card
+      h2 修改密码
+      .pwd-form(:class='{ "loading-cover": pwdLoading }')
+        label
+          strong 旧密码
+          input.pica-input(v-model='pwdForm.oldPassword', type='password')
+        label
+          strong 新密码
+          input.pica-input(v-model='pwdForm.newPassword', type='password')
+        label
+          strong 确认密码
+          input.pica-input(v-model='pwdForm.confirmPassword', type='password')
+        .align-center
+          PicaButton(
+            variant='primary',
+            :disabled='pwdLoading',
+            @click.prevent='handleChangePassword'
+          ) 修改密码
+      PicaMbox(v-if='pwdError', type='error', style='margin-top: 0.75rem')
+        template(#header) 修改失败
+        p {{ pwdError }}
+      PicaMbox(v-if='pwdSuccess', type='info', header='成功', style='margin-top: 0.75rem')
+        p {{ pwdSuccess }}
 
   section(v-else)
     .mode-tabs
@@ -81,6 +107,7 @@ import { onMounted, reactive, ref } from 'vue'
 import { setTitle } from '~/utils/setTitle'
 import { getErrMsg } from '~/utils/getErrMsg'
 import { useUserStore } from '~/stores/user'
+import { picaClient } from '~/utils/pica-client'
 
 const route = useRoute()
 const router = useRouter()
@@ -188,6 +215,39 @@ function handleRegister() {
     })
 }
 
+const pwdForm = reactive({ oldPassword: '', newPassword: '', confirmPassword: '' })
+const pwdLoading = ref(false)
+const pwdError = ref('')
+const pwdSuccess = ref('')
+
+async function handleChangePassword() {
+  pwdError.value = ''
+  pwdSuccess.value = ''
+
+  if (!pwdForm.oldPassword || !pwdForm.newPassword) {
+    pwdError.value = '请填写旧密码和新密码'
+    return
+  }
+  if (pwdForm.newPassword !== pwdForm.confirmPassword) {
+    pwdError.value = '两次输入的新密码不一致'
+    return
+  }
+
+  pwdLoading.value = true
+  try {
+    await picaClient.changePassword(pwdForm.oldPassword, pwdForm.newPassword)
+    pwdSuccess.value = '密码修改成功，请重新登录'
+    pwdForm.oldPassword = ''
+    pwdForm.newPassword = ''
+    pwdForm.confirmPassword = ''
+    setTimeout(() => user.logout(), 2000)
+  } catch (e) {
+    pwdError.value = getErrMsg(e)
+  } finally {
+    pwdLoading.value = false
+  }
+}
+
 function handleSignOut() {
   user.logout()
 }
@@ -198,6 +258,47 @@ onMounted(() => {
 </script>
 
 <style scoped lang="scss">
+.account-section {
+  max-width: 500px;
+  margin: 0 auto;
+
+  .account-actions {
+    display: flex;
+    justify-content: center;
+    gap: 0.5rem;
+    margin-top: 0.75rem;
+
+    a { text-decoration: none; }
+  }
+}
+
+.pwd-card {
+  margin-top: 1.25rem;
+
+  h2 {
+    margin: 0 0 0.75rem;
+    display: inline-block;
+    left: unset;
+    transform: none;
+    padding: 0.1em 0.5em;
+  }
+
+  label {
+    display: flex;
+    align-items: center;
+    margin: 0.75rem 0;
+
+    strong {
+      min-width: 5.5rem;
+      margin-right: 0.75rem;
+      white-space: nowrap;
+      font-size: 0.9rem;
+    }
+
+    input { flex: 1; }
+  }
+}
+
 .mode-tabs {
   display: flex;
   max-width: 500px;

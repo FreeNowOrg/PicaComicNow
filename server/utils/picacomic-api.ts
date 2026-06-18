@@ -2,6 +2,27 @@
 // Auth/signature logic based on @l2studio/picacomic-api (MIT License)
 // https://github.com/l2studio/picacomic-api
 
+async function proxyAwareFetch(
+  url: string,
+  init?: RequestInit
+): Promise<Response> {
+  const proxyUrl =
+    process.env.https_proxy ||
+    process.env.HTTPS_PROXY ||
+    process.env.http_proxy ||
+    process.env.HTTP_PROXY
+  if (proxyUrl) {
+    try {
+      const { fetch: undiciFetch, ProxyAgent } = await import('undici')
+      return undiciFetch(url, {
+        ...init,
+        dispatcher: new ProxyAgent(proxyUrl),
+      } as any) as unknown as Response
+    } catch {}
+  }
+  return globalThis.fetch(url, init)
+}
+
 const API_BASE = 'https://picaapi.picacomic.com/'
 const API_KEY = 'C69BAF41DA5ABD1FFEDC6D2FEA56B'
 const SIGNATURE_KEY =
@@ -90,7 +111,7 @@ export class PicaComicAPI {
       }
     }
 
-    const response = await globalThis.fetch(url.toString(), {
+    const response = await proxyAwareFetch(url.toString(), {
       method,
       headers,
       body: opts.json !== undefined ? JSON.stringify(opts.json) : undefined,

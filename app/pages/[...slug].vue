@@ -7,6 +7,9 @@
 <script setup lang="ts">
 import { onMounted } from 'vue'
 import { setTitle } from '~/utils/setTitle'
+
+definePageMeta({ name: 'not-found' })
+
 onMounted(() => {
   setTitle('404', 'Error')
 })

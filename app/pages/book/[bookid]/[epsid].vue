@@ -58,6 +58,7 @@ import { ChevronLeft, ChevronRight, ArrowLeft } from '@vicons/fa'
 import { useBookStore } from '~/stores/book'
 
 definePageMeta({
+  name: 'read',
   alias: ['/read/:bookid/:epsid'],
 })
 

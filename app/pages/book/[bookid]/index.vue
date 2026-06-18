@@ -96,6 +96,8 @@ import { CheckCircle, PenNib, Bookmark, BookmarkRegular } from '@vicons/fa'
 import type { PicaBookMeta, PicaBookEp } from '~/types'
 import { useBookStore } from '~/stores/book'
 
+definePageMeta({ name: 'book' })
+
 const route = useRoute()
 
 const bookid = ref(route.params.bookid as string)

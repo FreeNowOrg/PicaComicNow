@@ -34,6 +34,8 @@ import { getErrMsg } from '~/utils/getErrMsg'
 import { type PicaBookListItem, PicaListSort } from '~/types'
 import { useCategoryStore } from '~/stores/category'
 
+definePageMeta({ name: 'comics' })
+
 const route = useRoute()
 const router = useRouter()
 const catStore = useCategoryStore()

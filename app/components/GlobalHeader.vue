@@ -27,7 +27,7 @@ header.global-header.flex-center(
       type='text',
       placeholder='Search...',
       v-model='searchInput',
-      @keydown.enter='() => (router.push({ name: "search", params: { keyword: searchInput } }), (searchInput = ""))',
+      @keydown.enter='() => (router.push({ path: "/search", query: { keyword: searchInput } }), (searchInput = ""))',
       :style='{ height: "2rem" }'
     )
 

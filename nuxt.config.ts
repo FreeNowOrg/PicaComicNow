@@ -9,6 +9,12 @@ export default defineNuxtConfig({
     picaS3Base: '',
   },
 
+  nitro: {
+    rollupConfig: {
+      external: ['undici'],
+    },
+  },
+
   vite: {
     esbuild: {
       drop: process.env.NODE_ENV === 'production' ? ['console'] : [],

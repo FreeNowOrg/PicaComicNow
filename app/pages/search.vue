@@ -57,10 +57,10 @@ onMounted(() => {
   page.value = parseInt(route.query.page as string) || 1
   sort.value = (route.query.sort as PicaListSort) || PicaListSort.DEFAULT
 
-  loadData()
+  loadData(true)
 })
 
-function loadData() {
+function loadData(init = false) {
   if (loading.value) return
 
   if (keyword.value) {
@@ -69,7 +69,8 @@ function loadData() {
     setTitle('Search')
   }
 
-  router.push({
+  const nav = init ? router.replace : router.push
+  nav({
     path: '/search',
     query: {
       keyword: keyword.value,

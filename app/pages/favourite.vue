@@ -53,17 +53,18 @@ onMounted(() => {
   page.value = parseInt(route.query.page as string) || 1
   sort.value = (route.query.sort as PicaListSort) || PicaListSort.DATE_DESC
 
-  loadData()
+  loadData(true)
 })
 
-watch([page, sort], loadData)
+watch([page, sort], () => loadData())
 
 const loading = ref(false)
 const error = ref('')
-function loadData() {
+function loadData(init = false) {
   if (loading.value) return
 
-  router.replace({
+  const nav = init ? router.replace : router.push
+  nav({
     query: {
       page: page.value,
       sort: sort.value,

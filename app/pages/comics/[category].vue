@@ -51,10 +51,10 @@ onMounted(() => {
   page.value = parseInt(route.query.page as string) || 1
   sort.value = (route.query.sort as PicaListSort) || PicaListSort.DEFAULT
 
-  loadData()
+  loadData(true)
 })
 
-async function loadData() {
+async function loadData(init = false) {
   if (loading.value) return
 
   if (!category.value) {
@@ -63,10 +63,9 @@ async function loadData() {
   }
 
   setTitle(`${category.value} (page ${page.value})`, 'Comics')
-  router.replace({
-    params: {
-      category: category.value,
-    },
+  const nav = init ? router.replace : router.push
+  nav({
+    params: { category: category.value },
     query: { page: page.value, sort: sort.value },
   })
 

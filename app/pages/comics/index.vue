@@ -47,16 +47,15 @@ onMounted(() => {
   page.value = parseInt(route.query.page as string) || 1
   sort.value = (route.query.s as PicaListSort) || (route.query.sort as PicaListSort) || PicaListSort.DEFAULT
 
-  loadData()
+  loadData(true)
 })
 
-async function loadData() {
+async function loadData(init = false) {
   if (loading.value) return
 
   setTitle(`全部漫画 (第 ${page.value} 页)`)
-  router.replace({
-    query: { page: page.value, s: sort.value },
-  })
+  const nav = init ? router.replace : router.push
+  nav({ query: { page: page.value, s: sort.value } })
 
   loading.value = true
   error.value = ''

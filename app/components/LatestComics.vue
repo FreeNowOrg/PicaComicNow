@@ -30,7 +30,7 @@ defineProps<{ comics: PicaBookListItem[] }>()
   background: #fff;
   display: flex;
   flex-direction: column;
-  min-height: 320px;
+  height: 360px;
 }
 
 .latest-header {

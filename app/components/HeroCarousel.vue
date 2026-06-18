@@ -85,7 +85,7 @@ onBeforeUnmount(() => { if (timer) clearInterval(timer) })
   box-shadow: 6px 6px 0 0 #000;
   position: relative;
   overflow: hidden;
-  min-height: 320px;
+  height: 360px;
   background: #000;
 }
 
@@ -93,7 +93,6 @@ onBeforeUnmount(() => { if (timer) clearInterval(timer) })
   position: relative;
   width: 100%;
   height: 100%;
-  min-height: 320px;
 }
 
 .slide {

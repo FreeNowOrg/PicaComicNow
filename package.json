@@ -19,7 +19,6 @@
     "vue": "^3.5.38"
   },
   "devDependencies": {
-    "@l2studio/picacomic-api": "0.1.13",
     "@pinia/nuxt": "^0.11.3",
     "@prettier/plugin-pug": "^3.4.2",
     "@types/node": "^24.13.2",

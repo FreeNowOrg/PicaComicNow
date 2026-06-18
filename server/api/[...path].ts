@@ -14,17 +14,15 @@ export default defineEventHandler(async (event) => {
   console.info(`[${method}] ${path}`, query, body)
 
   try {
-    const { data } = await client
-      .fetch(path as string, {
-        headers: { authorization },
-        method,
-        searchParams: query as Record<string, string>,
-        json:
-          typeof body === 'object' && body && Object.keys(body).length > 0
-            ? body
-            : undefined,
-      })
-      .json<any>()
+    const { data } = await client.fetch(path as string, {
+      headers: { authorization },
+      method,
+      searchParams: query as Record<string, string>,
+      json:
+        typeof body === 'object' && body && Object.keys(body).length > 0
+          ? body
+          : undefined,
+    })
 
     return {
       code: 200,
@@ -36,7 +34,7 @@ export default defineEventHandler(async (event) => {
     }
   } catch (err: any) {
     throw createError({
-      statusCode: err?.response?.statusCode || 500,
+      statusCode: err?.statusCode || 500,
       statusMessage: err.message,
       data: err,
     })

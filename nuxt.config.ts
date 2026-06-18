@@ -7,8 +7,6 @@ export default defineNuxtConfig({
 
   runtimeConfig: {
     picaS3Base: '',
-    picaProxyHost: '',
-    picaProxyPort: '',
   },
 
   vite: {

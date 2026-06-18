@@ -9,13 +9,11 @@ export default defineEventHandler(async (event) => {
   const body = await readBody(event)
 
   try {
-    const { message } = await client
-      .fetch('users/password', {
-        headers: { authorization },
-        method: 'PUT',
-        body,
-      })
-      .json<any>()
+    const { raw } = await client.fetch('users/password', {
+      headers: { authorization },
+      method: 'PUT',
+      json: body,
+    })
 
     setResponseHeader(event, 'cache-control', 'no-cache')
     setCookie(event, 'PICA_TOKEN', '', {
@@ -25,10 +23,10 @@ export default defineEventHandler(async (event) => {
     })
     setResponseHeader(event, 'refresh', '0;URL=/auth')
 
-    return { code: 200, message }
+    return { code: 200, message: raw?.message }
   } catch (err: any) {
     throw createError({
-      statusCode: err?.response?.statusCode || 500,
+      statusCode: err?.statusCode || 500,
       statusMessage: err.message,
       data: err,
     })

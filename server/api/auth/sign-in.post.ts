@@ -16,7 +16,7 @@ export default defineEventHandler(async (event) => {
     return { code: 200, message: 'ok', body: { token } }
   } catch (err: any) {
     throw createError({
-      statusCode: err?.response?.statusCode || 500,
+      statusCode: err?.statusCode || 500,
       statusMessage: err.message,
       data: err,
     })

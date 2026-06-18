@@ -140,8 +140,8 @@ onMounted(() => {
   font-size: 1.25rem;
   z-index: 100;
   background-color: #fff;
-  // Neubrutalism: thick bottom border instead of box-shadow
   border-bottom: 3px solid #000;
+  box-sizing: content-box;
   transition: transform 0.3s ease;
 
   a {
@@ -220,6 +220,8 @@ onMounted(() => {
     .user-dropdown {
       font-size: 1rem;
       position: relative;
+      display: flex;
+      align-items: center;
 
       .dropdown-btn {
         position: relative;

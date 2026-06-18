@@ -98,7 +98,7 @@ watch(
   position: fixed;
   top: 0;
   left: 0;
-  padding-top: 60px; // matches updated header height
+  padding-top: 63px;
   width: calc(1rem + 240px);
   max-width: 80vw;
   height: 100vh;

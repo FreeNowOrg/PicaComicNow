@@ -22,10 +22,14 @@ PicaProvider#app-container
 
 main {
   background-color: #FFF0F3;
+  background-image:
+    linear-gradient(rgba(0, 0, 0, 0.03) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(0, 0, 0, 0.03) 1px, transparent 1px);
+  background-size: 72px 72px;
 }
 
 article {
-  margin-top: 60px;
+  margin-top: 63px;
   padding-top: 2rem;
   padding-bottom: 4rem;
 }

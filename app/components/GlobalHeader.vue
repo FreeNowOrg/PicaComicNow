@@ -233,7 +233,7 @@ onMounted(() => {
             width: 2rem;
             height: 2rem;
             border: 2px solid #000;
-            vertical-align: middle;
+            display: block;
           }
         }
 

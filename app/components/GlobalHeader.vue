@@ -15,9 +15,11 @@ header.global-header.flex-center(
 
   .flex-1.flex.nav-links(style='gap: 1rem')
     .item
+      NuxtLink(to='/comics') 全部漫画
+    .item
       NuxtLink(to='/categories') 分类
     .item
-      NuxtLink(to='/favourite') 收藏夹
+      NuxtLink(to='/favourite') 收藏
     .item
       NuxtLink(to='/about') 关于
 

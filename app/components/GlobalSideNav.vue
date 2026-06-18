@@ -14,6 +14,10 @@ aside.global-site-nav(
               i.i-fa6-solid-house
               | 首页
           li
+            NuxtLink(to='/comics')
+              i.i-fa6-solid-book
+              | 全部漫画
+          li
             NuxtLink(to='/categories')
               i.i-fa6-solid-folder
               | 分类列表
@@ -24,7 +28,7 @@ aside.global-site-nav(
           li(v-if='user.profile')
             NuxtLink(to='/profile')
               i.i-fa6-solid-user
-              | {{ user.profile.name }}（你）
+              | {{ user.profile.name }}
           li(v-if='user.profile')
             NuxtLink(to='/favourite')
               i.i-fa6-solid-bookmark
@@ -32,7 +36,7 @@ aside.global-site-nav(
           li
             NuxtLink(to='/auth')
               i.i-fa6-solid-fingerprint
-              | 登录
+              | {{ user.profile ? '退出' : '登录' }}
 
       .group
         .title {{ PROJECT_NAME }}
@@ -40,7 +44,7 @@ aside.global-site-nav(
           li
             NuxtLink(to='/about')
               i.i-fa6-solid-heart
-              | 关于
+              | 关于我们
 </template>
 
 <script setup lang="ts">

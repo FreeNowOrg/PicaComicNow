@@ -7,4 +7,10 @@
     "binding": "ASSETS",
     "directory": ".output/public",
   },
+  "observability": {
+    "logs": {
+      "enabled": true,
+      "invocation_logs": true,
+    },
+  },
 }

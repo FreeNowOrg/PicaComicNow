@@ -1,38 +1,54 @@
-# PicACG Web App
+# Pica Comic Now
 
-<div align="center">
+A fan-made web client for PicACG, built with [Nuxt](https://nuxt.com/).
 
-Deploy your own
+> **Disclaimer:** This is NOT an official PicACG product. All comic data and images are copyrighted by PICA and their respective authors. For personal use only.
 
-[![Deploy with Vercel](https://vercel.com/button)](https://vercel.com/new/clone?repository-url=https%3A%2F%2Fgithub.com%2FFreeNowOrg%2FPicaComicNow&demo-title=PicACG%20Web%20App&demo-url=https%3A%2F%2Fpica-comic.vercel.app)
+## Stack
 
-想用的话点上面的按钮自己部署一个，一直点下一步就行了。别让我的被封了，我还要看本子呢，谢谢。
+- **Frontend:** Vue 3, Naive UI, Pinia, Pug, Sass
+- **Backend:** Nuxt server routes (Nitro / H3), proxying PicACG upstream API
+- **Deployment:** Cloudflare Workers, Docker, or any Node.js host
 
-</div>
+## Development
 
-## Attention please
+```bash
+pnpm install
+pnpm dev
+```
 
-This is a fan made website. We are NOT PicACG official. Please DO NOT share this website anywhere.
+Dev server starts at `http://localhost:3000`.
 
-这是一个粉丝向网站，我们与 PicACG 官方没有任何关系。请勿在任何地方传播本网站。
+## Environment Variables
 
----
+| Variable | Scope | Description |
+|---|---|---|
+| `NUXT_PICA_S3_BASE` | Server | Override PicACG image CDN base URL |
 
-_For communication and learning only._
+## Build & Deploy
 
-**All data & pictures from query:** &copy;PICA & Illusts' authors
+### Node.js
 
-> Copyright 2021 FreeNowOrg
->
-> Licensed under the Apache License, Version 2.0 (the "License");<br>
-> you may not use this file except in compliance with the License.<br>
-> You may obtain a copy of the License at
->
-> http://www.apache.org/licenses/LICENSE-2.0
->
-> Unless required by applicable law or agreed to in writing, software<br>
-> distributed under the License is distributed on an "AS IS" BASIS,<br>
-> WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.<br>
-> See the License for the specific language governing permissions and<br>
-> limitations under the License.
+```bash
+pnpm build
+node .output/server/index.mjs
+```
 
+### Docker
+
+```bash
+docker build -t pica-comic-now .
+docker run -p 3000:3000 pica-comic-now
+```
+
+### Cloudflare Workers
+
+Deploy via [NuxtHub](https://hub.nuxt.com), [Wrangler](https://developers.cloudflare.com/workers/wrangler/), or your preferred CI pipeline with the `cloudflare-workers` Nitro preset:
+
+```bash
+NITRO_PRESET=cloudflare-workers pnpm build
+```
+
+## License
+
+[Apache-2.0](LICENSE) &copy; FreeNowOrg

@@ -7,32 +7,32 @@ aside.global-site-nav(
   .inner
     .list
       .group
-        .title Navigation
+        .title 导航
         ul
           li
             NuxtLink(to='/')
               i.i-fa6-solid-house
-              | Home
+              | 首页
           li
             NuxtLink(to='/categories')
               i.i-fa6-solid-folder
-              | Categories Index
+              | 分类列表
 
       .group
-        .title User
+        .title 用户
         ul
           li(v-if='user.profile')
             NuxtLink(to='/profile')
               i.i-fa6-solid-user
-              | {{ user.profile.name }} (you)
+              | {{ user.profile.name }}（你）
           li(v-if='user.profile')
             NuxtLink(to='/favourite')
               i.i-fa6-solid-bookmark
-              | My Favourite
+              | 我的收藏
           li
             NuxtLink(to='/auth')
               i.i-fa6-solid-fingerprint
-              | Authorization
+              | 登录
 
       .group
         .title {{ PROJECT_NAME }}
@@ -40,7 +40,7 @@ aside.global-site-nav(
           li
             NuxtLink(to='/about')
               i.i-fa6-solid-heart
-              | About us
+              | 关于
 </template>
 
 <script setup lang="ts">

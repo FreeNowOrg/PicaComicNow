@@ -2,9 +2,9 @@
 #error-404
   .error-content
     .error-code 404
-    h1.error-title Not Found
-    p.error-message This page has been lost in the void.
-    NuxtLink.pica-btn(to='/') Go Home
+    h1.error-title 页面未找到
+    p.error-message 你访问的页面不存在
+    NuxtLink.pica-btn(to='/') 返回首页
 </template>
 
 <script setup lang="ts">

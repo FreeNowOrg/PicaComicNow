@@ -7,12 +7,12 @@ mixin thumb(item)
       i.i-fa6-solid-up-right-from-square(v-if='item.isWeb', style='float: right')
 
 #categories-container
-  h1 Categories Index
+  h1 分类列表
 
   .loading.align-center(v-if='loading')
     placeholder
 
-  PicaMbox(v-if='error', type='error', header='Failed to get categories data')
+  PicaMbox(v-if='error', type='error', header='加载分类失败')
     p {{ error }}
 
   ul.categories-list

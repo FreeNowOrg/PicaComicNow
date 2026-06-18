@@ -1,27 +1,27 @@
 <template lang="pug">
 #auth-container
-  h1 Authorization
+  h1 登录
 
-  PicaMbox(v-if='$route.query.tips', type='info', header='Tips', style='margin-bottom: 1rem')
-    p You must log in to use this website
+  PicaMbox(v-if='$route.query.tips', type='info', header='提示', style='margin-bottom: 1rem')
+    p 请先登录后使用
 
   section(v-if='user.profile')
     PicaCard
-      h2 Hello, {{ user.profile.name }}
+      h2 你好，{{ user.profile.name }}
       .align-center
-        PicaButton(variant='primary', @click.prevent='handleSignOut') Sign out
+        PicaButton(variant='primary', @click.prevent='handleSignOut') 退出登录
 
   section(v-else)
     PicaCard.form.align-center(:class='{ "loading-cover": onAuthenticating }')
-      h2(style='left: 0; transform: none') Login
+      h2(style='left: 0; transform: none') 登录
       label
-        strong Username/email
+        strong 用户名/邮箱
         input.pica-input(v-model='email')
       label
-        strong Password
+        strong 密码
         input.pica-input(v-model='password', type='password')
       div
-        PicaButton(variant='primary', @click.prevent='handleLogin') Login
+        PicaButton(variant='primary', @click.prevent='handleLogin') 登录
       //- Error
       PicaMbox(v-if='errorMsg', type='error')
         template(#header) {{ errorTitle }}
@@ -60,7 +60,7 @@ function handleLogin() {
       },
       (err) => {
         console.warn('auth faild', err)
-        errorTitle.value = 'Auth failed'
+        errorTitle.value = '认证失败'
         errorMsg.value = getErrMsg(err)
       }
     )
@@ -73,7 +73,7 @@ function handleLogin() {
       },
       (err) => {
         console.warn('profile faild')
-        errorTitle.value = 'Faild to get profile'
+        errorTitle.value = '获取资料失败'
         errorMsg.value = getErrMsg(err)
       }
     )

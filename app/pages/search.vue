@@ -13,9 +13,9 @@ mixin pagenator
     span(v-if='keyword') 搜索「{{ keyword }}」
 
   h1(v-if='keyword') 搜索「{{ keyword }}」(第 {{ page }} 页)
-  h1(v-else) Advanced Search
+  h1(v-else) 高级搜索
 
-  PicaMbox(v-if='error', type='error', header='Failed to get comics data')
+  PicaMbox(v-if='error', type='error', header='加载漫画失败')
     p {{ error }}
 
   .loading.align-center(v-if='loading && !comics.length')

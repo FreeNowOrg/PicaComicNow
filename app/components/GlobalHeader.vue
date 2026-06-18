@@ -15,16 +15,16 @@ header.global-header.flex-center(
 
   .flex-1.flex.nav-links(style='gap: 1rem')
     .item
-      NuxtLink(to='/categories') Categories
+      NuxtLink(to='/categories') 分类
     .item
-      NuxtLink(to='/favourite') Favourite
+      NuxtLink(to='/favourite') 收藏夹
     .item
-      NuxtLink(to='/about') About
+      NuxtLink(to='/about') 关于
 
   .item.search-area
     input.search-input(
       type='text',
-      placeholder='Search...',
+      placeholder='搜索...',
       v-model='searchInput',
       @keydown.enter='() => (router.push({ path: "/search", query: { keyword: searchInput } }), (searchInput = ""))',
       :style='{ height: "2rem" }'
@@ -53,8 +53,8 @@ header.global-header.flex-center(
                   .banner-bg
                   img.avatar(:src='DEFAULT_AVATAR')
                 .details
-                  a.user-name Anonymous
-                  .uid Please login
+                  a.user-name 匿名用户
+                  .uid 请登录
 
             //- isLogedIn
             li(v-if='user.profile')
@@ -71,10 +71,10 @@ header.global-header.flex-center(
                   NuxtLink.plain.user-name(to='/profile') {{ user.profile.name }}
                   .uid {{ user.profile.email }}
             li(v-if='user.profile')
-              NuxtLink.plain(to='/favourite') My Favourites
+              NuxtLink.plain(to='/favourite') 我的收藏
 
             li(v-if='$route.path !== "/auth"')
-              NuxtLink.plain(to='/auth') {{ user.profile ? 'Logout' : 'Login' }}
+              NuxtLink.plain(to='/auth') {{ user.profile ? '退出登录' : '登录' }}
 </template>
 
 <script setup lang="ts">

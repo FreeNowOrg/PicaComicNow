@@ -11,31 +11,31 @@
         | &nbsp;
         span.uid @{{ user.profile.email }}
     PicaCard.slogan
-      h2 Slogan
+      h2 个性签名
       .slogan-view.flex(
         v-if='!sloganEdit',
         :class='{ "loading-cover": sloganLoading }'
       )
         p.pre.flex-1 {{ user.profile.slogan || '-' }}
         .edit-btn
-          PicaButton(size='sm', @click='sloganEdit = true') edit
+          PicaButton(size='sm', @click='sloganEdit = true') 编辑
       .slogan-edit(v-else)
         .flex
           label.flex-1(for='sloganEdit')
-            strong Update slogan
+            strong 更新签名
           .cancel-btn
-            PicaButton(size='sm', @click='sloganEdit = false') cancel
+            PicaButton(size='sm', @click='sloganEdit = false') 取消
         .flex.gap-1
           .edit-area.flex-1
             textarea#sloganEdit.pica-input(v-model='sloganInput')
           .btn-area
-            PicaButton(variant='primary', size='sm', :disabled='sloganLoading', @click='handleSloganEdit') Submit
+            PicaButton(variant='primary', size='sm', :disabled='sloganLoading', @click='handleSloganEdit') 提交
     PicaCard
       details
         pre {{ user.profile }}
 
   section.user-profile.no-profile(v-else)
-    h1.name Please login
+    h1.name 请先登录
 </template>
 
 <script setup lang="ts">

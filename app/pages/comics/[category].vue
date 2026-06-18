@@ -9,9 +9,9 @@ mixin pagenator
     NuxtLink(to='/categories') 分类列表
     span {{ category }}
 
-  h1(v-if='category') {{ category }}
+  h1(v-if='category') 分类：{{ category }}
 
-  PicaMbox(v-if='error', type='error', header='Failed to get comics data')
+  PicaMbox(v-if='error', type='error', header='加载漫画失败')
     p {{ error }}
 
   .loading.align-center(v-if='loading && !comics.length')

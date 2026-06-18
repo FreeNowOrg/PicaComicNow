@@ -21,7 +21,7 @@
             h1.title {{ bookMeta.title }}
             a.bookmark(
               :class='bookMeta.isFavourite ? "is-favourite" : "not-favourite"',
-              :title='bookMeta.isFavourite ? "Click to remove bookmark" : "Click to add bookmark"',
+              :title='bookMeta.isFavourite ? "取消收藏" : "添加收藏"',
               @click='handleBookmark'
             )
               i.i-fa6-solid-bookmark(v-if='bookMeta.isFavourite')
@@ -31,18 +31,18 @@
               i.i-fa6-solid-circle-check.text-brand-green(v-if='bookMeta.finished')
               i.i-fa6-solid-pen-nib.text-brand-pink(v-else)
               |
-              | {{ bookMeta.finished ? 'Finished' : 'Writing' }}
+              | {{ bookMeta.finished ? '已完结' : '连载中' }}
             .pages
-              strong Pages:
-              | {{ bookMeta.pagesCount }} Pages, {{ bookMeta.epsCount }} Episodes
+              strong 页数：
+              | {{ bookMeta.pagesCount }} 页，{{ bookMeta.epsCount }} 章节
             .author
-              strong Author:
+              strong 作者：
               NuxtLink(:to='"/search?keyword=" + bookMeta.author') @{{ bookMeta.author }}
             .chinese-team(v-if='bookMeta.chineseTeam')
-              strong Chinese translator:
+              strong 汉化组：
               NuxtLink(:to='"/search?keyword=" + bookMeta.chineseTeam') {{ bookMeta.chineseTeam }}
             .tags-list
-              strong Categories:
+              strong 分类：
               NuxtLink.tag(
                 v-for='item in bookMeta.categories',
                 :to='"/comics/" + item'
@@ -59,14 +59,14 @@
                 span {{ bookMeta.commentsCount }}
 
       .tags-list
-        strong Tags:
+        strong 标签：
         NuxtLink.tag(v-for='item in bookMeta.tags', :to='"/search?keyword=" + item') {{ item }}
 
       .description {{ bookMeta.description }}
 
   section.book-eps
     PicaCard
-      h2#eps Episodes
+      h2#eps 章节列表
       p.loading.align-center(v-if='isLoadingEps || !bookEps.length')
         placeholder
       .eps-list(v-if='bookEps.length')
@@ -77,15 +77,15 @@
 
   section.extra-actions
     PicaCard
-      h2 Extra Actions
+      h2 其他操作
       details
-        summary Book Meta
+        summary 漫画元数据
         pre {{ bookMeta }}
       details
-        summary Book Episodes
+        summary 章节数据
         pre {{ bookEps }}
       p(v-if='bookMeta')
-        PicaButton(variant='danger', @click='init(true)') Force Reload Book Info
+        PicaButton(variant='danger', @click='init(true)') 强制重新加载
 </template>
 
 <script setup lang="ts">

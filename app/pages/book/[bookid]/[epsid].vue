@@ -11,14 +11,14 @@
       :to='"/book/" + bookid + "/" + prevEp.order'
     )
       i.i-fa6-solid-chevron-left
-      | {{ prevEp?.title || 'Previous' }}
+      | {{ prevEp?.title || '上一话' }}
     .ep-title
-      h1 {{ curEp?.title || 'Loading...' }}
+      h1 {{ curEp?.title || '加载中...' }}
     NuxtLink.pica-btn.bg-cream.ep-nav-btn(
       v-if='nextEp',
       :to='"/book/" + bookid + "/" + nextEp.order'
     )
-      | {{ nextEp?.title || 'Next' }}
+      | {{ nextEp?.title || '下一话' }}
       i.i-fa6-solid-chevron-right
 
   .pages-list
@@ -31,7 +31,7 @@
 
   p.align-center(v-if='pagesLeft > 0 && pages.length')
     PicaButton(@click='loadPages()')
-      | {{ isLoadingPages ? 'Loading...' : 'See more' }} ({{ pagesLeft }} pages left)
+      | {{ isLoadingPages ? '加载中...' : '加载更多' }} ({{ pagesLeft }} 页剩余)
 
   .book-eps(v-if='bookEps.length && pages.length')
     .next-ep(v-if='nextEp', style='text-align: center')
@@ -41,7 +41,7 @@
         | {{ nextEp.title }}
         i.i-fa6-solid-chevron-right
 
-    h2 Episodes
+    h2 章节列表
     .eps-list
       NuxtLink.ep-link(
         v-for='item in orderedEps',

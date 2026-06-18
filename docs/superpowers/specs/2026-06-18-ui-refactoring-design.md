@@ -48,16 +48,16 @@ Based on existing config from another project, adapted for PicaComicNow.
 ### UnoCSS Shortcuts (from existing config)
 
 ```
-nb-border:    border-3 border-solid border-black
-nb-border-sm: border-2 border-solid border-black
-nb-shadow:    shadow-[6px_6px_0_0_#000]
-nb-shadow-sm: shadow-[4px_4px_0_0_#000]
-nb-shadow-lg: shadow-[8px_8px_0_0_#000]
-nb-card:      nb-border nb-shadow rounded-lg bg-white transition-all duration-150
-nb-press:     hover:translate-x-1.5 hover:translate-y-1.5 hover:shadow-[0_0_0_0_#000] ...
-nb-btn:       nb-border nb-shadow rounded-lg px-6 py-3 font-black ... nb-press
-nb-tag:       nb-border-sm shadow-[3px_3px_0_0_#000] rounded-md px-3 py-1 font-bold ...
-nb-input:     w-full nb-border-sm rounded-md px-4 py-3 ... focus:border-brand-pink ...
+pica-border:    border-3 border-solid border-black
+pica-border-sm: border-2 border-solid border-black
+pica-shadow:    shadow-[6px_6px_0_0_#000]
+pica-shadow-sm: shadow-[4px_4px_0_0_#000]
+pica-shadow-lg: shadow-[8px_8px_0_0_#000]
+pica-card:      pica-border pica-shadow rounded-lg bg-white transition-all duration-150
+pica-press:     hover:translate-x-1.5 hover:translate-y-1.5 hover:shadow-[0_0_0_0_#000] ...
+pica-btn:       pica-border pica-shadow rounded-lg px-6 py-3 font-black ... pica-press
+pica-tag:       pica-border-sm shadow-[3px_3px_0_0_#000] rounded-md px-3 py-1 font-bold ...
+pica-input:     w-full pica-border-sm rounded-md px-4 py-3 ... focus:border-brand-pink ...
 ```
 
 ### Font Families
@@ -80,7 +80,7 @@ All components use `Pica` prefix. Location: `app/components/ui/`.
 Replaces naive-ui `NDialog`.
 
 - Renders via `<Teleport to="body">`
-- Backdrop overlay + centered nb-card panel
+- Backdrop overlay + centered pica-card panel
 - Slots: header, default (body), footer
 - Driven by composable `useDialog()` in `app/composables/useDialog.ts`
 - API: `useDialog().open({ title, content, onConfirm, onCancel })`
@@ -100,9 +100,9 @@ Replaces naive-ui `NMessage`.
 
 Replaces naive-ui `NPagination`.
 
-- Page number button group with nb-btn styling
+- Page number button group with pica-btn styling
 - First/prev/next/last navigation
-- Quick jump input (nb-input styled)
+- Quick jump input (pica-input styled)
 - Ellipsis for large page ranges
 - Props: `page`, `pageCount`, `pageSlot`
 - Emits: `update:page`
@@ -111,8 +111,8 @@ Replaces naive-ui `NPagination`.
 
 Replaces naive-ui `NSelect`.
 
-- Trigger: nb-input styled button showing current value
-- Dropdown: nb-card panel with option list
+- Trigger: pica-input styled button showing current value
+- Dropdown: pica-card panel with option list
 - Click-outside to close
 - Props: `options`, `value`, `size`
 - Emits: `update:value`
@@ -123,7 +123,7 @@ Replaces global `<button>` styling in elements.sass.
 
 - Variants: `default`, `primary` (brand-pink bg), `danger`
 - Sizes: `sm`, `md`, `lg`
-- Uses nb-btn shortcut as base
+- Uses pica-btn shortcut as base
 - Supports icon slot
 
 ### PicaCard
@@ -131,14 +131,14 @@ Replaces global `<button>` styling in elements.sass.
 Replaces global `.card` class.
 
 - Color variants: `white` (default), `pink`, `yellow`, `green`
-- Uses nb-card shortcut as base
+- Uses pica-card shortcut as base
 - Slots: default
 
 ### PicaTag
 
 Replaces global `.tag` class.
 
-- Uses nb-tag shortcut
+- Uses pica-tag shortcut
 - Color prop for background
 - Special styling for `data-tag="生肉"` (preserved)
 
@@ -147,7 +147,7 @@ Replaces global `.tag` class.
 Replaces global `.mbox` class.
 
 - Types: info, success, warning, error
-- Neubrutalism styled: nb-border-sm + colored left border (4px)
+- Neubrutalism styled: pica-border-sm + colored left border (4px)
 - Slots: title, default
 
 ### PicaProvider
@@ -171,7 +171,7 @@ Significantly reduced. Button/card/tag/input styles move into Pica components. R
 
 - `h1`, `h2` base styling (Neubrutalism: display font, bold, with colored underline or highlight)
 - `a` link styling (preserve animated underline, update colors)
-- `pre`, `code` styling (nb-border-sm + brand colors)
+- `pre`, `code` styling (pica-border-sm + brand colors)
 - `.tabber` styling (update to nb aesthetic)
 
 ### formats.scss

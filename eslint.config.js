@@ -8,7 +8,7 @@ import globals from 'globals'
 
 export default tseslint.config(
   {
-    ignores: ['*.d.ts', '**/dist', '*.dev.*'],
+    ignores: ['*.d.ts', '**/dist', '*.dev.*', '.nuxt', '.output'],
   },
   {
     extends: [

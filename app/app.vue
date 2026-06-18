@@ -1,5 +1,29 @@
 <template lang="pug">
-div
-  h1 Nuxt Migration in Progress
-  NuxtPage
+NaiveuiProvider#app-container
+  main.flex-1
+    article.responsive
+      NuxtPage
+
+  NProgress
+  GlobalHeader
+  GlobalSideNav
+  GlobalFooter
 </template>
+
+<script setup lang="ts">
+</script>
+
+<style scoped lang="sass">
+#app-container
+  display: flex
+  flex-direction: column
+  min-height: 100vh
+
+main
+  background-color: var(--theme-background-color)
+
+article
+  margin-top: 50px
+  padding-top: 2rem
+  padding-bottom: 4rem
+</style>

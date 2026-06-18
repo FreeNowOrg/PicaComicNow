@@ -21,26 +21,25 @@
 
 <script lang="ts"></script>
 
-<style scoped lang="sass">
-.svgspinner
-  max-width: 100%
+<style scoped lang="scss">
+.svgspinner {
+  max-width: 100%;
 
-  .spincircle
-    animation: loading-round 1.2s infinite linear, loading-dash 2s infinite linear alternate
-    stroke-dasharray: 236
-    stroke: var(--theme-accent-color)
+  .spincircle {
+    animation: loading-round 1.2s infinite linear, loading-dash 2s infinite linear alternate;
+    stroke-dasharray: 236;
+    // Brand pink spinner
+    stroke: #FF5C8A;
+  }
+}
 
-@keyframes loading-round
-  0%
-    transform: rotate(0deg)
+@keyframes loading-round {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(720deg); }
+}
 
-  100%
-    transform: rotate(720deg)
-
-@keyframes loading-dash
-  0%
-    stroke-dashoffset: 236
-
-  100%
-    stroke-dashoffset: 0
+@keyframes loading-dash {
+  0% { stroke-dashoffset: 236; }
+  100% { stroke-dashoffset: 0; }
+}
 </style>

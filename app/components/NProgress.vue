@@ -16,18 +16,25 @@ router.afterEach(() => {
 })
 </script>
 
-<style lang="sass">
-#nprogress
-  .bar
-    background-color: var(--theme-secondary-color)
-    top: 51px
-    .peg
-      display: none
+<style lang="scss">
+#nprogress {
+  .bar {
+    // Brand pink progress bar, offset below the Neubrutalism navbar (61px)
+    background-color: #FF5C8A;
+    top: 61px;
 
-  .spinner
-    top: 60px
+    .peg {
+      display: none;
+    }
+  }
 
-    .spinner-icon
-      border-top-color: var(--theme-secondary-color)
-      border-left-color: var(--theme-secondary-color)
+  .spinner {
+    top: 70px;
+
+    .spinner-icon {
+      border-top-color: #FF5C8A;
+      border-left-color: #FF5C8A;
+    }
+  }
+}
 </style>

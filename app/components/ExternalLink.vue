@@ -10,12 +10,15 @@ const props = defineProps<{
 }>()
 </script>
 
-<style scoped lang="sass">
-.external-icon
-  font-size: 0.75em
-  margin-left: 4px
+<style scoped lang="scss">
+.external-icon {
+  font-size: 0.75em;
+  margin-left: 4px;
+}
 
-.no-icon
-  .external-icon
-    display: none
+.no-icon {
+  .external-icon {
+    display: none;
+  }
+}
 </style>

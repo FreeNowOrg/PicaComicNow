@@ -3,14 +3,14 @@
   UserCard
 
   .top-grid
-    HeroCarousel(v-if='leaderboard.length', :comics='leaderboard')
+    HeroCarousel(v-if='home.leaderboard.length', :comics='home.leaderboard')
     .top-grid-placeholder(v-else)
       Placeholder
-    LatestComics(v-if='latestComics.length', :comics='latestComics')
+    LatestComics(v-if='home.latestComics.length', :comics='home.latestComics')
     .top-grid-placeholder(v-else)
       Placeholder
 
-  PicaMbox(v-if='topError', type='error', :header='topError')
+  PicaMbox(v-if='home.topError', type='error', :header='home.topError')
 
   .search-bar
     input.search-input(
@@ -31,9 +31,9 @@
       h2
         i.i-fa6-solid-dice
         |  随机推荐
-      PicaButton(size='sm', @click='refreshRandom') 换一批
-    books-list(v-if='randomComics.length', :data='randomComics', backTo='/')
-    .random-loading(v-if='randomLoading')
+      PicaButton(size='sm', @click='home.refreshRandom()') 换一批
+    books-list(v-if='home.randomComics.length', :data='home.randomComics', backTo='/')
+    .random-loading(v-if='home.randomLoading')
       Placeholder
     .random-sentinel(ref='sentinelRef')
 </template>
@@ -41,13 +41,15 @@
 <script setup lang="ts">
 import { onBeforeUnmount, onMounted, ref } from 'vue'
 import { setTitle } from '~/utils/setTitle'
-import { picaClient } from '~/utils/pica-client'
-import type { PicaBookListItem, PicaLeaderboardItem } from '~/types'
+import { useHomeStore } from '~/stores/home'
 
 setTitle()
 
+const home = useHomeStore()
 const router = useRouter()
 const searchInput = ref('')
+const sentinelRef = ref<HTMLElement>()
+let observer: IntersectionObserver | null = null
 
 function handleSearch() {
   if (searchInput.value.trim()) {
@@ -55,60 +57,20 @@ function handleSearch() {
   }
 }
 
-const leaderboard = ref<PicaLeaderboardItem[]>([])
-const latestComics = ref<PicaBookListItem[]>([])
-const topError = ref('')
-
-const randomComics = ref<PicaBookListItem[]>([])
-const randomLoading = ref(false)
-const seenIds = new Set<string>()
-const sentinelRef = ref<HTMLElement>()
-let observer: IntersectionObserver | null = null
-
 onMounted(async () => {
-  try {
-    const [lb, latest] = await Promise.all([
-      picaClient.fetchLeaderboard('H24'),
-      picaClient.fetchAllComics(1, 'dd'),
-    ])
-    leaderboard.value = lb.slice(0, 5)
-    latestComics.value = latest.docs.slice(0, 10)
-  } catch (e: any) {
-    topError.value = 'Failed to load homepage data'
-    console.warn(e)
+  await home.loadTop()
+  if (!home.randomComics.length) {
+    await home.loadRandomBatch()
   }
-
-  await loadRandomBatch()
   setupObserver()
 })
-
-async function loadRandomBatch() {
-  if (randomLoading.value) return
-  randomLoading.value = true
-  try {
-    const comics = await picaClient.fetchRandomComics()
-    const fresh = comics.filter((c) => !seenIds.has(c._id))
-    fresh.forEach((c) => seenIds.add(c._id))
-    randomComics.value.push(...fresh)
-  } catch (e) {
-    console.warn('Failed to load random comics', e)
-  } finally {
-    randomLoading.value = false
-  }
-}
-
-function refreshRandom() {
-  seenIds.clear()
-  randomComics.value = []
-  loadRandomBatch()
-}
 
 function setupObserver() {
   if (!sentinelRef.value) return
   observer = new IntersectionObserver(
     (entries) => {
       if (entries[0]?.isIntersecting) {
-        loadRandomBatch()
+        home.loadRandomBatch()
       }
     },
     { rootMargin: '200px' }

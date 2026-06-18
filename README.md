@@ -1,6 +1,12 @@
+<div align="center">
+
+<img src="https://github.com/user-attachments/assets/fa3d46f0-ffd3-40ca-9562-2c16dec10db1" alt="Preview" width="420">
+
 # Pica Comic Now
 
 A fan-made web client for PicACG, built with [Nuxt](https://nuxt.com/).
+
+</div>
 
 ## Stack
 

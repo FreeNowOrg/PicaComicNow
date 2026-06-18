@@ -1,4 +1,4 @@
-import { FileMedia, type FileThumb } from './File.js'
+import type { FileMedia, FileThumb } from './File.js'
 
 export type ApiResponse<T = unknown> = {
   code: number

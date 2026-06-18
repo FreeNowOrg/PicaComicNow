@@ -21,11 +21,11 @@ PicaProvider#app-container
 }
 
 main {
-  background-color: var(--theme-background-color);
+  background-color: #FFF8DC;
 }
 
 article {
-  margin-top: 50px;
+  margin-top: 60px;
   padding-top: 2rem;
   padding-bottom: 4rem;
 }

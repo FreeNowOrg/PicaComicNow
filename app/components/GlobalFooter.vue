@@ -52,41 +52,68 @@ import {
 } from '~/utils/config'
 </script>
 
-<style scoped lang="sass">
-.global-footer
-  > div
-    color: var(--theme-accent-link-color)
+<style scoped lang="scss">
+.global-footer {
+  // Thick top border to separate from page content
+  border-top: 3px solid #000;
 
-  .top
-    background-color: var(--theme-accent-color)
-    padding-top: 2rem
-    padding-bottom: 2rem
-    gap: 1.5rem
+  > div {
+    color: #fff;
+  }
 
-  .bottom
-    padding: 1rem
-    background-color: var(--theme-accent-color-darken)
+  // Main content sections: brand-pink background
+  .top {
+    background-color: #FF5C8A;
+    padding-top: 2rem;
+    padding-bottom: 2rem;
+    gap: 1.5rem;
+    // Neubrutalism: thick border between top sections
+    border-bottom: 3px solid #000;
+  }
 
-  h4
-    position: relative
-    margin: 1rem 0 0.5rem 0
-    padding-bottom: 0.2rem
-    border-bottom: 2px solid
-    font-size: 1.1rem
+  // Copyright bar: darker pink (brand-pinkHot)
+  .bottom {
+    padding: 1rem;
+    background-color: #FF6B9D;
+  }
 
-  ul
-    padding-left: 1rem
-    margin: 0.2rem 0
+  // Section headings: display font, bold, bottom border
+  h4 {
+    position: relative;
+    margin: 1rem 0 0.5rem 0;
+    padding-bottom: 0.4rem;
+    border-bottom: 3px solid #000;
+    font-size: 1.1rem;
+    font-family: "Archivo Black", "Noto Sans SC", system-ui, sans-serif;
+    font-weight: 900;
+    color: #fff;
+  }
 
-    a
-      display: inline
-      font-weight: 400
+  ul {
+    padding-left: 1rem;
+    margin: 0.2rem 0;
 
-a
-  --color: #eee
-  font-weight: 600
+    a {
+      display: inline;
+      font-weight: 400;
+    }
+  }
+}
 
-@media  (max-width: 800px)
-  .top
-    flex-direction: column
+// Link color: white/cream, underline on hover
+a {
+  --color: #FFF8DC;
+  font-weight: 600;
+
+  &:hover {
+    text-decoration: underline;
+    text-underline-offset: 3px;
+  }
+}
+
+@media (max-width: 800px) {
+  .top {
+    flex-direction: column;
+  }
+}
 </style>

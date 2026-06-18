@@ -77,72 +77,111 @@ watch(
 )
 </script>
 
-<style scoped lang="sass">
-.global-side-nav
-  z-index: 15
+<style scoped lang="scss">
+.global-site-nav {
+  z-index: 15;
+}
 
-.backdrop
-  position: fixed
-  top: 0
-  left: 0
-  width: 100vw
-  height: 100vh
-  background-color: rgba(0, 0, 0, 0.1)
-  z-index: 15
+// Semi-transparent overlay — slightly darker for more presence
+.backdrop {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background-color: rgba(0, 0, 0, 0.35);
+  z-index: 15;
+}
 
-.inner
-  position: fixed
-  top: 0
-  left: 0
-  padding-top: 50px
-  width: calc(1rem + 240px)
-  max-width: 80vw
-  height: 100vh
-  background-color: #fff
-  z-index: 16
-  transition: all 0.5s
+// Side panel: white background, Neubrutalism right border
+.inner {
+  position: fixed;
+  top: 0;
+  left: 0;
+  padding-top: 60px; // matches updated header height
+  width: calc(1rem + 240px);
+  max-width: 80vw;
+  height: 100vh;
+  background-color: #fff;
+  border-right: 3px solid #000;
+  z-index: 16;
+  transition: all 0.5s;
+}
 
-.list
-  max-height: calc(100vh - 56px)
-  overflow-x: auto
+.list {
+  max-height: calc(100vh - 60px);
+  overflow-y: auto;
+  overflow-x: hidden;
+}
 
-.group
-  margin: 0.5rem 0
+.group {
+  margin: 0.5rem 0;
 
-  .title
-    user-select: none
-    padding: 0 1.6rem
-    margin: 1.6rem 0 0.4rem 0
-    font-weight: 600
-    font-size: 0.8rem
-    color: #aaa
+  // Section titles: uppercase, spaced, bold — Neubrutalism editorial style
+  .title {
+    user-select: none;
+    padding: 0 1.6rem;
+    margin: 1.6rem 0 0.4rem 0;
+    font-weight: 900;
+    font-size: 0.7rem;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: #000;
+    font-family: "Archivo Black", "Noto Sans SC", system-ui, sans-serif;
+  }
 
-  ul
-    margin: 0
-    list-style: none
-    padding-left: 0
+  ul {
+    margin: 0;
+    list-style: none;
+    padding-left: 0;
 
-    .xicon
-      margin-right: 0.4rem
+    .xicon {
+      margin-right: 0.4rem;
+    }
 
-    li
-      a
-        padding: 0.8rem 1.6rem
-        display: block
-        color: #888
-        &:hover
-          background-color: rgba(0, 0, 0, 0.05)
-        &:after
-          display: none !important
+    li {
+      a {
+        padding: 0.8rem 1.6rem;
+        display: block;
+        color: #222;
+        font-weight: 600;
+        transition: background-color 0.1s ease;
 
-        &.not-allowed
-          cursor: not-allowed
-          text-decoration: line-through
+        // Neubrutalism: yellow highlight on hover
+        &:hover {
+          background-color: #FFE066;
+          color: #000;
+        }
 
-// Hidden state
-.is-hide
-  .inner
-    left: -300px
-  .backdrop
-    display: none
+        &::after {
+          display: none !important;
+        }
+
+        // Active / router-link-active: brand-pink with white text
+        &.router-link-active,
+        &.router-link-exact-active {
+          background-color: #FF5C8A;
+          color: #fff;
+          font-weight: 700;
+        }
+
+        &.not-allowed {
+          cursor: not-allowed;
+          text-decoration: line-through;
+        }
+      }
+    }
+  }
+}
+
+// Hidden state — slide panel off-screen, hide backdrop
+.is-hide {
+  .inner {
+    left: -300px;
+  }
+
+  .backdrop {
+    display: none;
+  }
+}
 </style>

@@ -129,166 +129,248 @@ onMounted(() => {
 })
 </script>
 
-<style scoped lang="sass">
-.global-header
-  height: 50px
-  width: 100%
-  padding: 0 1rem
-  position: fixed
-  gap: 1rem
-  font-size: 1.25rem
-  z-index: 100
-  background-color: #fff
-  transition: box-shadow 0.4s ease
-  box-shadow: 0 1px 0 #eee
+<style scoped lang="scss">
+.global-header {
+  height: 60px;
+  width: 100%;
+  padding: 0 1rem;
+  position: fixed;
+  gap: 1rem;
+  font-size: 1.25rem;
+  z-index: 100;
+  background-color: #fff;
+  // Neubrutalism: thick bottom border instead of box-shadow
+  border-bottom: 3px solid #000;
+  transition: transform 0.3s ease;
 
-  a
-    --color: #222
+  a {
+    --color: #222;
+  }
 
-  // &.not-at-top
-  //   box-shadow: 0 0 12px #eee
+  // Navigation links: bold weight for Neubrutalism feel
+  .nav-links {
+    .item a {
+      font-weight: 700;
+      letter-spacing: 0.01em;
+    }
+  }
 
-  .side-nav-toggler
-    --color: #888
-    display: inline-block
-    width: 40px
-    height: 40px
-    line-height: 45px
-    text-align: center
-    border-radius: 50%
+  .side-nav-toggler {
+    --color: #222;
+    display: inline-block;
+    width: 40px;
+    height: 40px;
+    line-height: 45px;
+    text-align: center;
+    border-radius: 0; // flat corners for Neubrutalism
 
     &:hover,
-    &.is-active
-      background-color: rgba(0, 0, 0, 0.05)
+    &.is-active {
+      background-color: #FFE066; // brand-yellow highlight
+    }
+  }
 
-  .global-site-logo
-    .desc
-      font-size: 0.6rem
-      font-weight: 600
-      color: #222
-      text-align: right
+  .global-site-logo {
+    font-family: "Archivo Black", "Noto Sans SC", system-ui, sans-serif;
+    font-weight: 900;
+    font-size: 1.3rem;
+    letter-spacing: -0.02em;
 
-    img
-      display: block
-      height: 1.8rem
-      width: auto
+    .desc {
+      font-size: 0.6rem;
+      font-weight: 600;
+      color: #222;
+      text-align: right;
+    }
 
-  .user-area
-    .avatar
-      font-size: 1.6rem
+    img {
+      display: block;
+      height: 1.8rem;
+      width: auto;
+    }
+  }
+
+  // Search input: pica-input style inline
+  .search-input {
+    border: 2px solid #000;
+    border-radius: 4px;
+    padding: 0 0.75rem;
+    background-color: #fff;
+    font-weight: 500;
+    transition: box-shadow 0.15s ease, border-color 0.15s ease;
+
+    &:focus {
+      outline: none;
+      border-color: #FF5C8A;
+      box-shadow: 4px 4px 0 0 #FF5C8A;
+    }
+  }
+
+  .user-area {
+    .avatar {
+      font-size: 1.6rem;
+    }
+
     .avatar img,
-    img.avatar
-      border-radius: 50%
+    img.avatar {
+      border-radius: 50%;
+    }
 
-    .user-dropdown
-      font-size: 1rem
-      position: relative
-      .dropdown-btn
-        position: relative
-        display: inline-flex
-        align-items: center
-        .avatar
-          margin-right: 0.2rem
-          img
-            width: 2rem
-            height: 2rem
-            box-shadow: 0 0 0 2px #fff
-            vertical-align: middle
-        .angle svg
-          transition: all 0.12s ease
-        &:hover
-          .avatar
-            img
-              box-shadow: 0 0 0 2px rgba(0, 0, 0, 0.25)
-        &.is-show
-          .avatar
-            img
-              box-shadow: 0 0 0 2px var(--theme-accent-color)
-          .angle svg
-            transform: rotateZ(180deg)
+    .user-dropdown {
+      font-size: 1rem;
+      position: relative;
 
-      .dropdown-content
-        position: absolute
-        top: 1.8rem
-        right: 0
-        padding: 0
-        padding-top: 0.4rem
-        width: 200px
+      .dropdown-btn {
+        position: relative;
+        display: inline-flex;
+        align-items: center;
 
-        ul
-          list-style: none
-          padding: 4px
-          background-color: #fff
-          box-shadow: 0 0 4px #aaa
-          border-radius: 4px
+        .avatar {
+          margin-right: 0.2rem;
 
-          li > *
-            padding: 0.5rem
+          img {
+            width: 2rem;
+            height: 2rem;
+            // Neubrutalism: solid offset ring instead of blurred shadow
+            box-shadow: 2px 2px 0 0 #000;
+            vertical-align: middle;
+          }
+        }
 
-          li a
-            display: block
-            cursor: pointer
-            --color: var(--theme-link-color)
+        .angle svg {
+          transition: all 0.12s ease;
+        }
 
-            &:hover
-              background-color: var(--theme-tag-color)
+        &:hover {
+          .avatar img {
+            box-shadow: 3px 3px 0 0 #FF5C8A;
+          }
+        }
 
-  .nav-user-card
-    border-bottom: 1px solid
-    position: relative
+        &.is-show {
+          .avatar img {
+            box-shadow: 3px 3px 0 0 #FF5C8A;
+          }
 
-    .banner-bg
-      position: absolute
-      top: -4px
-      left: -4px
-      height: 3rem
-      width: calc(100% + 8px)
-      background-color: rgba(var(--theme-accent-color--rgb), 0.1)
-      z-index: 0
+          .angle svg {
+            transform: rotateZ(180deg);
+          }
+        }
+      }
 
-    a
-      display: inline !important
+      // Dropdown panel: pica-card style
+      .dropdown-content {
+        position: absolute;
+        top: 2rem;
+        right: 0;
+        padding: 0;
+        padding-top: 0.4rem;
+        width: 200px;
 
-    .avatar
-      width: 68px
-      height: 68px
-      box-shadow: 0 0 0 4px #fff
-      z-index: 1
+        ul {
+          list-style: none;
+          padding: 4px;
+          background-color: #fff;
+          border: 3px solid #000;
+          box-shadow: 6px 6px 0 0 #000;
+          border-radius: 4px;
 
-    .details
-      .user-name
-        font-size: 1rem
+          li > * {
+            padding: 0.5rem;
+          }
 
-      .uid
-        font-size: 0.8rem
-        color: #aaa
+          li a {
+            display: block;
+            cursor: pointer;
+            font-weight: 600;
+            --color: #222;
 
-@media  (max-width: 800px)
-  .global-header
-    .nav-links > .item
-      display: none
+            &:hover {
+              background-color: #FFE066; // brand-yellow hover
+            }
+          }
+        }
+      }
+    }
+  }
 
-// Animate
-.fadeInUp
-  animation: fadeInUp 0.24s ease
+  .nav-user-card {
+    border-bottom: 2px solid #000;
+    position: relative;
 
-.fadeOutDown
-  animation: fadeOutDown 0.4s ease
+    .banner-bg {
+      position: absolute;
+      top: -4px;
+      left: -4px;
+      height: 3rem;
+      width: calc(100% + 8px);
+      background-color: rgba(255, 92, 138, 0.1); // brand-pink tint
+      z-index: 0;
+    }
 
-@keyframes fadeInUp
-  0%
-    opacity: 0
-    transform: translate3d(0, 1rem, 0)
+    a {
+      display: inline !important;
+    }
 
-  to
-    opacity: 1
-    transform: translateZ(0)
+    .avatar {
+      width: 68px;
+      height: 68px;
+      box-shadow: 3px 3px 0 0 #000;
+      z-index: 1;
+    }
 
-@keyframes fadeOutDown
-  0%
-    opacity: 1
+    .details {
+      .user-name {
+        font-size: 1rem;
+        font-weight: 700;
+      }
 
-  to
-    opacity: 0
-    transform: translate3d(0, 1rem, 0)
+      .uid {
+        font-size: 0.8rem;
+        color: #666;
+      }
+    }
+  }
+}
+
+// Hide nav links on narrow screens
+@media (max-width: 800px) {
+  .global-header {
+    .nav-links > .item {
+      display: none;
+    }
+  }
+}
+
+// Animate — dropdown entry/exit
+.fadeInUp {
+  animation: fadeInUp 0.24s ease;
+}
+
+.fadeOutDown {
+  animation: fadeOutDown 0.4s ease;
+}
+
+@keyframes fadeInUp {
+  0% {
+    opacity: 0;
+    transform: translate3d(0, 1rem, 0);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateZ(0);
+  }
+}
+
+@keyframes fadeOutDown {
+  0% {
+    opacity: 1;
+  }
+
+  to {
+    opacity: 0;
+    transform: translate3d(0, 1rem, 0);
+  }
+}
 </style>

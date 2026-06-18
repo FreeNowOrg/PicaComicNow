@@ -54,7 +54,7 @@ async function loadData() {
   if (loading.value) return
 
   setTitle(`全部漫画 (第 ${page.value} 页)`)
-  router.push({
+  router.replace({
     query: { page: page.value, s: sort.value },
   })
 

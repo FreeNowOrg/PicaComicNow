@@ -63,7 +63,7 @@ async function loadData() {
   }
 
   setTitle(`${category.value} (page ${page.value})`, 'Comics')
-  router.push({
+  router.replace({
     params: {
       category: category.value,
     },

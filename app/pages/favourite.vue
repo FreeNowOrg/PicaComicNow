@@ -63,7 +63,7 @@ const error = ref('')
 function loadData() {
   if (loading.value) return
 
-  router.push({
+  router.replace({
     query: {
       page: page.value,
       sort: sort.value,

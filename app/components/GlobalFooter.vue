@@ -112,7 +112,7 @@ import {
 
     a {
       display: inline;
-      font-weight: 400;
+      font-weight: 600;
     }
   }
 }

@@ -42,6 +42,7 @@ li.book-card {
   max-width: 240px;
   width: calc(50% - 2rem);
   position: relative;
+  padding: 0;
 
   // Neubrutalism card: thick border + solid shadow
   border: 3px solid #000;

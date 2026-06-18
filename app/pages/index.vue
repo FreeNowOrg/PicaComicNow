@@ -65,7 +65,7 @@ onMounted(async () => {
   try {
     const [lb, latest] = await Promise.all([
       picaClient.fetchLeaderboard('H24'),
-      picaClient.fetchLatestComics(),
+      picaClient.fetchAllComics(1, 'dd'),
     ])
     leaderboard.value = lb.slice(0, 5)
     latestComics.value = latest.docs.slice(0, 10)

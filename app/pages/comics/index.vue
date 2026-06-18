@@ -27,15 +27,13 @@ import { computed, effect, onMounted, ref, watch } from 'vue'
 import { setTitle } from '~/utils/setTitle'
 import { getErrMsg } from '~/utils/getErrMsg'
 import { type PicaBookListItem, PicaListSort } from '~/types'
-import { useCategoryStore } from '~/stores/category'
+import { picaClient } from '~/utils/pica-client'
 
 definePageMeta({ name: 'comics-index' })
 
 const route = useRoute()
 const router = useRouter()
-const catStore = useCategoryStore()
 
-const category = computed(() => route.params.category as string)
 const page = ref(1)
 const totalPages = ref(1)
 const sort = ref<PicaListSort>(PicaListSort.DEFAULT)
@@ -45,10 +43,10 @@ const loading = ref(false)
 const error = ref('')
 
 onMounted(() => {
-  setTitle('Comics')
+  setTitle('全部漫画')
 
   page.value = parseInt(route.query.page as string) || 1
-  sort.value = (route.query.sort as PicaListSort) || PicaListSort.DEFAULT
+  sort.value = (route.query.s as PicaListSort) || (route.query.sort as PicaListSort) || PicaListSort.DEFAULT
 
   loadData()
 })
@@ -56,24 +54,16 @@ onMounted(() => {
 async function loadData() {
   if (loading.value) return
 
-  if (!category.value) {
-    error.value = 'Category not specified'
-    return
-  }
-
-  setTitle(`${category.value} (page ${page.value})`, 'Comics')
+  setTitle(`全部漫画 (第 ${page.value} 页)`)
   router.push({
-    params: {
-      category: category.value,
-    },
-    query: { page: page.value, sort: sort.value },
+    query: { page: page.value, s: sort.value },
   })
 
   loading.value = true
   error.value = ''
 
-  return catStore
-    .fetchBooksInCategory(category.value, page.value, sort.value)
+  return picaClient
+    .fetchAllComics(page.value, sort.value)
     .then(
       (data) => {
         comics.value = data.docs
@@ -98,8 +88,4 @@ watch([category, page, sort], ([nCat, nPage, nSort], [cat, pg, srt]) => {
 </script>
 
 <style scoped lang="scss">
-// Breadcrumb spacing
-.bread-crumb {
-  margin-bottom: 1.5rem;
-}
 </style>

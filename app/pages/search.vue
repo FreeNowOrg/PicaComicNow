@@ -8,11 +8,11 @@ mixin pagenator
 
 #search-container
   .bread-crumb
-    NuxtLink.pica-btn.bg-cream(to='/categories')
-      i.i-fa6-solid-arrow-left
-      | Categories Index
+    NuxtLink(to='/') 首页
+    NuxtLink(to='/comics') 全部漫画
+    span(v-if='keyword') 搜索「{{ keyword }}」
 
-  h1(v-if='keyword') Search『{{ keyword }}』comics (page {{ page }})
+  h1(v-if='keyword') 搜索「{{ keyword }}」(第 {{ page }} 页)
   h1(v-else) Advanced Search
 
   PicaMbox(v-if='error', type='error', header='Failed to get comics data')
@@ -128,7 +128,4 @@ watch(
 
 <style scoped lang="scss">
 // Breadcrumb spacing
-.bread-crumb {
-  margin-bottom: 1.5rem;
-}
 </style>

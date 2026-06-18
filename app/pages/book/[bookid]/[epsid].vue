@@ -1,11 +1,9 @@
 <template lang="pug">
 #read-container
   .bread-crumb
-    NuxtLink.pica-btn.bg-cream(
-      :to='"/book/" + bookid + ($route.query.backTo ? "?backTo=" + $route.query.backTo : "")'
-    )
-      i.i-fa6-solid-arrow-left
-      | Back to {{ bookMeta ? `"${bookMeta.title}"` : 'book' }}
+    NuxtLink(to='/') 首页
+    NuxtLink(:to='"/book/" + bookid') {{ bookMeta ? bookMeta.title : '...' }}
+    span(v-if='curEp') {{ curEp.title }}
 
   .ep-pagination
     NuxtLink.pica-btn.bg-cream.ep-nav-btn(

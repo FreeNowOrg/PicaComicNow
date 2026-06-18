@@ -8,11 +8,11 @@ mixin pagenator
 
 #favourite-container
   .bread-crumb
-    NuxtLink.pica-btn.bg-cream(to='/profile')
-      i.i-fa6-solid-arrow-left
-      | Profile
+    NuxtLink(to='/') 首页
+    NuxtLink(to='/profile') 个人资料
+    span 收藏夹
 
-  h1 My Favourites
+  h1 我的收藏
 
   PicaMbox(v-if='error', type='error', header='Failed to get list')
     p {{ error }}
@@ -96,7 +96,4 @@ function loadData() {
 
 <style scoped lang="scss">
 // Breadcrumb spacing
-.bread-crumb {
-  margin-bottom: 1.5rem;
-}
 </style>

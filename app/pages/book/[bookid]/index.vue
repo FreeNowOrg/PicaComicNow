@@ -1,10 +1,10 @@
 <template lang="pug">
 #book-container
   section.book-info
-    .bread-crumb(v-if='$route.query.backTo')
-      NuxtLink.pica-btn.bg-cream(:to='"" + $route.query.backTo')
-        i.i-fa6-solid-arrow-left
-        | Back to {{ $route.query.backTo }}
+    .bread-crumb
+      NuxtLink(to='/') 首页
+      NuxtLink(to='/comics') 全部漫画
+      span(v-if='bookMeta') {{ bookMeta.title }}
     .loading.align-center(v-if='isLoadingMeta || !bookMeta')
       placeholder
     PicaCard(v-if='bookMeta')

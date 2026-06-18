@@ -149,9 +149,9 @@ class PicaComicClient {
     return data.body.comics
   }
 
-  async fetchLatestComics(page: number = 1) {
+  async fetchAllComics(page: number = 1, sort: PicaListSortType = 'dd') {
     const { data } = await this.http.get<ApiResponseBookList>('/comics', {
-      params: { page, s: 'dd' },
+      params: { page, s: sort },
     })
     return data.body.comics
   }

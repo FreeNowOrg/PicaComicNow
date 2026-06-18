@@ -1,9 +1,8 @@
 <template lang="pug">
 #leaderboard-container
   .bread-crumb
-    NuxtLink.pica-btn.bg-cream(to='/')
-      i.i-fa6-solid-arrow-left
-      |  首页
+    NuxtLink(to='/') 首页
+    span 排行榜
 
   h1 排行榜
 

@@ -101,7 +101,4 @@ watch([category, page, sort], ([nCat, nPage, nSort], [cat, pg, srt]) => {
 
 <style scoped lang="scss">
 // Breadcrumb spacing
-.bread-crumb {
-  margin-bottom: 1.5rem;
-}
 </style>

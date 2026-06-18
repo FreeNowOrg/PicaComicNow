@@ -1,27 +1,26 @@
 <template lang="pug">
-mixin thumb(item)
-  .thumb
-    lazyload.img(:src='item.thumb.fileUrl')
-    .title
-      | {{ item.title }}
-      i.i-fa6-solid-up-right-from-square(v-if='item.isWeb', style='float: right')
-
 #categories-container
+  .bread-crumb
+    NuxtLink(to='/') 首页
+    span 分类列表
+
   h1 分类列表
 
   .loading.align-center(v-if='loading')
-    placeholder
+    Placeholder
 
   PicaMbox(v-if='error', type='error', header='加载分类失败')
     p {{ error }}
 
-  ul.categories-list
-    li(v-for='item in list')
-      .pica-card.category-card(v-if='item.active !== false')
-        e-link.no-icon(v-if='item.isWeb', :href='item.link')
-          +thumb(item)
-        NuxtLink(v-else, :to='"/comics/" + item.title')
-          +thumb(item)
+  .categories-grid(v-if='list.length')
+    template(v-for='item in list')
+      NuxtLink.category-item(
+        v-if='item.active !== false && !item.isWeb',
+        :to='"/comics/" + item.title'
+      )
+        .category-thumb
+          Lazyload(:src='item.thumb.fileUrl')
+        .category-name {{ item.title }}
 </template>
 
 <script setup lang="ts">
@@ -57,81 +56,58 @@ function init() {
 }
 
 onMounted(() => {
-  setTitle('All Categories')
+  setTitle('分类列表')
   init()
 })
 </script>
 
-<style lang="scss">
-.categories-list {
-  list-style: none;
-  padding-left: 0;
+<style scoped lang="scss">
+.categories-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+  gap: 0.75rem;
+}
+
+.category-item {
   display: flex;
-  gap: 1.5rem;
-  flex-wrap: wrap;
-  justify-content: center;
+  align-items: center;
+  gap: 0.75rem;
+  padding: 0.5rem 0.75rem;
+  border: 2px solid #000;
+  background: #fff;
+  box-shadow: 3px 3px 0 0 #000;
+  text-decoration: none;
+  color: #000;
+  font-weight: 700;
+  font-size: 0.9rem;
+  transition: all 0.15s;
 
-  li {
-    max-width: 240px;
-    width: calc(50% - 1rem);
+  &:hover {
+    translate: 2px 2px;
+    box-shadow: 0 0 0 0 #000;
+    background: #FFE066;
+    text-decoration: none;
   }
+}
 
-  // pica-card override: remove padding, keep border+shadow, add hover press effect
-  .category-card {
-    position: relative;
-    line-height: 0;
-    padding: 0;
-    overflow: hidden;
+.category-thumb {
+  width: 36px;
+  height: 36px;
+  flex-shrink: 0;
+  border: 2px solid #000;
+  overflow: hidden;
 
-    // Neubrutalism press effect on hover
-    &:hover {
-      translate: 3px 3px;
-      box-shadow: 0 0 0 0 #000;
-    }
-
-    > a {
-      display: block;
-      width: 100%;
-    }
-
-    .thumb {
-      position: relative;
-      overflow: hidden;
-      width: 100%;
-      height: 0;
-      padding-top: 100%;
-
-      .lazyload {
-        position: absolute;
-        top: 0;
-        left: 0;
-        display: block;
-        width: 100%;
-        height: 100%;
-        transition: transform 0.24s ease;
-        transform: scale(1);
-      }
-
-      &:hover .lazyload {
-        transform: scale(1.1);
-      }
-
-      // Title overlay: Neubrutalism style — cream bg, bold black text
-      .title {
-        position: absolute;
-        font-weight: 900;
-        font-size: 1rem;
-        color: #000;
-        background-color: #FFF0F3;
-        border-top: 3px solid #000;
-        left: 0;
-        bottom: 0;
-        padding: 0.4rem 0.75rem;
-        width: 100%;
-        line-height: 1.2;
-        box-sizing: border-box;
-      }
-    }
+  :deep(.lazyload) {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
   }
+}
+
+.category-name {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 }
 </style>

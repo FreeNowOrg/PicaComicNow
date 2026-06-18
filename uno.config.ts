@@ -69,15 +69,15 @@ export default defineConfig({
     'pica-shadow': 'shadow-[6px_6px_0_0_#000]',
     'pica-shadow-sm': 'shadow-[4px_4px_0_0_#000]',
     'pica-shadow-lg': 'shadow-[8px_8px_0_0_#000]',
-    'pica-card': 'pica-border pica-shadow rounded-lg bg-white transition-all duration-150',
+    'pica-card': 'pica-border pica-shadow bg-white transition-all duration-150',
     'pica-press':
       'hover:translate-x-1.5 hover:translate-y-1.5 hover:shadow-[0_0_0_0_#000] active:translate-x-1.5 active:translate-y-1.5 active:shadow-[0_0_0_0_#000]',
     'pica-btn':
-      'pica-border pica-shadow rounded-lg px-6 py-3 font-black inline-flex items-center gap-2 bg-cream text-black no-underline transition-all duration-150 hover:translate-x-1.5 hover:translate-y-1.5 hover:shadow-[0_0_0_0_#000] hover:no-underline active:translate-x-1.5 active:translate-y-1.5 active:shadow-[0_0_0_0_#000]',
+      'pica-border pica-shadow px-6 py-3 font-black inline-flex items-center gap-2 bg-cream text-black no-underline transition-all duration-150 hover:translate-x-1.5 hover:translate-y-1.5 hover:shadow-[0_0_0_0_#000] hover:no-underline active:translate-x-1.5 active:translate-y-1.5 active:shadow-[0_0_0_0_#000]',
     'pica-tag':
-      'pica-border-sm shadow-[3px_3px_0_0_#000] rounded-md px-3 py-1 font-bold text-sm inline-flex items-center gap-1 bg-white',
+      'pica-border-sm shadow-[3px_3px_0_0_#000] px-3 py-1 font-bold text-sm inline-flex items-center gap-1 bg-white',
     'pica-input':
-      'w-full pica-border-sm rounded-md px-4 py-3 bg-white text-black font-medium focus:outline-0 focus:border-brand-pink focus:shadow-[4px_4px_0_0_#FF5C8A] transition-all duration-150',
+      'w-full pica-border-sm px-4 py-3 bg-white text-black font-medium focus:outline-0 focus:border-brand-pink focus:shadow-[4px_4px_0_0_#FF5C8A] transition-all duration-150',
   },
   safelist: [
     'bg-brand-pink',

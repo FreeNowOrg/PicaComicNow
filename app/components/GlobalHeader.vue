@@ -193,7 +193,7 @@ onMounted(() => {
   // Search input: pica-input style inline
   .search-input {
     border: 2px solid #000;
-    border-radius: 4px;
+    border-radius: 0;
     padding: 0 0.75rem;
     background-color: #fff;
     font-weight: 500;
@@ -212,7 +212,7 @@ onMounted(() => {
 
     .avatar img,
     img.avatar {
-      border-radius: 50%;
+      border-radius: 0;
       display: block;
     }
 
@@ -273,7 +273,7 @@ onMounted(() => {
           background-color: #fff;
           border: 3px solid #000;
           box-shadow: 6px 6px 0 0 #000;
-          border-radius: 4px;
+          border-radius: 0;
 
           li > * {
             padding: 0.5rem;

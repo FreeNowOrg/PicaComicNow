@@ -196,7 +196,7 @@ onBeforeRouteUpdate((to, from, next) => {
   max-width: 600px;
   margin: 0 auto;
   border: 3px solid #000;
-  border-radius: 0.5rem;
+  border-radius: 0;
   overflow: hidden;
   background-color: #fff;
 
@@ -230,7 +230,7 @@ onBeforeRouteUpdate((to, from, next) => {
         background-color: #FF5C8A;
         color: #fff;
         border: 2px solid #000;
-        border-radius: 0.375rem;
+        border-radius: 0;
         font-weight: 700;
         font-size: 0.875rem;
         box-shadow: 2px 2px 0 0 #000;

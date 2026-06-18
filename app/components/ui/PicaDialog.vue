@@ -47,7 +47,7 @@ watch(dialog.visible, (val) => {
 
 .pica-dialog {
   border: 3px solid #000;
-  border-radius: 0.75rem;
+  border-radius: 0;
   box-shadow: 8px 8px 0 0 #000;
   background-color: #fff;
   min-width: 320px;

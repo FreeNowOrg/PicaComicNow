@@ -98,7 +98,7 @@ const pageItems = computed(() => {
 
 .page-btn {
   border: 2px solid #000;
-  border-radius: 0.375rem;
+  border-radius: 0;
   padding: 0.25rem 0.625rem;
   background-color: #fff;
   cursor: pointer;
@@ -145,7 +145,7 @@ const pageItems = computed(() => {
 .jump-input {
   width: 3.5rem;
   border: 2px solid #000;
-  border-radius: 0.375rem;
+  border-radius: 0;
   padding: 0.25rem 0.375rem;
   text-align: center;
   font-weight: 700;

@@ -34,7 +34,7 @@ const sizeClass = computed(() => `size-${props.size}`)
 <style scoped lang="scss">
 .pica-button {
   border: 3px solid #000;
-  border-radius: 0.5rem;
+  border-radius: 0;
   font-weight: 900;
   display: inline-flex;
   align-items: center;

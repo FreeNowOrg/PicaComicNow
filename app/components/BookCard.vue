@@ -45,7 +45,7 @@ li.book-card {
 
   // Neubrutalism card: thick border + solid shadow
   border: 3px solid #000;
-  border-radius: 0.75rem;
+  border-radius: 0;
   box-shadow: 6px 6px 0 0 #000;
   background: #fff;
   overflow: hidden;
@@ -119,7 +119,7 @@ li.book-card {
         font-size: 0.7rem;
         font-weight: 700;
         border: 2px solid #000;
-        border-radius: 6px;
+        border-radius: 0;
         box-shadow: 2px 2px 0 0 #000;
         background: #fff;
         color: #000;

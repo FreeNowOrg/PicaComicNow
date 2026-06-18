@@ -33,7 +33,7 @@ const toasts = useToast()
 
 .pica-toast {
   border: 2px solid #000;
-  border-radius: 0.5rem;
+  border-radius: 0;
   padding: 0.75rem 1.25rem;
   box-shadow: 4px 4px 0 0 #000;
   font-weight: 700;

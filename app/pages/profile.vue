@@ -100,7 +100,7 @@ onMounted(() => {
     img {
       width: 80px;
       height: 80px;
-      border-radius: 50%;
+      border-radius: 0;
       box-shadow: 0 0 0 4px #fff, 0 0 0 6px #000;
     }
   }
@@ -116,7 +116,7 @@ onMounted(() => {
     background-color: #ff5c8a;
     color: #000;
     border: 2px solid #000;
-    border-radius: 4px;
+    border-radius: 0;
     font-size: 0.8rem;
     font-weight: 700;
   }

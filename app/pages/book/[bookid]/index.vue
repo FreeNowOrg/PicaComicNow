@@ -11,7 +11,7 @@
       .details
         .left
           e-link.no-icon.thumb(:href='bookMeta.thumb.fileUrl')
-            lazyload.img.pica-border.rounded-lg(
+            lazyload.img.pica-border(
               :src='bookMeta.thumb.fileUrl',
               :width='200',
               :height='266'
@@ -298,7 +298,7 @@ onMounted(() => {
       align-items: center;
       padding: 0.35rem 0.75rem;
       border: 2px solid #000;
-      border-radius: 0.375rem;
+      border-radius: 0;
       box-shadow: 3px 3px 0 0 #000;
       background-color: #fff;
       font-weight: 700;
@@ -325,7 +325,7 @@ onMounted(() => {
 .tags-list {
   .tag {
     border: 2px solid #000;
-    border-radius: 0.375rem;
+    border-radius: 0;
     box-shadow: 2px 2px 0 0 #000;
     padding: 0.125rem 0.5rem;
     font-weight: 700;

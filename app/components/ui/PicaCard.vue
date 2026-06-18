@@ -19,7 +19,7 @@ const colorClass = computed(() => `color-${props.color}`)
 <style scoped lang="scss">
 .pica-card {
   border: 3px solid #000;
-  border-radius: 0.5rem;
+  border-radius: 0;
   padding: 1rem;
   box-shadow: 6px 6px 0 0 #000;
   transition: all 150ms;

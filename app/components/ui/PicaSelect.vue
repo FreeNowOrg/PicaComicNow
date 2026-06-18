@@ -62,7 +62,7 @@ onBeforeUnmount(() => {
 .pica-select-trigger {
   width: 100%;
   border: 2px solid #000;
-  border-radius: 0.375rem;
+  border-radius: 0;
   padding: 0.375rem 0.75rem;
   background-color: #fff;
   cursor: pointer;
@@ -95,7 +95,7 @@ onBeforeUnmount(() => {
   left: 0;
   width: 100%;
   border: 2px solid #000;
-  border-radius: 0.375rem;
+  border-radius: 0;
   background-color: #fff;
   box-shadow: 4px 4px 0 0 #000;
   z-index: 50;

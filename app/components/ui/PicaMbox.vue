@@ -20,7 +20,7 @@ defineProps<{
 .pica-mbox {
   border: 3px solid #000;
   border-left: 6px solid #000;
-  border-radius: 0.5rem;
+  border-radius: 0;
   overflow: hidden;
   box-shadow: 4px 4px 0 0 #000;
   background-color: #fff;

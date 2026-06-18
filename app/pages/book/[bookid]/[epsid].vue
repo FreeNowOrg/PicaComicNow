@@ -4,7 +4,7 @@
     NuxtLink.button(
       :to='"/book/" + bookid + ($route.query.backTo ? "?backTo=" + $route.query.backTo : "")'
     )
-      icon(style='margin-right: 0.5rem'): arrow-left
+      i.i-fa6-solid-arrow-left(style='margin-right: 0.5rem')
       | Back to {{ bookMeta ? `《${bookMeta.title}》` : 'book' }}
 
   .ep-pagination.flex.gap-1
@@ -12,7 +12,7 @@
       v-if='prevEp',
       :to='"/book/" + bookid + "/" + prevEp.order'
     )
-      icon: chevron-left
+      i.i-fa6-solid-chevron-left
       | {{ prevEp?.title || 'Previous' }}
     .ep-title.flex-1
       h1 {{ curEp?.title || 'Loading...' }}
@@ -21,7 +21,7 @@
       :to='"/book/" + bookid + "/" + nextEp.order'
     )
       | {{ nextEp?.title || 'Next' }}
-      icon: chevron-right
+      i.i-fa6-solid-chevron-right
 
   .pages-list
     .align-center(v-if='!pages.length')
@@ -40,7 +40,7 @@
         :to='"/book/" + bookid + "/" + nextEp.order'
       )
         | {{ nextEp.title }}
-        icon: chevron-right
+        i.i-fa6-solid-chevron-right
 
     h2 Episodes
     .eps-list
@@ -54,7 +54,6 @@
 import { computed, onMounted, ref, watch } from 'vue'
 import { setTitle } from '~/utils/setTitle'
 import type { PicaBookMeta, PicaBookPage, PicaBookEp } from '~/types'
-import { ChevronLeft, ChevronRight, ArrowLeft } from '@vicons/fa'
 import { useBookStore } from '~/stores/book'
 
 definePageMeta({

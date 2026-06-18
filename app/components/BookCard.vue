@@ -22,20 +22,16 @@ li.book-card.card
       ) {{ item }}
     .stats
       .likes
-        icon
-          Heart
+        i.i-fa6-solid-heart
         | {{ data.likesCount }}
       .views
-        icon
-          Eye
+        i.i-fa6-solid-eye
         | {{ data.totalViews }}
   details
     pre {{ data }}
 </template>
 
 <script setup lang="ts">
-import {} from 'vue'
-import { Heart, Eye } from '@vicons/fa'
 import type { PicaBookListItem } from '~/types'
 
 defineProps<{ data: PicaBookListItem; backTo: string }>()

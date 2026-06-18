@@ -2,8 +2,7 @@
 #index-container
   h1 PicACG
 
-  .mbox.info(style='margin-bottom: 1.5rem')
-    .title Tips
+  PicaMbox(type='info', header='Tips', style='margin-bottom: 1.5rem')
     p This site is under construction
 
   .flex.gap-1

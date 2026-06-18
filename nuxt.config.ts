@@ -15,11 +15,8 @@ export default defineNuxtConfig({
     },
     optimizeDeps: {
       include: [
-        '@vicons/fa',
-        '@vicons/utils',
         'axios',
         'localforage',
-        'naive-ui',
         'nprogress',
       ],
     },

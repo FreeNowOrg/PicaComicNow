@@ -9,16 +9,14 @@ mixin pagenator
 #search-container
   .bread-crumb
     NuxtLink.button(to='/categories')
-      icon
-        arrow-left
+      i.i-fa6-solid-arrow-left
       |
       | Categories Index
 
   h1(v-if='keyword') Search『{{ keyword }}』comics (page {{ page }})
   h1(v-else) Advanced Search
 
-  .mbox.error(v-if='error')
-    .title Failed to get comics data
+  PicaMbox(v-if='error', type='error', header='Failed to get comics data')
     p {{ error }}
 
   .loading.align-center(v-if='loading && !comics.length')
@@ -34,7 +32,6 @@ mixin pagenator
 import { computed, onMounted, ref, watch } from 'vue'
 import { getErrMsg } from '~/utils/getErrMsg'
 import { setTitle } from '~/utils/setTitle'
-import { ArrowLeft, ArrowRight } from '@vicons/fa'
 import { picaClient } from '~/utils/pica-client'
 import {
   PicaListSort,

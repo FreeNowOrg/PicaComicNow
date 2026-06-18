@@ -11,13 +11,11 @@ aside.global-site-nav(
         ul
           li
             NuxtLink(to='/')
-              icon
-                Home
+              i.i-fa6-solid-house
               | Home
           li
             NuxtLink(to='/categories')
-              icon
-                Folder
+              i.i-fa6-solid-folder
               | Categories Index
 
       .group
@@ -25,18 +23,15 @@ aside.global-site-nav(
         ul
           li(v-if='user.profile')
             NuxtLink(to='/profile')
-              icon
-                icon-user
+              i.i-fa6-solid-user
               | {{ user.profile.name }} (you)
           li(v-if='user.profile')
             NuxtLink(to='/favourite')
-              icon
-                Bookmark
+              i.i-fa6-solid-bookmark
               | My Favourite
           li
             NuxtLink(to='/auth')
-              icon
-                Fingerprint
+              i.i-fa6-solid-fingerprint
               | Authorization
 
       .group
@@ -44,22 +39,13 @@ aside.global-site-nav(
         ul
           li
             NuxtLink(to='/about')
-              icon
-                Heart
+              i.i-fa6-solid-heart
               | About us
 </template>
 
 <script setup lang="ts">
 import { computed, onMounted, watch } from 'vue'
 import { PROJECT_NAME } from '~/utils/config'
-import {
-  Home,
-  Heart,
-  User as IconUser,
-  Fingerprint,
-  Bookmark,
-  Folder,
-} from '@vicons/fa'
 import { useUserStore } from '~/stores/user'
 import { useSidenavStore } from '~/stores/sidenav'
 

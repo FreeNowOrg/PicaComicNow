@@ -7,8 +7,7 @@ header.global-header.flex-center(
       @click='sidenav.toggle()',
       :class='{ "is-active": sidenav.isShow }'
     )
-      icon
-        bars
+      i.i-fa6-solid-bars
 
   .item.global-site-logo-container
     NuxtLink.plain.global-site-logo(to='/', title='Home')
@@ -80,7 +79,6 @@ header.global-header.flex-center(
 
 <script setup lang="ts">
 import { onMounted, ref, watch } from 'vue'
-import { Github, Bars, UserCircle, AngleDown } from '@vicons/fa'
 import { useUserStore } from '~/stores/user'
 import { useSidenavStore } from '~/stores/sidenav'
 

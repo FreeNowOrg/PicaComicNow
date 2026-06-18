@@ -1,25 +1,22 @@
 <template lang="pug">
 .book-list-paginator
   .sort-selector
-    n-select(
+    PicaSelect(
       :options='PICA_LIST_SORT_OPTIONS',
-      :value='sort',
-      @update:value='emit("update:sort", $event)',
-      size='small'
+      :model-value='sort',
+      @update:model-value='emit("update:sort", $event)'
     )
   .page-selector
-    n-pagination(
-      :page='page',
+    PicaPagination(
+      :model-page='page',
       :page-count='totalPages',
-      show-quick-jumper,
       :page-slot='7',
-      @update:page='emit("update:page", $event)'
+      @update:model-page='emit("update:page", $event)'
     )
 </template>
 
 <script setup lang="ts">
 import { PicaListSort, PICA_LIST_SORT_OPTIONS } from '~/types'
-import { NPagination, NSelect } from 'naive-ui'
 import { effect } from 'vue'
 const props = withDefaults(
   defineProps<{
@@ -55,12 +52,14 @@ effect(() => {
 })
 </script>
 
-<style scoped lang="sass">
-.book-list-paginator
-  display: flex
-  gap: 1rem
-  justify-content: center
-  flex-wrap: wrap
-  .sort-selector
-    min-width: 7rem
+<style scoped lang="scss">
+.book-list-paginator {
+  display: flex;
+  gap: 1rem;
+  justify-content: center;
+  flex-wrap: wrap;
+  .sort-selector {
+    min-width: 7rem;
+  }
+}
 </style>

@@ -4,8 +4,7 @@ mixin thumb(item)
     lazyload.img(:src='item.thumb.fileUrl')
     .title
       | {{ item.title }}
-      icon(v-if='item.isWeb', style='float: right')
-        external-link-alt
+      i.i-fa6-solid-up-right-from-square(v-if='item.isWeb', style='float: right')
 
 #categories-container
   h1 Categories Index
@@ -13,8 +12,7 @@ mixin thumb(item)
   .loading.align-center(v-if='loading')
     placeholder
 
-  .mbox.error(v-if='error')
-    .title Failed to get categories data
+  PicaMbox(v-if='error', type='error', header='Failed to get categories data')
     p {{ error }}
 
   ul.categories-list
@@ -30,7 +28,6 @@ mixin thumb(item)
 import { onMounted, ref } from 'vue'
 import { getErrMsg } from '~/utils/getErrMsg'
 import { setTitle } from '~/utils/setTitle'
-import { ExternalLinkAlt } from '@vicons/fa'
 import type { PicaCategory } from '~/types'
 import { useCategoryStore } from '~/stores/category'
 

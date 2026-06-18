@@ -22,14 +22,12 @@
               :title='bookMeta.isFavourite ? "Click to remove bookmark" : "Click to add bookmark"',
               @click='handleBookmark'
             )
-              icon
-                bookmark(v-if='bookMeta.isFavourite')
-                bookmark-regular(v-else)
+              i.i-fa6-solid-bookmark(v-if='bookMeta.isFavourite')
+              i.i-fa6-regular-bookmark(v-else)
           .flex-column.flex-1.gap-1
             .finished
-              icon
-                CheckCircle(v-if='bookMeta.finished')
-                PenNib(v-else)
+              i.i-fa6-solid-circle-check(v-if='bookMeta.finished')
+              i.i-fa6-solid-pen-nib(v-else)
               |
               | {{ bookMeta.finished ? 'Finished' : 'Writing' }}
             .pages
@@ -92,7 +90,6 @@
 import { onMounted, ref, watch } from 'vue'
 import { getErrMsg } from '~/utils/getErrMsg'
 import { setTitle } from '~/utils/setTitle'
-import { CheckCircle, PenNib, Bookmark, BookmarkRegular } from '@vicons/fa'
 import type { PicaBookMeta, PicaBookEp } from '~/types'
 import { useBookStore } from '~/stores/book'
 

@@ -9,15 +9,13 @@ mixin pagenator
 #favourite-container
   .bread-crumb
     NuxtLink.button(to='/profile')
-      icon
-        arrow-left
+      i.i-fa6-solid-arrow-left
       |
       | Profile
 
   h1 My Favourites
 
-  .mbox.error(v-if='error')
-    .title Failed to get list
+  PicaMbox(v-if='error', type='error', header='Failed to get list')
     p {{ error }}
 
   .loading.align-center(v-if='loading && !comics.length')
@@ -31,7 +29,6 @@ mixin pagenator
 
 <script setup lang="ts">
 import { onMounted, ref, watch } from 'vue'
-import { ArrowLeft, ArrowRight } from '@vicons/fa'
 import { setTitle } from '~/utils/setTitle'
 import { getErrMsg } from '~/utils/getErrMsg'
 import { type PicaBookListItem, PicaListSort } from '~/types'

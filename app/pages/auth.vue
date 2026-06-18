@@ -2,8 +2,7 @@
 #auth-container
   h1 Authorization
 
-  .mbox.info(v-if='$route.query.tips', style='margin-bottom: 1rem')
-    .title Tips
+  PicaMbox(v-if='$route.query.tips', type='info', header='Tips', style='margin-bottom: 1rem')
     p You must log in to use this website
 
   section(v-if='user.profile')
@@ -24,8 +23,8 @@
       div
         button(@click.prevent='handleLogin') Login
       //- Error
-      .mbox.error(v-if='errorMsg')
-        .title {{ errorTitle }}
+      PicaMbox(v-if='errorMsg', type='error')
+        template(#header) {{ errorTitle }}
         p {{ errorMsg }}
 </template>
 

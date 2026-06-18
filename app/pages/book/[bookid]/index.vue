@@ -69,11 +69,7 @@
       h2#eps 章节列表
       p.loading.align-center(v-if='isLoadingEps || !bookEps.length')
         placeholder
-      .eps-list(v-if='bookEps.length')
-        NuxtLink.ep-link(
-          v-for='item in bookEps',
-          :to='"/book/" + bookid + "/" + item.order + ($route.query.backTo ? "?backTo=" + $route.query.backTo : "")'
-        ) {{ item.title }}
+      EpsList(v-if='bookEps.length', :eps='bookEps', :book-id='bookid', :extra-query='epsLinkQuery')
 
   section.extra-actions
     PicaCard
@@ -89,7 +85,7 @@
 </template>
 
 <script setup lang="ts">
-import { onMounted, ref, watch } from 'vue'
+import { computed, onMounted, ref, watch } from 'vue'
 import { getErrMsg } from '~/utils/getErrMsg'
 import { setTitle } from '~/utils/setTitle'
 import type { PicaBookMeta, PicaBookEp } from '~/types'
@@ -100,6 +96,10 @@ definePageMeta({ name: 'book' })
 const route = useRoute()
 
 const bookid = ref(route.params.bookid as string)
+const epsLinkQuery = computed(() => {
+  const backTo = route.query.backTo as string | undefined
+  return backTo ? { backTo } : undefined
+})
 const bookStore = useBookStore()
 const bookMeta = ref<PicaBookMeta>()
 const bookEps = ref<PicaBookEp[]>([])
@@ -283,41 +283,6 @@ onMounted(() => {
     margin-top: 1rem;
     white-space: pre-wrap;
     line-height: 1.6;
-  }
-}
-
-// Episode list: Neubrutalism tag-like links
-.book-eps {
-  .eps-list {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 0.5rem;
-
-    .ep-link {
-      display: inline-flex;
-      align-items: center;
-      padding: 0.35rem 0.75rem;
-      border: 2px solid #000;
-      border-radius: 0;
-      box-shadow: 3px 3px 0 0 #000;
-      background-color: #fff;
-      font-weight: 700;
-      font-size: 0.875rem;
-      color: #000;
-      transition: all 150ms;
-      text-decoration: none;
-
-      &:hover {
-        translate: 1.5px 1.5px;
-        box-shadow: 0 0 0 0 #000;
-        background-color: #FFF0F3;
-      }
-
-      &.router-link-active {
-        background-color: #FF5C8A;
-        color: #fff;
-      }
-    }
   }
 }
 

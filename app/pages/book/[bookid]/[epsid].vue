@@ -42,11 +42,7 @@
         i.i-fa6-solid-chevron-right
 
     h2 章节列表
-    .eps-list
-      NuxtLink.ep-link(
-        v-for='item in orderedEps',
-        :to='"/book/" + bookid + "/" + item.order'
-      ) {{ item.title }}
+    EpsList(:eps='orderedEps', :book-id='bookid')
 </template>
 
 <script setup lang="ts">
@@ -274,35 +270,5 @@ onBeforeRouteUpdate((to, from, next) => {
     margin-bottom: 1rem;
   }
 
-  .eps-list {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 0.5rem;
-
-    .ep-link {
-      display: inline-flex;
-      align-items: center;
-      padding: 0.35rem 0.75rem;
-      border: 2px solid #000;
-      box-shadow: 3px 3px 0 0 #000;
-      background-color: #fff;
-      font-weight: 700;
-      font-size: 0.875rem;
-      color: #000;
-      transition: all 150ms;
-      text-decoration: none;
-
-      &:hover {
-        translate: 1.5px 1.5px;
-        box-shadow: 0 0 0 0 #000;
-        background-color: #FFF0F3;
-      }
-
-      &.router-link-active {
-        background-color: #FF5C8A;
-        color: #fff;
-      }
-    }
-  }
 }
 </style>

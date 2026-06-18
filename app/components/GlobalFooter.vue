@@ -1,46 +1,49 @@
 <template lang="pug">
 footer.global-footer
-  .top.flex.footer-inner
-    section.flex-1
-      h4 Discovery
-      ul
-        li
-          NuxtLink(to='/about') About us
-        li
-          NuxtLink(to='/categories') Categories
-          ul
-            li
-              NuxtLink(to='/comics/妹妹系') 妹妹系
-            li
-              NuxtLink(to='/search/獸耳') 兽耳娘，我现在就要看兽耳娘
+  .top
+    .footer-inner.flex
+      section.flex-1
+        h4 Discovery
+        ul
+          li
+            NuxtLink(to='/about') About us
+          li
+            NuxtLink(to='/categories') Categories
+            ul
+              li
+                NuxtLink(to='/comics/妹妹系') 妹妹系
+              li
+                NuxtLink(to='/search/獸耳') 兽耳娘，我现在就要看兽耳娘
 
-    section.flex-1
-      h4 Follow us
-      ul
-        li Free Now Organization
-          ul
-            li
-              e-link(href='https://github.com/FreeNowOrg') @FreeNowOrg
+      section.flex-1
+        h4 Follow us
+        ul
+          li Free Now Organization
+            ul
+              li
+                e-link(href='https://github.com/FreeNowOrg') @FreeNowOrg
 
-    section.flex-1
-      h4 Friend links
-      p Come to GitHub issues to exchange friend links~
+      section.flex-1
+        h4 Friend links
+        p Come to GitHub issues to exchange friend links~
 
-  .top.footer-inner
-    section.flex-1
-      h4 Attention please
-      p This is a fan made website. We are NOT PicACG official. Please DO NOT share this website anywhere.
-      p 这是一个粉丝向网站，我们与 PicACG 官方<u>没有任何关系</u>。<u>请勿</u>在任何地方传播本网站——珍惜眼前。
+  .top
+    .footer-inner
+      section
+        h4 Attention please
+        p This is a fan made website. We are NOT PicACG official. Please DO NOT share this website anywhere.
+        p 这是一个粉丝向网站，我们与 PicACG 官方<u>没有任何关系</u>。<u>请勿</u>在任何地方传播本网站——珍惜眼前。
 
-  .bottom.align-center.footer-inner
-    .copyright
-      | Copyright &copy; {{ COPYRIGHT_STR }}
-      |
-      e-link(:href='GITHUB_URL') {{ PROJECT_NAME }}
-      |
-      em v{{ VERSION }}
-      | &nbsp;|&nbsp;
-      span For communication and learning only.
+  .bottom
+    .footer-inner.align-center
+      .copyright
+        | Copyright &copy; {{ COPYRIGHT_STR }}
+        |
+        e-link(:href='GITHUB_URL') {{ PROJECT_NAME }}
+        |
+        em v{{ VERSION }}
+        | &nbsp;|&nbsp;
+        span For communication and learning only.
 </template>
 
 <script setup lang="ts">
@@ -54,7 +57,6 @@ import {
 
 <style scoped lang="scss">
 .global-footer {
-  // Thick top border to separate from page content
   border-top: 3px solid #000;
 
   > div {
@@ -73,8 +75,11 @@ import {
     background-color: #f5e4e8;
     padding-top: 2rem;
     padding-bottom: 2rem;
-    gap: 1.5rem;
     border-bottom: 2px solid #000;
+
+    .flex {
+      gap: 1.5rem;
+    }
   }
 
   .bottom {
@@ -112,7 +117,7 @@ a {
 }
 
 @media (max-width: 800px) {
-  .top {
+  .global-footer .top .flex {
     flex-direction: column;
   }
 }

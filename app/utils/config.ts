@@ -1,5 +1,8 @@
+import { version } from '../../package.json'
+
 export const ENV = process.env.NODE_ENV === 'development' ? 'dev' : 'prod'
 export const PROJECT_NAME = 'Pica Comic Now'
+export const VERSION = version
 
 export const GITHUB_OWNER = 'FreeNowOrg'
 export const GITHUB_REPO = 'PicaComicNow'

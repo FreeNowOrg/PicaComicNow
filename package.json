@@ -12,21 +12,17 @@
   },
   "dependencies": {
     "axios": "^1.8.2",
-    "fish-store": "^1.0.1",
-    "js-cookie": "^3.0.5",
     "localforage": "^1.10.0",
     "naive-ui": "^2.41.0",
     "nprogress": "0.2.0",
     "pinia": "^3.0.4",
-    "vue": "^3.5.13",
-    "vue-router": "^4.5.0"
+    "vue": "^3.5.13"
   },
   "devDependencies": {
     "@eslint/js": "^9.22.0",
     "@l2studio/picacomic-api": "0.1.13",
     "@pinia/nuxt": "^0.11.3",
     "@prettier/plugin-pug": "^3.2.1",
-    "@types/js-cookie": "^3.0.6",
     "@types/node": "^22.13.10",
     "@types/nprogress": "^0.2.3",
     "@vicons/fa": "^0.13.0",

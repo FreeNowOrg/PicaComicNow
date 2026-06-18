@@ -44,12 +44,10 @@ footer.global-footer
 </template>
 
 <script setup lang="ts">
-import {} from 'vue'
 import {
   PROJECT_NAME,
   COPYRIGHT_STR,
   GITHUB_URL,
-  GITHUB_OWNER,
   VERSION,
 } from '~/utils/config'
 </script>

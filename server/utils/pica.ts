@@ -1,4 +1,14 @@
 import type { H3Event } from 'h3'
+import { PicaComicAPI } from '@l2studio/picacomic-api'
+
+export function createPicaClient() {
+  const config = useRuntimeConfig()
+  const proxy =
+    config.picaProxyHost && config.picaProxyPort
+      ? { host: config.picaProxyHost, port: Number(config.picaProxyPort) }
+      : undefined
+  return new PicaComicAPI({ proxy })
+}
 
 export function getTokenFromReq(event: H3Event): string | null {
   const query = getQuery(event)

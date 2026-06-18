@@ -1,7 +1,5 @@
-import { PicaComicAPI } from '@l2studio/picacomic-api'
-
 export default defineEventHandler(async (event) => {
-  const client = new PicaComicAPI({})
+  const client = createPicaClient()
   const body = await readBody<{ email?: string; password?: string }>(event)
 
   if (!body?.email || !body?.password) {

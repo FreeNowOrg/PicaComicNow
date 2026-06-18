@@ -1,7 +1,5 @@
-import { PicaComicAPI } from '@l2studio/picacomic-api'
-
 export default defineEventHandler(async (event) => {
-  const client = new PicaComicAPI({})
+  const client = createPicaClient()
   const authorization = getTokenFromReq(event)
 
   if (!authorization) {

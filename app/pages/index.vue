@@ -5,16 +5,15 @@
   PicaMbox(type='info', header='Tips', style='margin-bottom: 1.5rem')
     p This site is under construction
 
-  .flex.gap-1
+  .cards-row
     PicaCard.flex-1
       h2 Greeting
       p hello, world
       p {{ time }}
     PicaCard.flex-1
       h2 Profile
-      p
+      .btn-group
         NuxtLink.pica-btn(to='/profile') profile
-        | &nbsp;
         NuxtLink.pica-btn(to='/favourite') favourite
 </template>
 
@@ -36,4 +35,16 @@ onBeforeUnmount(() => {
 })
 </script>
 
-<style scoped lang="scss"></style>
+<style scoped lang="scss">
+.cards-row {
+  display: flex;
+  gap: 1.5rem;
+  flex-wrap: wrap;
+}
+
+.btn-group {
+  display: flex;
+  gap: 1rem;
+  flex-wrap: wrap;
+}
+</style>

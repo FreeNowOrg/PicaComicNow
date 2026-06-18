@@ -42,8 +42,9 @@ const sizeClass = computed(() => `size-${props.size}`)
   cursor: pointer;
   transition: all 150ms;
   box-shadow: 4px 4px 0 0 #000;
-  background-color: #fff;
+  background-color: #FFF8DC;
   color: #000;
+  text-decoration: none;
 
   &:hover {
     translate: 1.5px 1.5px;

@@ -73,7 +73,7 @@ export default defineConfig({
     'pica-press':
       'hover:translate-x-1.5 hover:translate-y-1.5 hover:shadow-[0_0_0_0_#000] active:translate-x-1.5 active:translate-y-1.5 active:shadow-[0_0_0_0_#000]',
     'pica-btn':
-      'pica-border pica-shadow rounded-lg px-6 py-3 font-black inline-flex items-center gap-2 transition-all duration-150 hover:translate-x-1.5 hover:translate-y-1.5 hover:shadow-[0_0_0_0_#000] active:translate-x-1.5 active:translate-y-1.5 active:shadow-[0_0_0_0_#000]',
+      'pica-border pica-shadow rounded-lg px-6 py-3 font-black inline-flex items-center gap-2 bg-cream text-black no-underline transition-all duration-150 hover:translate-x-1.5 hover:translate-y-1.5 hover:shadow-[0_0_0_0_#000] hover:no-underline active:translate-x-1.5 active:translate-y-1.5 active:shadow-[0_0_0_0_#000]',
     'pica-tag':
       'pica-border-sm shadow-[3px_3px_0_0_#000] rounded-md px-3 py-1 font-bold text-sm inline-flex items-center gap-1 bg-white',
     'pica-input':

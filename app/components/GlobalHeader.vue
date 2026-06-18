@@ -157,16 +157,16 @@ onMounted(() => {
 
   .side-nav-toggler {
     --color: #222;
-    display: inline-block;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
     width: 40px;
     height: 40px;
-    line-height: 45px;
-    text-align: center;
-    border-radius: 0; // flat corners for Neubrutalism
+    border-radius: 0;
 
     &:hover,
     &.is-active {
-      background-color: #FFE066; // brand-yellow highlight
+      background-color: #FFE066;
     }
   }
 
@@ -207,13 +207,13 @@ onMounted(() => {
   }
 
   .user-area {
-    .avatar {
-      font-size: 1.6rem;
-    }
+    display: flex;
+    align-items: center;
 
     .avatar img,
     img.avatar {
       border-radius: 50%;
+      display: block;
     }
 
     .user-dropdown {

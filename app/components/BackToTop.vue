@@ -1,7 +1,7 @@
 <template lang="pug">
 Transition(name='btt')
   button.back-to-top(v-show='visible', @click='scrollToTop', aria-label='回到顶部')
-    i.i-fa6-solid-chevron-up
+    i.i-fa6-solid-chevron-up(style='flex-shrink: 0; width: 1em; height: 1em')
 </template>
 
 <script setup lang="ts">
